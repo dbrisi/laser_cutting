@@ -1,19 +1,16 @@
 # -*- coding: utf-8 -*-
-"""
-Spyder Editor
 
-This is a temporary script file.
-"""
+# simple program to ask user for rectangle dimensions and to output a rectangle of those dimensions as an .svg file. 
 
 import turtle
 #import tkinter as tk
 
-# get width and length from user - make this into a GUI later
-width = float(input('Enter a width for the rectangle:'))
-length = float(input('Enter a length for the rectangel:'))
-
 def main():
     
+    # get width and length from user - make this into a GUI later
+    width = float(input('Enter a width for the rectangle:'))
+    length = float(input('Enter a length for the rectangel:'))
+
     t = turtle.Turtle()
     
     t.pendown()
