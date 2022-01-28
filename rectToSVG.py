@@ -3,7 +3,8 @@
 # simple program to ask user for rectangle dimensions and to output a rectangle of those dimensions as an .svg file. 
 
 import turtle
-#import tkinter as tk
+import canvasvg
+
 
 def main():
     
@@ -13,7 +14,9 @@ def main():
 
     t = turtle.Turtle()
     
+    # drawing a simple rectangle
     t.pendown()
+    t.hideturtle()
     t.forward(width)
     t.left(90)
     t.forward(length)
@@ -21,11 +24,24 @@ def main():
     t.forward(width)
     t.left(90)
     t.forward(length)
-    t.penup()
+    #t.penup()
+    #turtle.mainloop() # this will keep the turtle window open
+    
+    # capture the graphic/image
+    ts = t.getscreen().getcanvas()
 
-#    done()
+    # save the graphic/image as an svg file using canvasvg package
+    #canvasvg.saveall("rect.svg",ts)
+    fileName = input("Name the file (no suffix):")
+    fileNameToSave = fileName + ".svg"
+    canvasvg.saveall(fileNameToSave,ts)
+    
+    
+    #saveImg()
+
 
 main()
+
 #t.save_as("rectangle.svg")
 
 # #create a window for user inputs
