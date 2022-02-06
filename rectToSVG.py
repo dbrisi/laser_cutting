@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# simple program to ask user for rectangle dimensions and to output a rectangle of those dimensions as an .svg file. 
+# simple program to ask user for rectangle dimensions and to output a rectangle of those dimensions as an .svg file.
 
 def main():
 
@@ -12,13 +12,13 @@ def main():
     #tooBig = True # placeholder for initial while loop
 
     # one pixel = 1/96 inch
-    inchToPix = 96; 
+    inchToPix = 96;
 
     # one inch = 72 pt font size; conversion factor to fill much of the box (height or width)
     fontSizeConv = 72
 
     print("This program helps you create a user-defined rectangle with initials engraved on it.")
-    print('"The length and width of the rectangle cannot exceed 2".')
+    print('The length and width of the rectangle cannot exceed 2".')
     # get maximum size, width and length from user
     # check the dimensions are valid and are less than or equal to the maximum size
     # while tooBig == True or height > 2 or width > 2:
@@ -47,15 +47,15 @@ def main():
         #     maxSize = 0
         #     height = 0
         #     width = 0
-        # else: 
+        # else:
         #     tooBig = False
-        
+
     # Ask user for initials
     while (len(initials) <= 0 or len(initials) > 3):
         initials = input("Enter your initials: ")
         if len(initials) > 3:
             print("That is a lot of initials. Try again. ")
-    
+
     # adjust font size so that the text does not exceed the rectangle bounds
     if height < width:
         fontSize = fontSizeConv*(4/5)*height
@@ -71,9 +71,8 @@ def main():
     f.write('<?xml version = "1.0" encoding = "UTF-8" ?> \n')
     f.write('<svg xmlns="http://www.w3.org/2000/svg" version = "1.1"> \n')
     f.write(f'<rect x = "10" y = "10" width = "{width*inchToPix}" height = "{height*inchToPix}" stroke = "black" stroke-width = "2" fill = "none" /> \n')
-    f.write(f'<text x = "{10 + (width*inchToPix)/2}" y = "{10 + (height*inchToPix)/2}" dominant-baseline="central" text-anchor="middle" font-size = "{fontSize}px" fill = "red">' + initials + ' </text> \n')
+    f.write(f'<text x = "{10 + (width*inchToPix)/2}" y = "{10 + (height*inchToPix)/2}" dominant-baseline= "central" text-anchor= "middle" font-size = "{fontSize}px" fill = "red">' + initials + ' </text> \n')
     f.write('</svg>')
     f.close()
 
 main()
-
