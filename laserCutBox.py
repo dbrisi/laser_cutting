@@ -14,6 +14,43 @@ print('The box will be laser cut from acrylic (nominally 1/4" thick).')
 print(f'The box cannot exceed dimensions which require more material than {MAX_HEIGHT}" X {MAX_WIDTH}".')
 print("--------------------------------------------------------------------------")
 
+def main():
+    
+    # initialize thickness, length, width and height of the box to be zero
+    thickness = 0.0
+    width = 0.0
+    length = 0.0
+    height = 0.0 
+
+    # reference dimensions for SVG output
+    longestDim = 0.0
+    mediumDim = 0.0
+    shortestDim = 0.0
+
+    boxValues = userInput(thickness, width, length, height)
+    # we can get rid of indivudual variables and just use the boxValues tuple... Whichever is easier
+    thickness = boxValues[0]
+    width = boxValues[1]
+    length = boxValues[2]
+    height = boxValues[3]
+    longestDim = boxValues[4]
+    mediumDim = boxValues[5]
+    shortestDim = boxValues[6]
+    partition = boxValues[7]
+    partitionLength = boxValues[8]
+    lid = boxValues[9]
+    # printing to check
+    print(f'thickness: {thickness}')
+    print(f'width: {width}')
+    print(f'length: {length}')
+    print(f'height: {height}')
+    print(f'longest: {longestDim}')
+    print(f'medium: {mediumDim}')
+    print(f'shortest: {shortestDim}')
+    print(f'partition: {partition}')
+    print(f'legnth of partition/compartment: {partitionLength}')
+    print(f'lid: {lid}')
+
 # funciton to accept inputs from user
 def userInput(thickness, width, length, height):
     
@@ -30,19 +67,20 @@ def userInput(thickness, width, length, height):
     # intial box value settings
     partition = False
     lid = False
-    numPartitions = 0 
+    #numPartitions = 0 
+    partitionLength = 0
 
     # get user input for box values
     while tooBig == True or thickness <= 0 or width <= 0 or length <= 0 or height <= 0:
 
         # get user input for thickness
         while thickness <= 0 or thickness > MAX_THICKNESS:
-            thickness = float(input('Enter a thickness (in) for the box walls: '))
+            thickness = float(input('Enter a thickness (in) for the box walls (nominally .25"): '))
             if thickness <= 0:
                 print("Invalid thickness! Only positive values accepted.")
             if thickness > MAX_THICKNESS:
                 print('Invalid thickness! That is very thick!')
-                print(f'Let''s try something less than or equal to {MAX_THICKNESS}".')
+                print(f'How about something less than or equal to {MAX_THICKNESS}"?')
         
         # get user input for width
         # NEED TO THINK ABOUT HOW WE ERROR CHECK FOR TOO LARGE
@@ -74,7 +112,7 @@ def userInput(thickness, width, length, height):
             # if height > :
             #     print(f'Invalid height!Must be less than or equal to {}" or we run out of material.')
         
-        # set reference dimensions
+        # set reference dimensions -> new function? 
         if width > length and width > height:
             longestDim = width
             if length > height or length == height:
@@ -102,24 +140,27 @@ def userInput(thickness, width, length, height):
                 mediumDim = length
                 shortestDim = width
 
-        # # as of 2/5/22, i have not fixed the issue with this loop -YL
-        # while (partitionInput != "Y" or partitionInput != "N"):
-        #     partitionInput = input("Would you like a partition for the box? Please Enter (Y/N):  ")
-        #     if partitionInput == "Y":
-        #         #partition = True
-        #         while numPartitions < 0 or numPartitions > 2:
-        #             numPartitions = input("You can have 1 or 2 partitions. Please enter how many: ")
-        #     else:
-        #         #partition = False
-        #         numPartitions = 0
+        # as of 2/5/22, i have not fixed the issue with this loop -YL
+        while (partitionInput != "Y" and partitionInput != "N"):
+            partitionInput = input("Would you like a partition for the box? Please Enter (Y/N):  ")
+            if partitionInput == "Y":
+                partition = True
+                while partitionLength <= 0 or partitionLength > length:
+                    partitionLength = float(input("Enter the depth/length (in) of the partition:"))
+                    if partitionLength < 0:
+                        print("Invalid lenth. Please enter a positive value")
+                    if partitionLength > length:
+                        print("Invalid lenth. Please enter a value which is less than the length")
+            else:
+                partition = False
 
-        # # as of 2/5/22, i have not fixed the issue with this loop -YL
-        # while (lidInput != "Y" or lidInput != "N"):
-        #     lidInput = input("Would you like a lid for the box? Please Enter (Y/N):  ")
-        #     if lidInput == "Y":
-        #         lid = True
-        #     else:
-        #         lid = False
+        # as of 2/5/22, i have not fixed the issue with this loop -YL
+        while (lidInput != "Y" and lidInput != "N"):
+            lidInput = input("Would you like a lid for the box? Please Enter (Y/N):  ")
+            if lidInput == "Y":
+                lid = True
+            else:
+                lid = False
             
         # OTHER USER INPUT OPTIONS? 
         # -Num. of dovetails? automatic? 
@@ -137,7 +178,7 @@ def userInput(thickness, width, length, height):
 
         # before error checking, assuming that dims are good so tooBig = False
         tooBig = False
-    return thickness, width, length, height, longestDim, mediumDim, shortestDim, numPartitions, lidInput
+    return thickness, width, length, height, longestDim, mediumDim, shortestDim, partition, partitionLength, lid
 
 def main():
     
@@ -145,7 +186,7 @@ def main():
     thickness = 0.0
     width = 0.0
     length = 0.0
-    height = 0.0
+    height = 0.0 
 
     # reference dimensions for SVG output
     longestDim = 0.0
@@ -161,8 +202,9 @@ def main():
     longestDim = boxValues[4]
     mediumDim = boxValues[5]
     shortestDim = boxValues[6]
-    numPartitions = boxValues[7]
-    lid = boxValues[8]
+    partition = boxValues[7]
+    partitionLength = boxValues[8]
+    lid = boxValues[9]
     # printing to check
     print(f'thickness: {thickness}')
     print(f'width: {width}')
@@ -171,8 +213,9 @@ def main():
     print(f'longest: {longestDim}')
     print(f'medium: {mediumDim}')
     print(f'shortest: {shortestDim}')
-    print(f'number of partitions: {numPartitions}')
+    print(f'partition: {partition}')
+    print(f'legnth of partition/compartment: {partitionLength}')
     print(f'lid: {lid}')
 
-
 main()
+
