@@ -3,7 +3,7 @@
 # constants
 MAX_WIDTH = 24.0 #verify this is the maximum width of the acrylic
 MAX_HEIGHT = 18.0 #verify this is the maximum height of the acrylic
-INCH_TO_PIX_CONV = 96 # one pixel = 1/96 inch
+INCH_TO_PIX_CONV = 96 # one pixel = 1/96 inch --> MAYBE CHANGE?
 FONT_SIZE_CONV = 72 # size 1 pt font = 1/72 inch
 
 # intro statements
@@ -11,7 +11,7 @@ print("-------------------------------------------------------------------------
 print("--------------------------------------------------------------------------")
 print("This program helps you create a user-defined, customizable box.")
 print('The box will be laser cut from acrylic (nominally 1/4" thick).')
-print(f'The box cannot exceed dimensions which require more material than {MAX_HEIGHT}" X {MAX_WIDTH}".')
+print(f'The box cannot exceed dimensions which require more material than {MAX_WIDTH}" X {MAX_HEIGHT}".')
 print("--------------------------------------------------------------------------")
 
 def main():
@@ -85,83 +85,98 @@ def userInput(thickness, width, length, height):
         # get user input for width
         # NEED TO THINK ABOUT HOW WE ERROR CHECK FOR TOO LARGE
         # i'm thinking error checking will be later...
-        while width <= 0:  
+        while width <= 0 or width > 24 - 2*thickness:  
             width = float(input('Enter a width (in) for the box: '))
             if width <= 0:
                 print("Invalid width! Only positive values accepted.")
-            # if width > :
-            #     print(f'Invalid width! Must be less than or equal to {}" or we run out of material.')
+            if width > 24 - 2*thickness:
+                print('Invalid width! Maximum dimension of the available material is only 24". Please try again.')
 
         # get user input for length
         # NEED TO THINK ABOUT HOW WE ERROR CHECK FOR TOO LARGE
         # i'm thinking error checking will be later...
-        while length <= 0:
+        while length <= 0 or length > 24 - 2*thickness:
             length = float(input('Enter a length (in) for your box: '))
             if length <= 0:
                 print("Invalid length! Only positive values accepted.")
-            # if length > :
-            #     print(f'Invalid length! Must be less than or equal to {}" or we run out of material.')
+            if length > 24 - 2*thickness:
+                print('Invalid width! Maximum dimension of the available material is only 24". Please try again.')
 
         # get user input for height
         # NEED TO THINK ABOUT HOW WE ERROR CHECK FOR TOO LARGE
         # i'm thinking error checking will be later...
-        while height <= 0:
+        while height <= 0 or height > 24 - 2*thickness:
             height = float(input('Enter a height (in) for the rectangle: '))
             if height <= 0:
                 print("Invalid height! Only positive values accepted.")
-            # if height > :
-            #     print(f'Invalid height!Must be less than or equal to {}" or we run out of material.')
-        
+            if length > 24 - 2*thickness:
+                print('Invalid width! Maximum dimension of the available material is only 24". Please try again.')
+
         # set reference dimensions -> new function? 
         if width > length and width > height:
             longestDim = width
+            longestDimInd = "w"
             if length > height or length == height:
                 mediumDim = length
+                mediumDimInd = "l"
                 shortestDim = height
+                shortestDimInd = "h"
             else:
                 mediumDim = height
+                mediumDimInd = "h"
                 shortestDim = length
+                shortestDimInd = 'l'
         
         if length > width and length > height:
             longestDim = length
+            longestDimInd = 'l'
             if width > height or width == height:
                 mediumDim = width
+                mediumDimInd = 'w'
                 shortestDim = height
+                shortestDimInd = 'h'
             else: 
                 mediumDim = height
+                mediumDimInd = 'h'
                 shortestDim = width
+                shortestDimInd = 'w'
 
         if height > width and height > length:
             longestDim = height
+            longestDimInd = 'h'
             if width > length or width == length:
                 mediumDim = width
+                mediumDimInd = 'w'
                 shortestDim = length
+                shortestDimInd = 'l'
             else:
                 mediumDim = length
+                mediumDimInd = 'l'
                 shortestDim = width
+                shortestDimInd = 'w'
 
-        # as of 2/5/22, i have not fixed the issue with this loop -YL
+        # maybe consider giving the user the option to choose the orientation (legnth/width-wise) of the partition
         while (partitionInput != "Y" and partitionInput != "N"):
-            partitionInput = input("Would you like a partition for the box? Please Enter (Y/N):  ")
+            partitionInput = input("Would you like a partition for the box? Please Enter (Y/N): ").upper()
             if partitionInput == "Y":
                 partition = True
                 while partitionLength <= 0 or partitionLength > length:
-                    partitionLength = float(input("Enter the depth/length (in) of the partition:"))
+                    partitionLength = float(input("Enter the location (in) of the partition: ")) #maybe clarify length/width later
                     if partitionLength < 0:
-                        print("Invalid lenth. Please enter a positive value")
+                        print("Invalid length. Please enter a positive value")
                     if partitionLength > length:
-                        print("Invalid lenth. Please enter a value which is less than the length")
+                        print("Invalid length. Please enter a value which is less than the length.")
             else:
                 partition = False
 
-        # as of 2/5/22, i have not fixed the issue with this loop -YL
         while (lidInput != "Y" and lidInput != "N"):
-            lidInput = input("Would you like a lid for the box? Please Enter (Y/N):  ")
+            lidInput = input("Would you like a lid for the box? Please Enter (Y/N):  ").upper()
             if lidInput == "Y":
                 lid = True
             else:
                 lid = False
-            
+
+
         # OTHER USER INPUT OPTIONS? 
         # -Num. of dovetails? automatic? 
         # -initials? 
@@ -178,7 +193,7 @@ def userInput(thickness, width, length, height):
 
         # before error checking, assuming that dims are good so tooBig = False
         tooBig = False
-    return thickness, width, length, height, longestDim, mediumDim, shortestDim, partition, partitionLength, lid
+    return thickness, width, length, height, longestDim, mediumDim, shortestDim, longestDimInd, mediumDimInd, shortestDimInd, partition, partitionLength, lid
 
 def main():
     
@@ -202,10 +217,15 @@ def main():
     longestDim = boxValues[4]
     mediumDim = boxValues[5]
     shortestDim = boxValues[6]
-    partition = boxValues[7]
-    partitionLength = boxValues[8]
-    lid = boxValues[9]
+    longestDimInd = boxValues[7]
+    mediumDimInd = boxValues[8]
+    shortestDimInd = boxValues[9]
+    partition = boxValues[10]
+    partitionLength = boxValues[11]
+    lid = boxValues[12]
     # printing to check
+    print('---------------------')
+    print('Results for testing:')
     print(f'thickness: {thickness}')
     print(f'width: {width}')
     print(f'length: {length}')
@@ -213,6 +233,9 @@ def main():
     print(f'longest: {longestDim}')
     print(f'medium: {mediumDim}')
     print(f'shortest: {shortestDim}')
+    print(f'Longest: {longestDimInd}')
+    print(f'Medium: {mediumDimInd}')
+    print(f'Shortest: {shortestDimInd}')
     print(f'partition: {partition}')
     print(f'legnth of partition/compartment: {partitionLength}')
     print(f'lid: {lid}')
