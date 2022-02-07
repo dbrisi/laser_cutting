@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 # ACTION ITEMS
-# 1. input for pattern - in userAddOnInput() -DJD
+# 1. input for pattern - in userAddOnInput() -DJD                                   DONE
 # 2. input for text on top - in userAddOnInput(), call new fct -YLL                 DONE
 # 3. input for text on front - in userAddOnInput(), call new fct -YLL               DONE
 # 4. # error checking dimensions - in userDimInput() -DJD
 # 5. start svg generation - new "master" fct, calls other svg generations -YLL
-# 6. fractal pattern - new function (called by master svg function) -DJD
+# 6. fractal pattern - new function (called by master svg function) -DJD            DONE
 # 7. text on top for SVG - new function, called by master svg fct -YLL
 # 8. text on bottom for SVG - new function, called by master svg fct -YLL
 # 9. one (same) function for each dimension input, called by userDimInput() -YLL    DONE
