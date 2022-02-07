@@ -4,14 +4,15 @@
 # 1. input for pattern - in userAddOnInput() -DJD
 # 2. input for text on top - in userAddOnInput(), call new fct -YLL                 DONE
 # 3. input for text on front - in userAddOnInput(), call new fct -YLL               DONE
-# 4. # error checking dimensions - in userDimInput() -DJD 
+# 4. # error checking dimensions - in userDimInput() -DJD
 # 5. start svg generation - new "master" fct, calls other svg generations -YLL
 # 6. fractal pattern - new function (called by master svg function) -DJD
 # 7. text on top for SVG - new function, called by master svg fct -YLL
 # 8. text on bottom for SVG - new function, called by master svg fct -YLL
 # 9. one (same) function for each dimension input, called by userDimInput() -YLL    DONE
 
-
+# imports
+import math
 
 # constants
 MAX_WIDTH = 24.0 #verify this is the maximum width of the acrylic
@@ -31,7 +32,7 @@ print("-------------------------------------------------------------------------
 ## FUNCTION TO ACCEPT USER INPUTS FOR BOX DIMENSIONS ##
 #######################################################
 def userDimInput(thickness, width, length, height):
-    
+
     #constants
     MAX_WIDTH = 24.0 #verify this is the maximum width of the acrylic
     MAX_HEIGHT = 18.0 #verify this is the maximum height of the acrylic
@@ -51,17 +52,18 @@ def userDimInput(thickness, width, length, height):
             if thickness > MAX_THICKNESS:
                 print('Invalid thickness! That is very thick!')
                 print(f'How about something less than or equal to {MAX_THICKNESS}"?')
-        
+
         # get user input for width
         width = userSingleDim("width",width,thickness)
-        
+
         # get user input for length
         length = userSingleDim("length",length,thickness)
 
         # get user input for height
         height = userSingleDim("height",height,thickness)
 
-        # set reference dimensions -> new function? 
+        # set reference dimensions -> new function?
+        ## NOT HANDLING TIES FYI
         if width > length and width > height:
             longestDim = width
             longestDimInd = "w"
@@ -75,7 +77,7 @@ def userDimInput(thickness, width, length, height):
                 mediumDimInd = "h"
                 shortestDim = length
                 shortestDimInd = 'l'
-        
+
         if length > width and length > height:
             longestDim = length
             longestDimInd = 'l'
@@ -84,7 +86,7 @@ def userDimInput(thickness, width, length, height):
                 mediumDimInd = 'w'
                 shortestDim = height
                 shortestDimInd = 'h'
-            else: 
+            else:
                 mediumDim = height
                 mediumDimInd = 'h'
                 shortestDim = width
@@ -104,13 +106,13 @@ def userDimInput(thickness, width, length, height):
                 shortestDim = width
                 shortestDimInd = 'w'
 
-    # ERROR CHECK REFERENCE DIMS new function to error check? 
-        ## need to check if longestDim x however many cuts (depending on if longest is w,l,h, lid/no-lid, partition(s)/no-partition(s)) exceeds the length/width of the acrylic... 
-        ## also need to check rest of dims and remaining acrylic space... 
+    # ERROR CHECK REFERENCE DIMS new function to error check?
+        ## need to check if longestDim x however many cuts (depending on if longest is w,l,h, lid/no-lid, partition(s)/no-partition(s)) exceeds the length/width of the acrylic...
+        ## also need to check rest of dims and remaining acrylic space...
 
         # if :
         #     tooBig = True
-        # else: 
+        # else:
         #     tooBig = False
 
 
@@ -129,14 +131,17 @@ def userAddOnInputs(length):
     topTextInput = ""
     frontTextInput = ""
     topText = ""
+    fractalInput = ""
+    fractalSideChoiceInput = ""
 
     # intial box value settings
     partition = False
     lid = False
     topTextYesNo = False # maybe this is not necessary (just check if text is "" or has something)
     frontTextYesNo = False # maybe this is not necessary (just check if text is "" or has something)
-    #numPartitions = 0 
+    #numPartitions = 0
     partitionLocation = 0
+    fractal = False
 
     # user input for partition option and location
     # maybe consider giving the user the option to choose the orientation (legnth/width-wise) of the partition
@@ -166,37 +171,47 @@ def userAddOnInputs(length):
         topTextValues = textInput("top")
         topTextInput = topTextValues[0]
         topTextYesNo = topTextValues[1]
-        topText = topTextValues[2] 
-    
+        topText = topTextValues[2]
+
     # user input for text option and content
     while (frontTextInput != "Y" and frontTextInput != "N"):
         frontTextValues = textInput("front")
         frontTextInput = frontTextValues[0]
         frontTextYesNo = frontTextValues[1]
-        frontText = frontTextValues[2] 
+        frontText = frontTextValues[2]
+
+    # user input for the fractal
+    while (fractalInput != "Y" and fractalInput != "N"):
+        fractalInput = input("Would you like a fractal pattern on one side of the box? Please Enter (Y/N): ").upper()
+        if fractalInput == "Y":
+            fractal = True
+            while (fractalSideChoiceInput != "SIDE" and fractalSideChoiceInput != "BOTTOM"):
+                fractalSideChoiceInput = input("Enter the location of the fractal - Side or Bottom: ").upper()
+        else:
+            fractal = False
 
     #Simple case: Width and Length along width of acrylic (24"), Height along height of acrylic (18"
 
-    # OTHER USER INPUT OPTIONS? 
+    # OTHER USER INPUT OPTIONS?
     # -Num. of dovetails? automatic? --> NO for now, start with fixed size of dovetails
     # -ask for text message on front and/or top --> YES
     # pattern? pick a size/ automatic? --> YES, give options for one (or both) sides, one for now
 
-    return partition, partitionLocation, lid, topTextYesNo, topText, frontTextYesNo, frontText
-    
+    return partition, partitionLocation, lid, topTextYesNo, topText, frontTextYesNo, frontText, fractal, fractalSideChoiceInput
+
 ############################################
 ## FUNCTION TO ACCEPT USER INPUT FOR TEXT ##
 ############################################
 def textInput(location):
     textInput = input(f"Would you like text on the {location} of your box? Please enter Y/N: ").upper()
     if textInput == "Y":
-        print('OK, text will be autosized to fit the dimensions of the box.') # in the meantime... 
+        print('OK, text will be autosized to fit the dimensions of the box.') # in the meantime...
         YesNo = True
         text = input("Please enter the text: ")
-    else: 
+    else:
         YesNo = False
         text = "" # necessary?
-    
+
     return textInput, YesNo, text
 
 ##########################################################
@@ -209,19 +224,47 @@ def userSingleDim(dimension, dimensionValue, thickness):
             print(f"Invalid {dimension}! Only positive values accepted.")
         if dimensionValue > 24 - 2*thickness:
             print(f'Invalid {dimension}! Maximum dimension of the available material is only 24". Please try again.')
-            
+
     return dimensionValue
+
+##########################################################
+## FUNCTION TO GENERATE FRACTAL IN SVG ##
+##########################################################
+def fractalGenerator(hasFractal, fractalSide):
+    if hasFractal == True:
+        if fractalSide == "SIDE":
+            xStart = 444
+            yStart = 444
+        if fractalSide == "BOTTOM":
+            xStart = 555
+            yStart = 555
+
+        f = open("fractalMainTest.svg","w")
+
+        f.write('<?xml version = "1.0" encoding = "UTF-8" ?> \n')
+        f.write('<svg xmlns="http://www.w3.org/2000/svg" version = "1.1"> \n')
+        f.write(f'<polyline points = "{xStart},{yStart} {xStart + 2*math.cos(59*math.pi/180)},{yStart + 2*math.sin(59*math.pi/180)}" fill = "none" stroke = "red" /> \n')
+
+
+        for i in range(100):
+            #sketch.pencolor(colors[i % 6])
+            ## EVERYTHING TEMPORARY EXCEPT POLYLINE
+            f.write(f'<polyline points = "{xStart + 2*math.cos(59*i*math.pi/180)*i},{yStart + 2*math.sin(59*i*math.pi/180)*i} {xStart + 2*math.cos(59*(i+1)*math.pi/180)*(i+1)},{yStart + 2*math.sin(59*(i+1)*math.pi/180)*(i+1)}" fill = "none" stroke = "red" /> \n')
+
+        f.write('</svg>')
+
+        f.close()
 
 ###################
 ## MAIN FUNCTION ##
 ###################
 def main():
-    
+
     # initialize thickness, length, width and height of the box to be zero
     thickness = 0.0
     width = 0.0
     length = 0.0
-    height = 0.0 
+    height = 0.0
 
     # reference dimensions for SVG output
     longestDim = 0.0
@@ -250,6 +293,8 @@ def main():
     topText = boxValues[4]
     frontTextYesNo = boxValues[5]
     frontText = boxValues[6]
+    fractal = boxValues[7]
+    fractalSideChoiceInput = boxValues[8]
 
     # printing to check
     print('---------------------')
@@ -275,6 +320,9 @@ def main():
     print(f'top text content: \t{topText}')
     print(f'front text: \t\t{frontTextYesNo}')
     print(f'front text content: \t{frontText}')
+    print(f'fractal: \t\t{fractal}')
+    print(f'fractal side: \t{fractalSideChoiceInput}')
+
+    fractalGenerator(fractal, fractalSideChoiceInput)
 
 main()
-
