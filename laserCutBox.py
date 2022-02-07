@@ -1,15 +1,22 @@
 # -*- coding: utf-8 -*-
 
 # ACTION ITEMS
-# 1. input for pattern - in userAddOnInput() -DJD                                   DONE
-# 2. input for text on top - in userAddOnInput(), call new fct -YLL                 DONE
-# 3. input for text on front - in userAddOnInput(), call new fct -YLL               DONE
-# 4. # error checking dimensions - in userDimInput() -DJD
-# 5. start svg generation - new "master" fct, calls other svg generations -YLL
-# 6. fractal pattern - new function (called by master svg function) -DJD            DONE
-# 7. text on top for SVG - new function, called by master svg fct -YLL
-# 8. text on bottom for SVG - new function, called by master svg fct -YLL
+# 1. input for pattern - in userAddOnInput()                                -DJD    DONE
+# 2. input for text on top - in userAddOnInput(), call new fct              -YLL    DONE
+# 3. input for text on front - in userAddOnInput(), call new fct            -YLL    DONE
+# 4. # error checking dimensions - in userDimInput()                        -DJD    
+# 5. start svg generation - new "master" fct, calls other svg generations   -ALL    DYNAMIC UNTIL ALL SVG FCTs ARE DONE
+# 6. fractal pattern - new function (called by master svg function)         -DJD    DONE
+# 7. text on top for SVG - new function, called by master svg fct           -YLL    2/7 - 2/8
+# 8. text on bottom for SVG - new function, called by master svg fct        -YLL    2/7 - 2/8
 # 9. one (same) function for each dimension input, called by userDimInput() -YLL    DONE
+# 10. SVG generation of the lid/top (new fct), called by masterSVG          -DJD    
+# 11. need to modify baseSVG() to include holes and nut cut-outs
+# 12. need to modify baseSVG() to include slits on sides for partition      -YLL
+# 13. need to modify baseSVG() to output partition (no dovetails, screws?)
+# 14. now everything is in inch, scale down? 1:4? 1:8?
+# 15. modify fractalGenerator() and include in masterSVG
+
 
 # imports
 import math
@@ -64,10 +71,10 @@ def userDimInput(thickness, width, length, height):
 
         # set reference dimensions -> new function?
         ## NOT HANDLING TIES FYI
-        if width > length and width > height:
+        if width >= length and width >= height:
             longestDim = width
             longestDimInd = "w"
-            if length > height or length == height:
+            if length >= height:
                 mediumDim = length
                 mediumDimInd = "l"
                 shortestDim = height
@@ -78,10 +85,10 @@ def userDimInput(thickness, width, length, height):
                 shortestDim = length
                 shortestDimInd = 'l'
 
-        if length > width and length > height:
+        if length >= width and length >= height:
             longestDim = length
             longestDimInd = 'l'
-            if width > height or width == height:
+            if width >= height:
                 mediumDim = width
                 mediumDimInd = 'w'
                 shortestDim = height
@@ -92,10 +99,10 @@ def userDimInput(thickness, width, length, height):
                 shortestDim = width
                 shortestDimInd = 'w'
 
-        if height > width and height > length:
+        if height >= width and height >= length:
             longestDim = height
             longestDimInd = 'h'
-            if width > length or width == length:
+            if width >= length:
                 mediumDim = width
                 mediumDimInd = 'w'
                 shortestDim = length
@@ -255,6 +262,126 @@ def fractalGenerator(hasFractal, fractalSide):
 
         f.close()
 
+def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START):
+
+    #INCH_TO_PIX_CONV = 96
+
+    # AS OF NOW KEEP AS DOVETAIL AS .5" AND USE ONLY FULL INTEGER DIMENSIONS
+    doveTailLength = .5 #in 
+
+    xStartNW = X_START
+    yStartNW = Y_START
+    xStartNE = xStartNW + horizontalDim*INCH_TO_PIX_CONV
+    yStartNE = yStartNW
+    xStartSE = xStartNE
+    yStartSE = yStartNE + verticalDim*INCH_TO_PIX_CONV
+    xStartSW = xStartSE - horizontalDim*INCH_TO_PIX_CONV
+    yStartSW = yStartSE
+    
+    # horizontal side 1 (NW to NE)
+    f.write('<polyline points="')
+    x1,y1 = xStartNW,  yStartNW
+    if position == "bottom":
+        x2,y2 = x1, y1 -thickness*INCH_TO_PIX_CONV
+        x3,y3 = x2 + doveTailLength*INCH_TO_PIX_CONV, y2
+        x4,y4 = x3, yStartNW
+        x5,y5 = x4 + doveTailLength*INCH_TO_PIX_CONV, yStartNW
+        for i in range(int(horizontalDim)):
+            increment = i*INCH_TO_PIX_CONV
+            f.write(f'{x1+increment},{y1} {x2+increment},{y2} {x3+increment},{y3} {x4+increment},{y4} {x5+increment},{y5} ')
+    else:
+        f.write(f'{xStartNW},{yStartNW} {xStartNE},{yStartNE} ')
+    f.write('" style="fill:none;stroke:black;stroke-horizontalDim:2"/>\n')
+
+    # vertical side 1 (NE to SE)
+    x1,y1 = xStartNE,  yStartNE
+    x2,y2 = x1 + thickness*INCH_TO_PIX_CONV, y1
+    x3,y3 = x2, y2 + doveTailLength*INCH_TO_PIX_CONV
+    x4,y4 = xStartNE, y3
+    x5,y5 = xStartNE, y4 + doveTailLength*INCH_TO_PIX_CONV
+    f.write('<polyline points="')
+    for i in range(int(verticalDim)):
+        increment = i*INCH_TO_PIX_CONV
+        f.write(f'{x1},{y1+increment} {x2},{y2+increment} {x3},{y3+increment} {x4},{y4+increment} {x5},{y5+increment} ')
+    f.write('" style="fill:none;stroke:black;stroke-horizontalDim:2"/>\n')
+    
+    # horizontal side 2 (SE to SW)
+    x1,y1 = xStartSE,  yStartSE
+    x2,y2 = x1, y1 + thickness*INCH_TO_PIX_CONV
+    x3,y3 = x2 - doveTailLength*INCH_TO_PIX_CONV, y2
+    x4,y4 = x3, yStartSE
+    x5,y5 = x4 - doveTailLength*INCH_TO_PIX_CONV, yStartSE
+    f.write('<polyline points="')
+    for i in range(int(horizontalDim)):
+        increment = i*INCH_TO_PIX_CONV
+        f.write(f'{x1-increment},{y1} {x2-increment},{y2} {x3-increment},{y3} {x4-increment},{y4} {x5-increment},{y5} ')
+    f.write('" style="fill:none;stroke:black;stroke-horizontalDim:2"/>\n')
+
+    # vertical side 2 (SW to NW)
+    x1,y1 = xStartSW,  yStartSW
+    x2,y2 = x1 - thickness*INCH_TO_PIX_CONV, y1
+    x3,y3 = x2, y2 - doveTailLength*INCH_TO_PIX_CONV
+    x4,y4 = xStartSW, y3
+    x5,y5 = xStartSW, y4 - doveTailLength*INCH_TO_PIX_CONV
+    f.write('<polyline points="')
+    for i in range(int(verticalDim)):
+        increment = i*INCH_TO_PIX_CONV
+        f.write(f'{x1},{y1-increment} {x2},{y2-increment} {x3},{y3-increment} {x4},{y4-increment} {x5},{y5-increment} ')
+    f.write('" style="fill:none;stroke:black;stroke-horizontalDim:2"/>\n')
+    
+
+##############################################################
+## FUNCTION TO GENERATE MAIN SVG, CALLS OTHER SVG FUNCTIONS ##
+##############################################################
+def masterSVG(thickness, width, length, height, partition, partitionLength, lid, topTextYesNo, topText, frontTextYesNo, frontText, fractal, fractalSideChoiceInput):
+    
+    # base origin
+    xScale1, yScale1 = 75,40
+    xScale2,yScale2 = xScale1 + 1*INCH_TO_PIX_CONV, yScale1
+    X_START, Y_START = 75, 75 # pixels
+    PIECE_SEPARATION = 25 # pixels
+
+    # set local origins of base pieces to be cut
+    # row 1 of pieces
+    xStartFront, yStartFront = X_START, Y_START
+    xStartBack, yStartBack = xStartFront + (width + 2*thickness)*INCH_TO_PIX_CONV + PIECE_SEPARATION, Y_START
+    xStartLeft, yStartLeft = xStartBack + (width + 2* thickness)*INCH_TO_PIX_CONV + PIECE_SEPARATION, Y_START
+    xStartRight, yStartRight = xStartLeft + (length + 2* thickness)*INCH_TO_PIX_CONV + PIECE_SEPARATION, Y_START
+    # row 2 of pieces
+    xStartTop, yStartTop = X_START, Y_START + (height + 2*thickness)*INCH_TO_PIX_CONV + PIECE_SEPARATION 
+    xStartBottom, yStartBottom = xStartTop + (width + 2*thickness)*INCH_TO_PIX_CONV + PIECE_SEPARATION, Y_START + (height + 2*thickness)*INCH_TO_PIX_CONV + PIECE_SEPARATION 
+    xStartPartition, yStartPartition = xStartBottom + (width + 2*thickness)*INCH_TO_PIX_CONV + PIECE_SEPARATION, Y_START + (height + 2*thickness)*INCH_TO_PIX_CONV + PIECE_SEPARATION 
+    
+    # create SVG file, will be saved in local repo/directory
+    fileNameInput = input('Enter a file name (no extension): ')
+    fileName = fileNameInput + ".svg"
+    f = open(fileName,'w')
+
+    # opening lines of SVG file
+    f.write('<?xml version = "1.0" encoding = "UTF-8" ?> \n')
+    f.write('<svg xmlns="http://www.w3.org/2000/svg" version = "1.1"> \n')
+    
+    # set scale of 1"
+    f.write(f'<line x1="{xScale1}" y1="{yScale1}" x2="{xScale2}" y2 ="{yScale2}" style="stroke:red;stroke-horizontalDim:4"/>\n')
+    f.write(f'<text x = "{xScale2+10}" y = "{yScale2+5}" font-size = "20px" fill = "red"> = 1 inch </text> \n')
+
+    # lines for calling specific SVG functions
+    baseSVG(f,"front",thickness,width,height,xStartFront,yStartFront)
+    baseSVG(f,"back",thickness,width,height,xStartBack,yStartBack)
+    baseSVG(f,"left",thickness,length,height,xStartLeft,yStartLeft)
+    baseSVG(f,"right",thickness,length,height,xStartRight,yStartRight)
+    baseSVG(f,"bottom",thickness,width,length,xStartBottom,yStartBottom)
+    # partition -> new function? modify the existing? use if (?)
+    # top/lid -> new function... use if (?)
+    # fractal -> existing function... use if (?), modify function to 
+    # text engravings -> new function... use if (?)
+
+    # closing line of SVG file
+    f.write('</svg>')
+    f.close()
+
+
+    
 ###################
 ## MAIN FUNCTION ##
 ###################
@@ -272,6 +399,7 @@ def main():
     shortestDim = 0.0
 
     boxDims = userDimInput(thickness, width, length, height)
+    boxValues = userAddOnInputs(length)
      # we can get rid of indivudual variables and just use the boxDims tuple... Whichever is easier
     thickness = boxDims[0]
     width = boxDims[1]
@@ -283,8 +411,6 @@ def main():
     longestDimInd = boxDims[7]
     mediumDimInd = boxDims[8]
     shortestDimInd = boxDims[9]
-
-    boxValues = userAddOnInputs(length)
     # we can get rid of indivudual variables and just use the boxValues tuple... Whichever is easier
     partition = boxValues[0]
     partitionLength = boxValues[1]
@@ -296,7 +422,10 @@ def main():
     fractal = boxValues[7]
     fractalSideChoiceInput = boxValues[8]
 
-    # printing to check
+    # CALL SVG FUNCTIONS
+    masterSVG(thickness,width,length,height,partition,partitionLength,lid,topTextYesNo,topText,frontTextYesNo,frontText,fractal,fractalSideChoiceInput)
+
+    # printing results to check
     print('---------------------')
     print('Results for testing:')
     print('---------------------')
