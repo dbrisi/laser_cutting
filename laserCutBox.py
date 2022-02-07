@@ -20,6 +20,7 @@
 
 # imports
 import math
+from re import X
 
 # constants
 MAX_WIDTH = 24.0 #verify this is the maximum width of the acrylic
@@ -237,30 +238,19 @@ def userSingleDim(dimension, dimensionValue, thickness):
 ##########################################################
 ## FUNCTION TO GENERATE FRACTAL IN SVG ##
 ##########################################################
-def fractalGenerator(hasFractal, fractalSide):
-    if hasFractal == True:
-        if fractalSide == "SIDE":
-            xStart = 444
-            yStart = 444
-        if fractalSide == "BOTTOM":
-            xStart = 555
-            yStart = 555
+def fractalGenerator(f,fractalSide, x,y):
+    
+    xStart = x
+    yStart = y
 
-        f = open("fractalMainTest.svg","w")
-
-        f.write('<?xml version = "1.0" encoding = "UTF-8" ?> \n')
-        f.write('<svg xmlns="http://www.w3.org/2000/svg" version = "1.1"> \n')
-        f.write(f'<polyline points = "{xStart},{yStart} {xStart + 2*math.cos(59*math.pi/180)},{yStart + 2*math.sin(59*math.pi/180)}" fill = "none" stroke = "red" /> \n')
+    f.write(f'<polyline points = "{xStart},{yStart} {xStart + 2*math.cos(59*math.pi/180)},{yStart + 2*math.sin(59*math.pi/180)}" fill = "none" stroke = "red" /> \n')
 
 
-        for i in range(100):
-            #sketch.pencolor(colors[i % 6])
-            ## EVERYTHING TEMPORARY EXCEPT POLYLINE
-            f.write(f'<polyline points = "{xStart + 2*math.cos(59*i*math.pi/180)*i},{yStart + 2*math.sin(59*i*math.pi/180)*i} {xStart + 2*math.cos(59*(i+1)*math.pi/180)*(i+1)},{yStart + 2*math.sin(59*(i+1)*math.pi/180)*(i+1)}" fill = "none" stroke = "red" /> \n')
+    for i in range(100):
+        #sketch.pencolor(colors[i % 6])
+        ## EVERYTHING TEMPORARY EXCEPT POLYLINE
+        f.write(f'<polyline points = "{xStart + 2*math.cos(59*i*math.pi/180)*i},{yStart + 2*math.sin(59*i*math.pi/180)*i} {xStart + 2*math.cos(59*(i+1)*math.pi/180)*(i+1)},{yStart + 2*math.sin(59*(i+1)*math.pi/180)*(i+1)}" fill = "none" stroke = "red" /> \n')
 
-        f.write('</svg>')
-
-        f.close()
 
 def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START):
 
@@ -374,6 +364,14 @@ def masterSVG(thickness, width, length, height, partition, partitionLength, lid,
     # partition -> new function? modify the existing? use if (?)
     # top/lid -> new function... use if (?)
     # fractal -> existing function... use if (?), modify function to 
+    if fractal == True:
+        if fractalSideChoiceInput == "SIDE":
+            xFractal = xStartLeft + (length*INCH_TO_PIX_CONV)/2
+            yFractal = yStartLeft + (height*INCH_TO_PIX_CONV)/2
+        else: 
+            xFractal = xStartBottom + (width*INCH_TO_PIX_CONV)/2
+            yFractal = yStartBottom + (length*INCH_TO_PIX_CONV)/2
+        fractalGenerator(f,fractalSideChoiceInput,xFractal,yFractal)
     # text engravings -> new function... use if (?)
 
     # closing line of SVG file
@@ -452,6 +450,6 @@ def main():
     print(f'fractal: \t\t{fractal}')
     print(f'fractal side: \t{fractalSideChoiceInput}')
 
-    fractalGenerator(fractal, fractalSideChoiceInput)
+    #fractalGenerator(fractal, fractalSideChoiceInput)
 
 main()
