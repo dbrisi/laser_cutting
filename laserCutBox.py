@@ -5,22 +5,24 @@
 # 2. input for text on top - in userAddOnInput(), call new fct              -YLL    DONE
 # 3. input for text on front - in userAddOnInput(), call new fct            -YLL    DONE
 # 4. # error checking dimensions - in userDimInput()                        -DJD    
-# 5. start svg generation - new "master" fct, calls other svg generations   -ALL    DYNAMIC UNTIL ALL SVG FCTs ARE DONE
+# 5. start svg generation - new "master" fct, calls other svg generations   -ALL    ONGOING
 # 6. fractal pattern - new function (called by master svg function)         -DJD    DONE
-# 7. text on top for SVG - new function, called by master svg fct           -YLL    2/7 - 2/8
-# 8. text on bottom for SVG - new function, called by master svg fct        -YLL    2/7 - 2/8
+# 7. text on top for SVG - new function, called by master svg fct           -YLL    DONE
+# 8. text on bottom for SVG - new function, called by master svg fct        -YLL    DONE
 # 9. one (same) function for each dimension input, called by userDimInput() -YLL    DONE
 # 10. SVG generation of the lid/top (new fct), called by masterSVG          -DJD    
 # 11. need to modify baseSVG() to include holes and nut cut-outs
-# 12. need to modify baseSVG() to include slits on sides for partition      -YLL
-# 13. need to modify baseSVG() to output partition (no dovetails, screws?)
-# 14. now everything is in inch, scale down? 1:4? 1:8?
-# 15. modify fractalGenerator() and include in masterSVG
+# 12. need to modify baseSVG() to include slits on sides for partition      -YLL    DONE
+# 13. need to modify baseSVG() to output partition (no dovetails, screws?)  -YLL    DONE
+# 14. now everything is in inch, scale down? 1:4? 1:8?                      -OPT
+# 15. modify fractalGenerator() and include in masterSVG                            DONE
+# 16. redo the partition part of the baseSVG - dovetails?                   -YLL    DONE
+# 17. autosize font, based on length of text?                               -OPT
+# 18. error check if text string exceed horizontal dimension?   
 
 
 # imports
 import math
-from re import X
 
 # constants
 MAX_WIDTH = 24.0 #verify this is the maximum width of the acrylic
@@ -251,13 +253,28 @@ def fractalGenerator(f,fractalSide, x,y):
         ## EVERYTHING TEMPORARY EXCEPT POLYLINE
         f.write(f'<polyline points = "{xStart + 2*math.cos(59*i*math.pi/180)*i},{yStart + 2*math.sin(59*i*math.pi/180)*i} {xStart + 2*math.cos(59*(i+1)*math.pi/180)*(i+1)},{yStart + 2*math.sin(59*(i+1)*math.pi/180)*(i+1)}" fill = "none" stroke = "red" /> \n')
 
+######################################
+## FUNCTION TO GENERATE TEXT IN SVG ##
+######################################
+def textSVG(f, text, xStart, yStart, horizontalDim, verticalDim):
+    if verticalDim < horizontalDim:
+        fontSize = FONT_SIZE_CONV*(2/5)*verticalDim
+    else:
+        fontSize = FONT_SIZE_CONV*(1/5)*horizontalDim
+    #f.write(f'<text x = "{xStart + (horizontalDim*INCH_TO_PIX_CONV)/2}" y = "{yStart + (verticalDim*INCH_TO_PIX_CONV)/2}" dominant-baseline= "central" text-anchor= "middle" font-size = "{fontSize}px" fill = "red">' + text + ' </text> \n')
+    f.write(f'<text x = "{xStart + (horizontalDim*INCH_TO_PIX_CONV)/2}" y = "{yStart + (verticalDim*INCH_TO_PIX_CONV)/2}" dominant-baseline= "central" text-anchor= "middle" font-size = "30px" fill = "red">' + text + ' </text> \n')
 
-def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START):
+#######################################
+## FUNCTION TO GENERATE BASES IN SVG ##
+#######################################
+def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START, partition = False, partitionLocation = None):
 
     #INCH_TO_PIX_CONV = 96
 
     # AS OF NOW KEEP AS DOVETAIL AS .5" AND USE ONLY FULL INTEGER DIMENSIONS
     doveTailLength = .5 #in 
+    partitionDoveTailLength = .5 # in
+    partitionDoveTailDistance = .25 # in
 
     xStartNW = X_START
     yStartNW = Y_START
@@ -268,62 +285,105 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
     xStartSW = xStartSE - horizontalDim*INCH_TO_PIX_CONV
     yStartSW = yStartSE
     
-    # horizontal side 1 (NW to NE)
-    f.write('<polyline points="')
-    x1,y1 = xStartNW,  yStartNW
-    if position == "bottom":
-        x2,y2 = x1, y1 -thickness*INCH_TO_PIX_CONV
-        x3,y3 = x2 + doveTailLength*INCH_TO_PIX_CONV, y2
-        x4,y4 = x3, yStartNW
-        x5,y5 = x4 + doveTailLength*INCH_TO_PIX_CONV, yStartNW
-        for i in range(int(horizontalDim)):
-            increment = i*INCH_TO_PIX_CONV
-            f.write(f'{x1+increment},{y1} {x2+increment},{y2} {x3+increment},{y3} {x4+increment},{y4} {x5+increment},{y5} ')
+    if position == "TOP":
+        f.write(f'<rect x = "{xStartNW - thickness*INCH_TO_PIX_CONV}" y = "{yStartNW-thickness*INCH_TO_PIX_CONV}" width = "{(horizontalDim + 2*thickness)*INCH_TO_PIX_CONV}" height = "{(verticalDim + 2*thickness)*INCH_TO_PIX_CONV}" style="fill:none;stroke:black;stroke-horizontalDim:2"/>\n')
+
     else:
-        f.write(f'{xStartNW},{yStartNW} {xStartNE},{yStartNE} ')
-    f.write('" style="fill:none;stroke:black;stroke-horizontalDim:2"/>\n')
+        # horizontal side 1 (NW to NE)
+        f.write('<polyline points="')
+        x1,y1 = xStartNW,  yStartNW
+        if position == "BOTTOM":
+            x2,y2 = x1, y1 -thickness*INCH_TO_PIX_CONV
+            x3,y3 = x2 + doveTailLength*INCH_TO_PIX_CONV, y2
+            x4,y4 = x3, yStartNW
+            x5,y5 = x4 + doveTailLength*INCH_TO_PIX_CONV, yStartNW
+            for i in range(int(horizontalDim)):
+                increment = i*INCH_TO_PIX_CONV
+                f.write(f'{x1+increment},{y1} {x2+increment},{y2} {x3+increment},{y3} {x4+increment},{y4} {x5+increment},{y5} ')
+        else:
+            f.write(f'{xStartNW},{yStartNW} {xStartNE},{yStartNE} ')
+        f.write('" style="fill:none;stroke:black;stroke-horizontalDim:2"/>\n')
 
-    # vertical side 1 (NE to SE)
-    x1,y1 = xStartNE,  yStartNE
-    x2,y2 = x1 + thickness*INCH_TO_PIX_CONV, y1
-    x3,y3 = x2, y2 + doveTailLength*INCH_TO_PIX_CONV
-    x4,y4 = xStartNE, y3
-    x5,y5 = xStartNE, y4 + doveTailLength*INCH_TO_PIX_CONV
-    f.write('<polyline points="')
-    for i in range(int(verticalDim)):
-        increment = i*INCH_TO_PIX_CONV
-        f.write(f'{x1},{y1+increment} {x2},{y2+increment} {x3},{y3+increment} {x4},{y4+increment} {x5},{y5+increment} ')
-    f.write('" style="fill:none;stroke:black;stroke-horizontalDim:2"/>\n')
+        
+        # vertical side 1 (NE to SE)
+        x1,y1 = xStartNE,  yStartNE
+        f.write('<polyline points="')
+        if position == "PARTITION":
+            x1, y1 = xStartNE, yStartNE
+            x2, y2 = x1, yStartNE + partitionDoveTailDistance*INCH_TO_PIX_CONV
+            x3, y3 = xStartNE + thickness*INCH_TO_PIX_CONV, y2
+            x4, y4 = x3, y3 + doveTailLength*INCH_TO_PIX_CONV
+            x5, y5 = x1, y4
+            x6, y6 = x5, yStartNE + (verticalDim - partitionDoveTailDistance - partitionDoveTailLength)*INCH_TO_PIX_CONV
+            x7, y7 = x5 + thickness*INCH_TO_PIX_CONV, y6
+            x8, y8 = x7, y7 + doveTailLength*INCH_TO_PIX_CONV
+            x9, y9 = x1, y8
+            x10, y10 = x1, yStartNE + verticalDim*INCH_TO_PIX_CONV
+
+            f.write(f'{x1},{y1} {x2},{y2} {x3},{y3} {x4},{y4} {x5},{y5} {x6},{y6} {x7},{y7} {x8},{y8} {x9},{y9} {x10},{y10}')
+        else:
+            x2,y2 = x1 + thickness*INCH_TO_PIX_CONV, y1
+            x3,y3 = x2, y2 + doveTailLength*INCH_TO_PIX_CONV
+            x4,y4 = xStartNE, y3
+            x5,y5 = xStartNE, y4 + doveTailLength*INCH_TO_PIX_CONV
+            for i in range(int(verticalDim)):
+                increment = i*INCH_TO_PIX_CONV
+                f.write(f'{x1},{y1+increment} {x2},{y2+increment} {x3},{y3+increment} {x4},{y4+increment} {x5},{y5+increment} ')
+        f.write('" style="fill:none;stroke:black;stroke-horizontalDim:2"/>\n')
+        
+        # horizontal side 2 (SE to SW)
+        x1,y1 = xStartSE,  yStartSE
+        f.write('<polyline points="')
+        if position == "PARTITION":
+            f.write(f'{xStartSE},{yStartSE} {xStartSW},{yStartSW} ')
+        else:
+            x2,y2 = x1, y1 + thickness*INCH_TO_PIX_CONV
+            x3,y3 = x2 - doveTailLength*INCH_TO_PIX_CONV, y2
+            x4,y4 = x3, yStartSE
+            x5,y5 = x4 - doveTailLength*INCH_TO_PIX_CONV, yStartSE
+            for i in range(int(horizontalDim)):
+                increment = i*INCH_TO_PIX_CONV
+                f.write(f'{x1-increment},{y1} {x2-increment},{y2} {x3-increment},{y3} {x4-increment},{y4} {x5-increment},{y5} ')
+        f.write('" style="fill:none;stroke:black;stroke-horizontalDim:2"/>\n')
+
+        # vertical side 2 (SW to NW)
+        x1,y1 = xStartSW,  yStartSW
+        f.write('<polyline points="')
+        if position == "PARTITION":
+            x1, y1 = xStartNW, yStartNW
+            x2, y2 = x1, yStartNW + partitionDoveTailDistance*INCH_TO_PIX_CONV
+            x3, y3 = xStartNW - thickness*INCH_TO_PIX_CONV, y2
+            x4, y4 = x3, y3 + doveTailLength*INCH_TO_PIX_CONV
+            x5, y5 = x1, y4
+            x6, y6 = x5, yStartNW + (verticalDim - partitionDoveTailDistance - partitionDoveTailLength)*INCH_TO_PIX_CONV
+            x7, y7 = x5 - thickness*INCH_TO_PIX_CONV, y6
+            x8, y8 = x7, y7 + doveTailLength*INCH_TO_PIX_CONV
+            x9, y9 = x1, y8
+            x10, y10 = x1, yStartNW + verticalDim*INCH_TO_PIX_CONV
+
+            f.write(f'{x1},{y1} {x2},{y2} {x3},{y3} {x4},{y4} {x5},{y5} {x6},{y6} {x7},{y7} {x8},{y8} {x9},{y9} {x10},{y10}')
+        else:
+            x2,y2 = x1 - thickness*INCH_TO_PIX_CONV, y1
+            x3,y3 = x2, y2 - doveTailLength*INCH_TO_PIX_CONV
+            x4,y4 = xStartSW, y3
+            x5,y5 = xStartSW, y4 - doveTailLength*INCH_TO_PIX_CONV
+            for i in range(int(verticalDim)):
+                increment = i*INCH_TO_PIX_CONV
+                f.write(f'{x1},{y1-increment} {x2},{y2-increment} {x3},{y3-increment} {x4},{y4-increment} {x5},{y5-increment} ')
+        f.write('" style="fill:none;stroke:black;stroke-horizontalDim:2"/>\n')
+
+        if ((position == "LEFT" or position == "RIGHT") and partition == True):
+            #f.write(f'<rect x = "{X_START + (partitionLocation*INCH_TO_PIX_CONV)/2 - (thickness*INCH_TO_PIX_CONV)/2}" y = "{Y_START}" width = "{thickness*INCH_TO_PIX_CONV}" height = "{verticalDim*INCH_TO_PIX_CONV}" style="fill:none;stroke:blue;strokeDim:3"/>\n')
+            f.write(f'<rect x = "{X_START + (partitionLocation*INCH_TO_PIX_CONV)/2 - (thickness*INCH_TO_PIX_CONV)/2}" y = "{Y_START + (partitionDoveTailDistance*INCH_TO_PIX_CONV)}" width = "{thickness*INCH_TO_PIX_CONV}" height = "{partitionDoveTailLength*INCH_TO_PIX_CONV}" style="fill:none;stroke:blue;strokeDim:3"/>\n')
+            f.write(f'<rect x = "{X_START + (partitionLocation*INCH_TO_PIX_CONV)/2 - (thickness*INCH_TO_PIX_CONV)/2}" y = "{Y_START + ((verticalDim - partitionDoveTailLength - partitionDoveTailDistance)*INCH_TO_PIX_CONV)}" width = "{thickness*INCH_TO_PIX_CONV}" height = "{partitionDoveTailLength*INCH_TO_PIX_CONV}" style="fill:none;stroke:blue;strokeDim:3"/>\n')
+
     
-    # horizontal side 2 (SE to SW)
-    x1,y1 = xStartSE,  yStartSE
-    x2,y2 = x1, y1 + thickness*INCH_TO_PIX_CONV
-    x3,y3 = x2 - doveTailLength*INCH_TO_PIX_CONV, y2
-    x4,y4 = x3, yStartSE
-    x5,y5 = x4 - doveTailLength*INCH_TO_PIX_CONV, yStartSE
-    f.write('<polyline points="')
-    for i in range(int(horizontalDim)):
-        increment = i*INCH_TO_PIX_CONV
-        f.write(f'{x1-increment},{y1} {x2-increment},{y2} {x3-increment},{y3} {x4-increment},{y4} {x5-increment},{y5} ')
-    f.write('" style="fill:none;stroke:black;stroke-horizontalDim:2"/>\n')
-
-    # vertical side 2 (SW to NW)
-    x1,y1 = xStartSW,  yStartSW
-    x2,y2 = x1 - thickness*INCH_TO_PIX_CONV, y1
-    x3,y3 = x2, y2 - doveTailLength*INCH_TO_PIX_CONV
-    x4,y4 = xStartSW, y3
-    x5,y5 = xStartSW, y4 - doveTailLength*INCH_TO_PIX_CONV
-    f.write('<polyline points="')
-    for i in range(int(verticalDim)):
-        increment = i*INCH_TO_PIX_CONV
-        f.write(f'{x1},{y1-increment} {x2},{y2-increment} {x3},{y3-increment} {x4},{y4-increment} {x5},{y5-increment} ')
-    f.write('" style="fill:none;stroke:black;stroke-horizontalDim:2"/>\n')
     
 
 ##############################################################
 ## FUNCTION TO GENERATE MAIN SVG, CALLS OTHER SVG FUNCTIONS ##
 ##############################################################
-def masterSVG(thickness, width, length, height, partition, partitionLength, lid, topTextYesNo, topText, frontTextYesNo, frontText, fractal, fractalSideChoiceInput):
+def masterSVG(thickness, width, length, height, partition, partitionLocation, lid, topTextYesNo, topText, frontTextYesNo, frontText, fractal, fractalSideChoiceInput):
     
     # base origin
     xScale1, yScale1 = 75,40
@@ -354,14 +414,16 @@ def masterSVG(thickness, width, length, height, partition, partitionLength, lid,
     # set scale of 1"
     f.write(f'<line x1="{xScale1}" y1="{yScale1}" x2="{xScale2}" y2 ="{yScale2}" style="stroke:red;stroke-horizontalDim:4"/>\n')
     f.write(f'<text x = "{xScale2+10}" y = "{yScale2+5}" font-size = "20px" fill = "red"> = 1 inch </text> \n')
+    #f.write(f'<text x = "{xScale2 + 30} y = "{yScale2+5} font-size = "20px" fill = "red"> RED = SCORE </text> \n')
+    #f.write(f'<text x = "{xScale2 + 60} y = "{yScale2+5} font-size = "20px" fill = "blue"> BLUE = ENGRAVING </text> \n')
 
     # lines for calling specific SVG functions
-    baseSVG(f,"front",thickness,width,height,xStartFront,yStartFront)
-    baseSVG(f,"back",thickness,width,height,xStartBack,yStartBack)
-    baseSVG(f,"left",thickness,length,height,xStartLeft,yStartLeft)
-    baseSVG(f,"right",thickness,length,height,xStartRight,yStartRight)
-    baseSVG(f,"bottom",thickness,width,length,xStartBottom,yStartBottom)
-    # partition -> new function? modify the existing? use if (?)
+    baseSVG(f,"FRONT",thickness,width,height,xStartFront,yStartFront)
+    baseSVG(f,"BACK",thickness,width,height,xStartBack,yStartBack)
+    baseSVG(f,"LEFT",thickness,length,height,xStartLeft,yStartLeft,partition, partitionLocation)
+    baseSVG(f,"RIGHT",thickness,length,height,xStartRight,yStartRight,partition, partitionLocation)
+    baseSVG(f,"BOTTOM",thickness,width,length,xStartBottom,yStartBottom)
+    baseSVG(f,"PARTITION",thickness, width, height, xStartPartition, yStartPartition, partition, partitionLocation)
     # top/lid -> new function... use if (?)
     # fractal -> existing function... use if (?), modify function to 
     if fractal == True:
@@ -373,6 +435,15 @@ def masterSVG(thickness, width, length, height, partition, partitionLength, lid,
             yFractal = yStartBottom + (length*INCH_TO_PIX_CONV)/2
         fractalGenerator(f,fractalSideChoiceInput,xFractal,yFractal)
     # text engravings -> new function... use if (?)
+
+    if (topTextYesNo == True):
+        textSVG(f,topText,xStartTop,yStartTop,width,length)
+
+    if (frontTextYesNo == True):
+        textSVG(f,frontText,xStartFront,yStartFront,width,height)
+
+    if (lid == True):
+        baseSVG(f,"TOP",thickness,width, length, xStartTop, yStartTop)
 
     # closing line of SVG file
     f.write('</svg>')
@@ -397,7 +468,7 @@ def main():
     shortestDim = 0.0
 
     boxDims = userDimInput(thickness, width, length, height)
-    boxValues = userAddOnInputs(length)
+    
      # we can get rid of indivudual variables and just use the boxDims tuple... Whichever is easier
     thickness = boxDims[0]
     width = boxDims[1]
@@ -409,9 +480,11 @@ def main():
     longestDimInd = boxDims[7]
     mediumDimInd = boxDims[8]
     shortestDimInd = boxDims[9]
+    
+    boxValues = userAddOnInputs(length)
     # we can get rid of indivudual variables and just use the boxValues tuple... Whichever is easier
     partition = boxValues[0]
-    partitionLength = boxValues[1]
+    partitionLocation = boxValues[1]
     lid = boxValues[2]
     topTextYesNo = boxValues[3]
     topText = boxValues[4]
@@ -421,7 +494,7 @@ def main():
     fractalSideChoiceInput = boxValues[8]
 
     # CALL SVG FUNCTIONS
-    masterSVG(thickness,width,length,height,partition,partitionLength,lid,topTextYesNo,topText,frontTextYesNo,frontText,fractal,fractalSideChoiceInput)
+    masterSVG(thickness,width,length,height,partition,partitionLocation,lid,topTextYesNo,topText,frontTextYesNo,frontText,fractal,fractalSideChoiceInput)
 
     # printing results to check
     print('---------------------')
@@ -441,7 +514,7 @@ def main():
     print('---------------------')
     print('Add-ons:')
     print(f'partition: \t\t{partition}')
-    print(f'location of partition: \t{partitionLength}')
+    print(f'location of partition: \t{partitionLocation}')
     print(f'lid: \t\t\t{lid}')
     print(f'top: \t\t\t{topTextYesNo}')
     print(f'top text content: \t{topText}')
