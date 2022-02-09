@@ -243,27 +243,33 @@ def fractalGenerator(f,fractalSide, x, y, width, length, height):
     xStart = x
     yStart = y
 
+    fracSpaceParam = .75
+
     if fractalSide == "SIDE":
-        minDistance = min(height, width)
+        minDistance = int(min(height, width))
     else:
-        minDistance = min(width, length)
+        minDistance = int(min(width, length))
 
-    f.write(f'<polyline points = "{xStart},{yStart} {xStart + 2*math.cos(59*math.pi/180)},{yStart + 2*math.sin(59*math.pi/180)}" fill = "none" stroke = "red" /> \n')
+    f.write(f'<polyline points = "{xStart},{yStart} {xStart + fracSpaceParam*math.cos(59*math.pi/180)},{yStart + fracSpaceParam*math.sin(59*math.pi/180)}" fill = "none" stroke = "red" /> \n')
 
 
-    for i in range(100):
-        f.write(f'<polyline points = "{xStart + 2*math.cos(59*i*math.pi/180)*i},{yStart + 2*math.sin(59*i*math.pi/180)*i} {xStart + 2*math.cos(59*(i+1)*math.pi/180)*(i+1)},{yStart + 2*math.sin(59*(i+1)*math.pi/180)*(i+1)}" fill = "none" stroke = "red" /> \n')
+    for i in range(22*minDistance):
+        f.write(f'<polyline points = "{xStart + fracSpaceParam*math.cos(59*i*math.pi/180)*i},{yStart + fracSpaceParam*math.sin(59*i*math.pi/180)*i} {xStart + fracSpaceParam*math.cos(59*(i+1)*math.pi/180)*(i+1)},{yStart + fracSpaceParam*math.sin(59*(i+1)*math.pi/180)*(i+1)}" fill = "none" stroke = "red" /> \n')
 
 ######################################
 ## FUNCTION TO GENERATE TEXT IN SVG ##
 ######################################
-def textSVG(f, text, xStart, yStart, horizontalDim, verticalDim):
+def textSVG(f, text, xStart, yStart, horizontalDim, verticalDim, topTextYesNo):
     if verticalDim < horizontalDim:
-        fontSize = FONT_SIZE_CONV*(2/5)*verticalDim
+        fontSize = FONT_SIZE_CONV*(1/5)*verticalDim
     else:
-        fontSize = FONT_SIZE_CONV*(1/5)*horizontalDim
-    #f.write(f'<text x = "{xStart + (horizontalDim*INCH_TO_PIX_CONV)/2}" y = "{yStart + (verticalDim*INCH_TO_PIX_CONV)/2}" dominant-baseline= "central" text-anchor= "middle" font-size = "{fontSize}px" fill = "red">' + text + ' </text> \n')
-    f.write(f'<text x = "{xStart + (horizontalDim*INCH_TO_PIX_CONV)/2}" y = "{yStart + (verticalDim*INCH_TO_PIX_CONV)/2}" dominant-baseline= "central" text-anchor= "middle" font-size = "30px" fill = "red">' + text + ' </text> \n')
+        fontSize = FONT_SIZE_CONV*(1/10)*horizontalDim
+
+    if topTextYesNo == True:
+        f.write(f'<text x = "{xStart + (horizontalDim*INCH_TO_PIX_CONV)/2}" y = "{yStart + (verticalDim*INCH_TO_PIX_CONV)/1.25}" dominant-baseline= "central" text-anchor= "middle" font-size = "30px" fill = "red">' + text + ' </text> \n')
+    else:
+        #f.write(f'<text x = "{xStart + (horizontalDim*INCH_TO_PIX_CONV)/2}" y = "{yStart + (verticalDim*INCH_TO_PIX_CONV)/2}" dominant-baseline= "central" text-anchor= "middle" font-size = "{fontSize}px" fill = "red">' + text + ' </text> \n')
+        f.write(f'<text x = "{xStart + (horizontalDim*INCH_TO_PIX_CONV)/2}" y = "{yStart + (verticalDim*INCH_TO_PIX_CONV)/2}" dominant-baseline= "central" text-anchor= "middle" font-size = "30px" fill = "red">' + text + ' </text> \n')
 
 #######################################
 ## FUNCTION TO GENERATE BASES IN SVG ##
@@ -278,10 +284,10 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
     partitionDoveTailDistance = .25 # in
 
     # SCREW and NUT DIMENSIONS --> Change if necessary
-    screwLength = 10 + 2 #mm with added clearance 
-    screwDiam = 2 + 0.5 #mm with added clearance 
-    squareNutSide = 5 + 0.5 #mm ## with added clearance 
-    squareNutThickness = 1.5 + 0.5 #mm with added clearance 
+    screwLength = 10 + 2 #mm with added clearance
+    screwDiam = 2 + 0.5 #mm with added clearance
+    squareNutSide = 5 + 0.5 #mm ## with added clearance
+    squareNutThickness = 1.5 + 0.5 #mm with added clearance
 
     xStartNW = X_START
     yStartNW = Y_START
@@ -295,21 +301,23 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
     if position == "TOP":
 
         ## CONSTANTS
-        shiftForScrews = 75
-        polylineLength = 7
+        shiftForScrews = 25
+        polylineLength = 5
         oscillator = 2 ## TO GET OFFSETS
         spacingParam = 10 ## CAN CHANGE - SHIFTS VERTICAL DISTANCE
+        spacingBetweenCurves = 20
+        lengthOfCurve = 10
 
         # outline of the lid
         f.write(f'<rect x = "{xStartNW - thickness*INCH_TO_PIX_CONV}" y = "{yStartNW-thickness*INCH_TO_PIX_CONV}" width = "{(horizontalDim + 2*thickness)*INCH_TO_PIX_CONV}" height = "{(verticalDim + 2*thickness)*INCH_TO_PIX_CONV}" style="fill:none;stroke:black;stroke:2"/>\n')
 
         totalLengthKerf = (horizontalDim + 2*thickness)*INCH_TO_PIX_CONV
 
-        distanceToFill = totalLengthKerf - 6
+        distanceToFill = totalLengthKerf - (spacingBetweenCurves - polylineLength*2 - lengthOfCurve)
 
-        howManyCols = int(distanceToFill/60)
+        howManyCols = int(distanceToFill/spacingBetweenCurves)
 
-        distanceToFillWithLines = distanceToFill - howManyCols*60
+        distanceToFillWithLines = distanceToFill - howManyCols*spacingBetweenCurves
 
         lengthOfStartAndEndLines = distanceToFillWithLines/2
 
@@ -319,17 +327,17 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
         for i in range(howManyCols): ##the width
             oscillator = oscillator*(-1)
 
-            for j in range(10): ## THE LENGTH
+            for j in range(8): ## THE LENGTH
 
                 if i == 0:
                     f.write(f'<polyline points = "{xStartNW - thickness*INCH_TO_PIX_CONV},{yStartNW + shiftForScrews + j*spacingParam + oscillator - thickness*INCH_TO_PIX_CONV} {xStartNW + lengthOfStartAndEndLines - thickness*INCH_TO_PIX_CONV},{yStartNW + j*spacingParam + oscillator + shiftForScrews - thickness*INCH_TO_PIX_CONV}" fill = "none" stroke = "black" /> \n')
 
-                f.write(f'<polyline points = "{xStartNW + i*60 + lengthOfStartAndEndLines - thickness*INCH_TO_PIX_CONV + (60 - 40 - 2*polylineLength)},{yStartNW + shiftForScrews + j*spacingParam + oscillator - thickness*INCH_TO_PIX_CONV} {xStartNW + i*60 + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (60 - 40 - 2*polylineLength)},{yStartNW + j*spacingParam + oscillator + shiftForScrews - thickness*INCH_TO_PIX_CONV}" fill = "none" stroke = "black" /> \n')
-                f.write(f'<path d = "M {xStartNW + i*60 + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (60 - 40 - 2*polylineLength)} {yKerfStart + j*spacingParam + oscillator} C {xStartNW + i*60 + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (60 - 40 - 2*polylineLength)} {yKerfStart + 10 + j*spacingParam + oscillator}, {xStartNW + i*60 + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (60 - 40 - 2*polylineLength) + 40} {yKerfStart + 10 + j*spacingParam + oscillator}, {xStartNW + i*60 + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (60 - 40 - 2*polylineLength) + 40} {yKerfStart + j*spacingParam + oscillator}" stroke = "black" fill = "transparent"/>\n')
-                f.write(f'<polyline points = "{xStartNW + i*60 + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (60 - 40 - 2*polylineLength) + 40} {yKerfStart + j*spacingParam + oscillator} {xStartNW + i*60 + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (60 - 40 - 2*polylineLength) + 40 + polylineLength},{yKerfStart + j*spacingParam + oscillator}" fill = "none" stroke = "black" /> \n')
+                f.write(f'<polyline points = "{xStartNW + i*spacingBetweenCurves + lengthOfStartAndEndLines - thickness*INCH_TO_PIX_CONV + (spacingBetweenCurves - lengthOfCurve - 2*polylineLength)},{yStartNW + shiftForScrews + j*spacingParam + oscillator - thickness*INCH_TO_PIX_CONV} {xStartNW + i*spacingBetweenCurves + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (spacingBetweenCurves - lengthOfCurve - 2*polylineLength)},{yStartNW + j*spacingParam + oscillator + shiftForScrews - thickness*INCH_TO_PIX_CONV}" fill = "none" stroke = "black" /> \n')
+                f.write(f'<path d = "M {xStartNW + i*spacingBetweenCurves + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (spacingBetweenCurves - lengthOfCurve - 2*polylineLength)} {yKerfStart + j*spacingParam + oscillator} C {xStartNW + i*spacingBetweenCurves + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (spacingBetweenCurves - lengthOfCurve - 2*polylineLength)} {yKerfStart + 10 + j*spacingParam + oscillator}, {xStartNW + i*spacingBetweenCurves + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (spacingBetweenCurves - lengthOfCurve - 2*polylineLength) + lengthOfCurve} {yKerfStart + 10 + j*spacingParam + oscillator}, {xStartNW + i*spacingBetweenCurves + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (spacingBetweenCurves - lengthOfCurve - 2*polylineLength) + lengthOfCurve} {yKerfStart + j*spacingParam + oscillator}" stroke = "black" fill = "transparent"/>\n')
+                f.write(f'<polyline points = "{xStartNW + i*spacingBetweenCurves + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (spacingBetweenCurves - lengthOfCurve - 2*polylineLength) + lengthOfCurve} {yKerfStart + j*spacingParam + oscillator} {xStartNW + i*spacingBetweenCurves + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (spacingBetweenCurves - lengthOfCurve - 2*polylineLength) + lengthOfCurve + polylineLength},{yKerfStart + j*spacingParam + oscillator}" fill = "none" stroke = "black" /> \n')
 
                 if i == (howManyCols -1):
-                    f.write(f'<polyline points = "{xStartNW + i*60 + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (60 - 40 - 2*polylineLength)*2 + 40 + polylineLength} {yKerfStart + j*spacingParam + oscillator} {xStartNW - thickness*INCH_TO_PIX_CONV + (horizontalDim + 2*thickness)*INCH_TO_PIX_CONV},{yKerfStart + j*spacingParam + oscillator}" fill = "none" stroke = "black" /> \n')
+                    f.write(f'<polyline points = "{xStartNW + i*spacingBetweenCurves + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (spacingBetweenCurves - lengthOfCurve - 2*polylineLength)*2 + lengthOfCurve + polylineLength} {yKerfStart + j*spacingParam + oscillator} {xStartNW - thickness*INCH_TO_PIX_CONV + (horizontalDim + 2*thickness)*INCH_TO_PIX_CONV},{yKerfStart + j*spacingParam + oscillator}" fill = "none" stroke = "black" /> \n')
 
 
     else:
@@ -374,18 +382,18 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
                 increment = i*INCH_TO_PIX_CONV
                 f.write(f'{x1},{y1+increment} {x2},{y2+increment} {x3},{y3+increment} {x4},{y4+increment} {x5},{y5+increment} ')
         f.write('" style="fill:none;stroke:black;stroke:2"/>\n')
-        
+
         if (position == "FRONT" or position == "BACK" or position == "LEFT" or position == "RIGHT"):
             x1,y1  = xStartNE, yStartNE + 1.5*doveTailLength*INCH_TO_PIX_CONV - screwDiam*MM_TO_PIX_CONV/2
             x2,y2  = x1 - (screwLength-squareNutSide-2)*MM_TO_PIX_CONV - thickness*INCH_TO_PIX_CONV, y1
-            x3,y3  = x2, y2 - (squareNutSide - screwDiam)*MM_TO_PIX_CONV/2 
+            x3,y3  = x2, y2 - (squareNutSide - screwDiam)*MM_TO_PIX_CONV/2
             x4,y4  = x3 - squareNutThickness*MM_TO_PIX_CONV, y3
             x5,y5  = x4, y2
             x6,y6  = x5 - 2*MM_TO_PIX_CONV, y5
             x7,y7  = x6, y6 + screwDiam*MM_TO_PIX_CONV
             x8,y8  = x5,y7
             x9,y9  = x4, y8 + (squareNutSide - screwDiam)*MM_TO_PIX_CONV/2
-            x10,y10  = x3, y9 
+            x10,y10  = x3, y9
             x11,y11  = x10, y8
             x12,y12  = x1, y11
 
@@ -487,7 +495,7 @@ def masterSVG(thickness, width, length, height, partition, partitionLocation, li
     f.write(f'<line x1="{xScale1}" y1="{yScale1}" x2="{xScale2}" y2 ="{yScale2}" style="stroke:red;stroke:4"/>\n')
     f.write(f'<text x = "{xScale2+10}" y = "{yScale2+5}" font-size = "12px" fill = "red"> = 1 inch (2:5 scale) </text> \n')
     #f.write(f'<text x = "{xScale2 + 30} y = "{yScale2+5} font-size = "20px" fill = "red"> RED = SCORE </text> \n')
-    #f.write(f'<text x = "{xScale2 + 60} y = "{yScale2+5} font-size = "20px" fill = "black"> black = ENGRAVING </text> \n')
+    #f.write(f'<text x = "{xScale2 + spacingBetweenCurves} y = "{yScale2+5} font-size = "20px" fill = "black"> black = ENGRAVING </text> \n')
 
     # lines for calling specific SVG functions
     baseSVG(f,"FRONT",thickness,width,height,xStartFront,yStartFront)
@@ -495,10 +503,10 @@ def masterSVG(thickness, width, length, height, partition, partitionLocation, li
     baseSVG(f,"LEFT",thickness,length,height,xStartLeft,yStartLeft,partition, partitionLocation)
     baseSVG(f,"RIGHT",thickness,length,height,xStartRight,yStartRight,partition, partitionLocation)
     baseSVG(f,"BOTTOM",thickness,width,length,xStartBottom,yStartBottom)
-    
+
     if (partition == True):
         baseSVG(f,"PARTITION",thickness, width, height, xStartPartition, yStartPartition, partition, partitionLocation)
-    
+
     if (lid == True):
         baseSVG(f,"TOP",thickness,width, length, xStartTop, yStartTop)
 
@@ -512,10 +520,10 @@ def masterSVG(thickness, width, length, height, partition, partitionLocation, li
         fractalGenerator(f,fractalSideChoiceInput,xFractal,yFractal, width, length, height)
 
     if (topTextYesNo == True):
-        textSVG(f,topText,xStartTop,yStartTop,width,length)
+        textSVG(f,topText,xStartTop,yStartTop,width,length, topTextYesNo)
 
     if (frontTextYesNo == True):
-        textSVG(f,frontText,xStartFront,yStartFront,width,height)
+        textSVG(f,frontText,xStartFront,yStartFront,width,height, topTextYesNo)
 
 
     # closing line of SVG file
