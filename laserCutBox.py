@@ -284,22 +284,43 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
     yStartSW = yStartSE
 
     if position == "TOP":
-        f.write(f'<rect x = "{xStartNW - thickness*INCH_TO_PIX_CONV}" y = "{yStartNW-thickness*INCH_TO_PIX_CONV}" width = "{(horizontalDim + 2*thickness)*INCH_TO_PIX_CONV}" height = "{(verticalDim + 2*thickness)*INCH_TO_PIX_CONV}" style="fill:none;stroke:black;stroke-horizontalDim:2"/>\n')
 
+        ## CONSTANTS
         shiftForScrews = 75
         polylineLength = 7
-        xKerfStart = xStartNW - thickness*INCH_TO_PIX_CONV + polylineLength
-        yKerfStart = yStartNW - thickness*INCH_TO_PIX_CONV + shiftForScrews
-
         oscillator = 2 ## TO GET OFFSETS
         spacingParam = 10 ## CAN CHANGE - SHIFTS VERTICAL DISTANCE
 
-        for i in range(5): ##the width
+
+        f.write(f'<rect x = "{xStartNW - thickness*INCH_TO_PIX_CONV}" y = "{yStartNW-thickness*INCH_TO_PIX_CONV}" width = "{(horizontalDim + 2*thickness)*INCH_TO_PIX_CONV}" height = "{(verticalDim + 2*thickness)*INCH_TO_PIX_CONV}" style="fill:none;stroke:black;stroke-horizontalDim:2"/>\n')
+
+        totalLengthKerf = (horizontalDim + 2*thickness)*INCH_TO_PIX_CONV
+
+        distanceToFill = totalLengthKerf - 6
+
+        howManyCols = int(distanceToFill/60)
+
+        distanceToFillWithLines = distanceToFill - howManyCols*60
+
+        lengthOfStartAndEndLines = distanceToFillWithLines/2
+
+        xKerfStart = xStartNW - thickness*INCH_TO_PIX_CONV + polylineLength
+        yKerfStart = yStartNW - thickness*INCH_TO_PIX_CONV + shiftForScrews
+
+        for i in range(howManyCols): ##the width
             oscillator = oscillator*(-1)
+
             for j in range(10): ## THE LENGTH
-                f.write(f'<polyline points = "{xStartNW + i*60 - thickness*INCH_TO_PIX_CONV},{yStartNW + shiftForScrews + j*spacingParam + oscillator - thickness*INCH_TO_PIX_CONV} {xStartNW + i*60 + polylineLength - thickness*INCH_TO_PIX_CONV},{yStartNW + j*spacingParam + oscillator + shiftForScrews - thickness*INCH_TO_PIX_CONV}" fill = "none" stroke = "black" /> \n')
+
+                if i == 0:
+                    f.write(f'<polyline points = "{xStartNW - thickness*INCH_TO_PIX_CONV},{yStartNW + shiftForScrews + j*spacingParam + oscillator - thickness*INCH_TO_PIX_CONV} {xStartNW + lengthOfStartAndEndLines - thickness*INCH_TO_PIX_CONV},{yStartNW + j*spacingParam + oscillator + shiftForScrews - thickness*INCH_TO_PIX_CONV}" fill = "none" stroke = "black" /> \n')
+
+                f.write(f'<polyline points = "{xStartNW + i*60 + lengthOfStartAndEndLines - thickness*INCH_TO_PIX_CONV + (60 - 40 - 2*polylineLength)},{yStartNW + shiftForScrews + j*spacingParam + oscillator - thickness*INCH_TO_PIX_CONV} {xStartNW + i*60 + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (60 - 40 - 2*polylineLength)},{yStartNW + j*spacingParam + oscillator + shiftForScrews - thickness*INCH_TO_PIX_CONV}" fill = "none" stroke = "black" /> \n')
                 f.write(f'<path d = "M {xKerfStart + i*60} {yKerfStart + j*spacingParam + oscillator} C {xKerfStart + i*60} {yKerfStart + 10 + j*spacingParam + oscillator}, {xKerfStart + i*60 + 40} {yKerfStart + 10 + j*spacingParam + oscillator}, {xKerfStart + i*60 + 40} {yKerfStart + j*spacingParam + oscillator}" stroke = "black" fill = "transparent"/>\n')
                 f.write(f'<polyline points = "{xKerfStart + i*60 + 40} {yKerfStart + j*spacingParam + oscillator} {xKerfStart + i*60 + 40 + polylineLength},{yKerfStart + j*spacingParam + oscillator}" fill = "none" stroke = "black" /> \n')
+
+            if i == (howManyCols -1):
+                print("yes")
 
     else:
         # horizontal side 1 (NW to NE)
