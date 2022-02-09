@@ -240,7 +240,7 @@ def userSingleDim(dimension, dimensionValue, thickness):
 ##########################################################
 ## FUNCTION TO GENERATE FRACTAL IN SVG ##
 ##########################################################
-def fractalGenerator(f,fractalSide, x,y):
+def fractalGenerator(f,fractalSide, x, y):
 
     xStart = x
     yStart = y
@@ -407,11 +407,20 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
                 f.write(f'{x1},{y1-increment} {x2},{y2-increment} {x3},{y3-increment} {x4},{y4-increment} {x5},{y5-increment} ')
         f.write('" style="fill:none;stroke:black;stroke-horizontalDim:2"/>\n')
 
-        if ((position == "LEFT" or position == "RIGHT") and partition == True):
-            #f.write(f'<rect x = "{X_START + (partitionLocation*INCH_TO_PIX_CONV)/2 - (thickness*INCH_TO_PIX_CONV)/2}" y = "{Y_START}" width = "{thickness*INCH_TO_PIX_CONV}" height = "{verticalDim*INCH_TO_PIX_CONV}" style="fill:none;stroke:blue;strokeDim:3"/>\n')
-            f.write(f'<rect x = "{X_START + (partitionLocation*INCH_TO_PIX_CONV)/2 - (thickness*INCH_TO_PIX_CONV)/2}" y = "{Y_START + (partitionDoveTailDistance*INCH_TO_PIX_CONV)}" width = "{thickness*INCH_TO_PIX_CONV}" height = "{partitionDoveTailLength*INCH_TO_PIX_CONV}" style="fill:none;stroke:blue;strokeDim:3"/>\n')
-            f.write(f'<rect x = "{X_START + (partitionLocation*INCH_TO_PIX_CONV)/2 - (thickness*INCH_TO_PIX_CONV)/2}" y = "{Y_START + ((verticalDim - partitionDoveTailLength - partitionDoveTailDistance)*INCH_TO_PIX_CONV)}" width = "{thickness*INCH_TO_PIX_CONV}" height = "{partitionDoveTailLength*INCH_TO_PIX_CONV}" style="fill:none;stroke:blue;strokeDim:3"/>\n')
+        if (position == "LEFT" and partition == True):
 
+            #f.write(f'<rect x = "{X_START + (partitionLocation*INCH_TO_PIX_CONV)/2 - (thickness*INCH_TO_PIX_CONV)/2}" y = "{Y_START}" width = "{thickness*INCH_TO_PIX_CONV}" height = "{verticalDim*INCH_TO_PIX_CONV}" style="fill:none;stroke:black;strokeDim:3"/>\n')
+
+            f.write(f'<rect x = "{X_START + (partitionLocation*INCH_TO_PIX_CONV) - (thickness*INCH_TO_PIX_CONV)/2}" y = "{Y_START + (partitionDoveTailDistance*INCH_TO_PIX_CONV)}" width = "{thickness*INCH_TO_PIX_CONV}" height = "{partitionDoveTailLength*INCH_TO_PIX_CONV}" style="fill:none;stroke:black;strokeDim:3"/>\n')
+
+            f.write(f'<rect x = "{X_START + (partitionLocation*INCH_TO_PIX_CONV) - (thickness*INCH_TO_PIX_CONV)/2}" y = "{Y_START + ((verticalDim - partitionDoveTailLength - partitionDoveTailDistance)*INCH_TO_PIX_CONV)}" width = "{thickness*INCH_TO_PIX_CONV}" height = "{partitionDoveTailLength*INCH_TO_PIX_CONV}" style="fill:none;stroke:black;strokeDim:3"/>\n')
+
+
+        if (position == "RIGHT" and partition == True):
+
+            f.write(f'<rect x = "{X_START + horizontalDim*INCH_TO_PIX_CONV - (partitionLocation*INCH_TO_PIX_CONV) - (thickness*INCH_TO_PIX_CONV)/2}" y = "{Y_START + (partitionDoveTailDistance*INCH_TO_PIX_CONV)}" width = "{thickness*INCH_TO_PIX_CONV}" height = "{partitionDoveTailLength*INCH_TO_PIX_CONV}" style="fill:none;stroke:black;strokeDim:3"/>\n')
+
+            f.write(f'<rect x = "{X_START + horizontalDim*INCH_TO_PIX_CONV - (partitionLocation*INCH_TO_PIX_CONV) - (thickness*INCH_TO_PIX_CONV)/2}" y = "{Y_START + ((verticalDim - partitionDoveTailLength - partitionDoveTailDistance)*INCH_TO_PIX_CONV)}" width = "{thickness*INCH_TO_PIX_CONV}" height = "{partitionDoveTailLength*INCH_TO_PIX_CONV}" style="fill:none;stroke:black;strokeDim:3"/>\n')
 
 ##############################################################
 ## FUNCTION TO GENERATE MAIN SVG, CALLS OTHER SVG FUNCTIONS ##
@@ -448,7 +457,7 @@ def masterSVG(thickness, width, length, height, partition, partitionLocation, li
     f.write(f'<line x1="{xScale1}" y1="{yScale1}" x2="{xScale2}" y2 ="{yScale2}" style="stroke:red;stroke-horizontalDim:4"/>\n')
     f.write(f'<text x = "{xScale2+10}" y = "{yScale2+5}" font-size = "20px" fill = "red"> = 1 inch </text> \n')
     #f.write(f'<text x = "{xScale2 + 30} y = "{yScale2+5} font-size = "20px" fill = "red"> RED = SCORE </text> \n')
-    #f.write(f'<text x = "{xScale2 + 60} y = "{yScale2+5} font-size = "20px" fill = "blue"> BLUE = ENGRAVING </text> \n')
+    #f.write(f'<text x = "{xScale2 + 60} y = "{yScale2+5} font-size = "20px" fill = "black"> black = ENGRAVING </text> \n')
 
     # lines for calling specific SVG functions
     baseSVG(f,"FRONT",thickness,width,height,xStartFront,yStartFront)
