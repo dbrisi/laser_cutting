@@ -240,10 +240,15 @@ def userSingleDim(dimension, dimensionValue, thickness):
 ##########################################################
 ## FUNCTION TO GENERATE FRACTAL IN SVG ##
 ##########################################################
-def fractalGenerator(f,fractalSide, x, y):
+def fractalGenerator(f,fractalSide, x, y, width, length, height):
 
     xStart = x
     yStart = y
+
+    if fractalSide == "SIDE":
+        minDistance = min(height, width)
+    else:
+        minDistance = min(width, length)
 
     f.write(f'<polyline points = "{xStart},{yStart} {xStart + 2*math.cos(59*math.pi/180)},{yStart + 2*math.sin(59*math.pi/180)}" fill = "none" stroke = "red" /> \n')
 
@@ -475,7 +480,7 @@ def masterSVG(thickness, width, length, height, partition, partitionLocation, li
         else:
             xFractal = xStartBottom + (width*INCH_TO_PIX_CONV)/2
             yFractal = yStartBottom + (length*INCH_TO_PIX_CONV)/2
-        fractalGenerator(f,fractalSideChoiceInput,xFractal,yFractal)
+        fractalGenerator(f,fractalSideChoiceInput,xFractal,yFractal, width, length, height)
     # text engravings -> new function... use if (?)
 
     if (topTextYesNo == True):
