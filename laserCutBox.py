@@ -284,12 +284,12 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
     partitionDoveTailDistance = .25 # in
 
     # SCREW and NUT DIMENSIONS
-    screwLength = 10 + 2 #mm with added clearance
-    screwDiam = 2 + 0.5 #mm with added clearance
-    squareNutSide = 5 + 0.5 #mm ## with added clearance
-    squareNutThickness = 1.5 + 0.5 #mm with added clearance
+    screwLength = 10 - 3 #mm with NO added clearance --> Added the "-3" to account for an issue later, easier to fix this way (in the meantime)
+    screwDiam = 2 #mm with NO added clearance
+    squareNutSide = 5#mm ## with NO added clearance
+    squareNutThickness = 1.5#mm with NO added clearance
     nutDistanceFromEdge = 4 #mm
-    distanceAfterNut = 5 #mm
+    distanceAfterNut = 3 #mm
     shiftDown = (verticalDim-1)*INCH_TO_PIX_CONV
     shiftRight = (horizontalDim-1)*INCH_TO_PIX_CONV
 
@@ -308,10 +308,10 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
         shiftForScrews = 20
         polylineLength = 5
         oscillator = 1 ## TO GET OFFSETS
-        spacingParam = 3.5 ## CAN CHANGE - SHIFTS VERTICAL DISTANCE
+        spacingParam = 2.5 ## CAN CHANGE - SHIFTS VERTICAL DISTANCE
         spacingBetweenCurves = 20
         lengthOfCurve = 10
-        curvatureAdj = 1.5
+        curvatureAdj = 1.25
 
         # outline of the lid
         x1,y1 = xStartNW - thickness*INCH_TO_PIX_CONV, yStartNW-thickness*INCH_TO_PIX_CONV
@@ -325,31 +325,26 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
         x9,y9 = x1,y1
 
         f.write(f'<polyline points = "{x1},{y1} {x2},{y2} {x3},{y3} {x4},{y4} {x5},{y5} {x6},{y6} {x7},{y7} {x8},{y8} {x9},{y9}" style="fill:none;stroke:black;stroke:2"/>\n')
-        # f.write(f'<rect x = "{xStartNW - thickness*INCH_TO_PIX_CONV}" y = "{yStartNW-thickness*INCH_TO_PIX_CONV}" width = "{(horizontalDim + 2*thickness)*INCH_TO_PIX_CONV}" height = "{(verticalDim + 2*thickness)*INCH_TO_PIX_CONV}" style="fill:none;stroke:black;stroke:2"/>\n')
 
-        # holes for the top
+        # holes for the lid
         xHole1,yHole1  = xStartNW + horizontalDim*INCH_TO_PIX_CONV/6, yStartNW - thickness*INCH_TO_PIX_CONV/2 + screwDiam*MM_TO_PIX_CONV/2
         xHole2, yHole2 = xStartNW + horizontalDim*INCH_TO_PIX_CONV*(5/6), yHole1
         f.write(f'<circle cx = "{xHole1}" cy = "{yHole1}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:1"/>\n')
         f.write(f'<circle cx = "{xHole2}" cy = "{yHole2}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:1"/>\n')
 
+        # kerf pattern
         totalLengthKerf = (horizontalDim + 2*thickness)*INCH_TO_PIX_CONV
-
         distanceToFill = totalLengthKerf - (spacingBetweenCurves - polylineLength*2 - lengthOfCurve)
-
         howManyCols = int(distanceToFill/spacingBetweenCurves)
-
         distanceToFillWithLines = distanceToFill - howManyCols*spacingBetweenCurves
-
         lengthOfStartAndEndLines = distanceToFillWithLines/2
-
         xKerfStart = xStartNW - thickness*INCH_TO_PIX_CONV + polylineLength
         yKerfStart = yStartNW - thickness*INCH_TO_PIX_CONV + shiftForScrews
 
         for i in range(howManyCols): ##the width
             oscillator = oscillator*(-1)
 
-            for j in range(13): ## THE LENGTH
+            for j in range(25): ## THE LENGTH
 
                 if i == 0:
                     f.write(f'<polyline points = "{xStartNW - thickness*INCH_TO_PIX_CONV},{yStartNW + shiftForScrews + j*spacingParam + oscillator - thickness*INCH_TO_PIX_CONV} {xStartNW + lengthOfStartAndEndLines - thickness*INCH_TO_PIX_CONV},{yStartNW + j*spacingParam + oscillator + shiftForScrews - thickness*INCH_TO_PIX_CONV}" fill = "none" stroke = "black" /> \n')
@@ -361,7 +356,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
                 if i == (howManyCols -1):
                     f.write(f'<polyline points = "{xStartNW + i*spacingBetweenCurves + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (spacingBetweenCurves - lengthOfCurve - 2*polylineLength)*2 + lengthOfCurve + polylineLength} {yKerfStart + j*spacingParam + oscillator} {xStartNW - thickness*INCH_TO_PIX_CONV + (horizontalDim + 2*thickness)*INCH_TO_PIX_CONV},{yKerfStart + j*spacingParam + oscillator}" fill = "none" stroke = "black" /> \n')
 
-
+    # if not the lid/top
     else:
         # horizontal side 1 (NW to NE)
         f.write('<polyline points="')
@@ -389,6 +384,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
         # slots for screws and nuts for lid connection
         if position == "BACK" and lid == True:
             shiftForLid = horizontalDim*INCH_TO_PIX_CONV*(2/3)
+
             x1,y1  = xStartNW + horizontalDim*INCH_TO_PIX_CONV/6 - screwDiam*MM_TO_PIX_CONV/2, yStartNW
             x2,y2  = x1, y1 + (screwLength-squareNutSide - distanceAfterNut)*MM_TO_PIX_CONV + thickness*INCH_TO_PIX_CONV
             x3,y3  = x2 - (squareNutSide - screwDiam)*MM_TO_PIX_CONV/2, y2
@@ -401,6 +397,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
             x10,y10  = x9, y3
             x11,y11  = x8, y3
             x12,y12  = x11, y1
+
             f.write(f'<line x1 = "{x1}" y1 = "{y1}" x2 = "{x12}" y2 = "{y12}" style="fill:none;stroke:white;stroke:2"/>\n')
             f.write(f'<line x1 = "{x1 + shiftForLid}" y1 = "{y1}" x2 = "{x12 + shiftForLid}" y2 = "{y12}" style="fill:none;stroke:white;stroke:2"/>\n')
             f.write(f'<polyline points = "{x1},{y1} {x2},{y2} {x3},{y3} {x4},{y4} {x5},{y5} {x6},{y6} {x7},{y7} {x8},{y8} {x9},{y9} {x10},{y10} {x11},{y11} {x12},{y12}" style="fill:none;stroke:black;stroke:2"/>\n')
@@ -417,6 +414,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
         # vertical side 1 (NE to SE)
         x1,y1 = xStartNE,  yStartNE
         f.write('<polyline points="')
+
         if position == "PARTITION":
             x1, y1 = xStartNE, yStartNE
             x2, y2 = x1, yStartNE + partitionDoveTailDistance*INCH_TO_PIX_CONV
@@ -430,6 +428,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
             x10, y10 = x1, yStartNE + verticalDim*INCH_TO_PIX_CONV
 
             f.write(f'{x1},{y1} {x2},{y2} {x3},{y3} {x4},{y4} {x5},{y5} {x6},{y6} {x7},{y7} {x8},{y8} {x9},{y9} {x10},{y10}')
+
         else:
             x2,y2 = x1 + thickness*INCH_TO_PIX_CONV, y1
             x3,y3 = x2, y2 + doveTailLength*INCH_TO_PIX_CONV
@@ -463,8 +462,10 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
         # horizontal side 2 (SE to SW)
         x1,y1 = xStartSE,  yStartSE
         f.write('<polyline points="')
+
         if position == "PARTITION":
             f.write(f'{xStartSE},{yStartSE} {xStartSW},{yStartSW} ')
+        
         else:
             x2,y2 = x1, y1 + thickness*INCH_TO_PIX_CONV
             x3,y3 = x2 - doveTailLength*INCH_TO_PIX_CONV, y2
@@ -473,9 +474,10 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
             for i in range(int(horizontalDim)):
                 increment = i*INCH_TO_PIX_CONV
                 f.write(f'{x1-increment},{y1} {x2-increment},{y2} {x3-increment},{y3} {x4-increment},{y4} {x5-increment},{y5} ')
+        
         f.write('" style="fill:none;stroke:black;stroke:2"/>\n')
 
-        # holes for screws -> move these down?
+        # holes for screws
         if position == "BOTTOM":
             xHole1,yHole1  = xStartSW + 1.5*doveTailLength*INCH_TO_PIX_CONV, yStartSW + thickness*INCH_TO_PIX_CONV/2 - screwDiam*MM_TO_PIX_CONV/2
             xHole2, yHole2 = xHole1 +shiftRight, yHole1
@@ -502,10 +504,10 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
             f.write(f'<polyline points = "{x1},{y1} {x2},{y2} {x3},{y3} {x4},{y4} {x5},{y5} {x6},{y6} {x7},{y7} {x8},{y8} {x9},{y9} {x10},{y10} {x11},{y11} {x12},{y12}" style="fill:none;stroke:black;stroke:2"/>\n')
             f.write(f'<polyline points = "{x1 + shiftRight},{y1} {x2 + shiftRight},{y2} {x3 + shiftRight},{y3} {x4 + shiftRight},{y4} {x5 + shiftRight},{y5} {x6 + shiftRight},{y6} {x7 + shiftRight},{y7} {x8 + shiftRight},{y8} {x9 + shiftRight},{y9} {x10 + shiftRight},{y10} {x11 + shiftRight},{y11} {x12 + shiftRight},{y12}" style="fill:none;stroke:black;stroke:2"/>\n')
 
-
         # vertical side 2 (SW to NW)
         x1,y1 = xStartSW,  yStartSW
         f.write('<polyline points="')
+
         if position == "PARTITION":
             x1, y1 = xStartNW, yStartNW
             x2, y2 = x1, yStartNW + partitionDoveTailDistance*INCH_TO_PIX_CONV
@@ -519,6 +521,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
             x10, y10 = x1, yStartNW + verticalDim*INCH_TO_PIX_CONV
 
             f.write(f'{x1},{y1} {x2},{y2} {x3},{y3} {x4},{y4} {x5},{y5} {x6},{y6} {x7},{y7} {x8},{y8} {x9},{y9} {x10},{y10}')
+
         else:
             x2,y2 = x1 - thickness*INCH_TO_PIX_CONV, y1
             x3,y3 = x2, y2 - doveTailLength*INCH_TO_PIX_CONV
@@ -527,20 +530,20 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
             for i in range(int(verticalDim)):
                 increment = i*INCH_TO_PIX_CONV
                 f.write(f'{x1},{y1-increment} {x2},{y2-increment} {x3},{y3-increment} {x4},{y4-increment} {x5},{y5-increment} ')
+
         f.write('" style="fill:none;stroke:black;stroke:2"/>\n')
 
-        # holes -> move these to the right?
+        # holes
         if (position == "FRONT" or position == "BACK" or position == "LEFT" or position == "RIGHT"):
             xHole1,yHole1  = xStartNW - thickness*INCH_TO_PIX_CONV/2 + screwDiam*MM_TO_PIX_CONV/2, yStartNW + 1.5*doveTailLength*INCH_TO_PIX_CONV
             xHole2,yHole2 = xHole1, yHole1 + shiftDown
             f.write(f'<circle cx = "{xHole1}" cy = "{yHole1}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:2"/>\n')
             f.write(f'<circle cx = "{xHole2}" cy = "{yHole2}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:2"/>\n')
 
+        # slots for partition
         if (position == "LEFT" and partition == True):
-            #f.write(f'<rect x = "{X_START + (partitionLocation*INCH_TO_PIX_CONV)/2 - (thickness*INCH_TO_PIX_CONV)/2}" y = "{Y_START}" width = "{thickness*INCH_TO_PIX_CONV}" height = "{verticalDim*INCH_TO_PIX_CONV}" style="fill:none;stroke:black;strokeDim:3"/>\n')
             f.write(f'<rect x = "{X_START + (partitionLocation*INCH_TO_PIX_CONV) - (thickness*INCH_TO_PIX_CONV)/2}" y = "{Y_START + (partitionDoveTailDistance*INCH_TO_PIX_CONV)}" width = "{thickness*INCH_TO_PIX_CONV}" height = "{partitionDoveTailLength*INCH_TO_PIX_CONV}" style="fill:none;stroke:black;strokeDim:3"/>\n')
             f.write(f'<rect x = "{X_START + (partitionLocation*INCH_TO_PIX_CONV) - (thickness*INCH_TO_PIX_CONV)/2}" y = "{Y_START + ((verticalDim - partitionDoveTailLength - partitionDoveTailDistance)*INCH_TO_PIX_CONV)}" width = "{thickness*INCH_TO_PIX_CONV}" height = "{partitionDoveTailLength*INCH_TO_PIX_CONV}" style="fill:none;stroke:black;strokeDim:3"/>\n')
-
         if (position == "RIGHT" and partition == True):
             f.write(f'<rect x = "{X_START + horizontalDim*INCH_TO_PIX_CONV - (partitionLocation*INCH_TO_PIX_CONV) - (thickness*INCH_TO_PIX_CONV)/2}" y = "{Y_START + (partitionDoveTailDistance*INCH_TO_PIX_CONV)}" width = "{thickness*INCH_TO_PIX_CONV}" height = "{partitionDoveTailLength*INCH_TO_PIX_CONV}" style="fill:none;stroke:black;strokeDim:3"/>\n')
             f.write(f'<rect x = "{X_START + horizontalDim*INCH_TO_PIX_CONV - (partitionLocation*INCH_TO_PIX_CONV) - (thickness*INCH_TO_PIX_CONV)/2}" y = "{Y_START + ((verticalDim - partitionDoveTailLength - partitionDoveTailDistance)*INCH_TO_PIX_CONV)}" width = "{thickness*INCH_TO_PIX_CONV}" height = "{partitionDoveTailLength*INCH_TO_PIX_CONV}" style="fill:none;stroke:black;strokeDim:3"/>\n')
@@ -551,10 +554,10 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
 def masterSVG(thickness, width, length, height, partition, partitionLocation, lid, topTextYesNo, topText, frontTextYesNo, frontText, fractal, fractalSideChoiceInput):
 
     # base origin
-    xScale1, yScale1 = 75,40
+    xScale1, yScale1 = 25,20
     xScale2,yScale2 = xScale1 + 1*INCH_TO_PIX_CONV, yScale1
-    X_START, Y_START = 75, 75 # pixels
-    PIECE_SEPARATION = 25 # pixels
+    X_START, Y_START = 25, 30 # pixels
+    PIECE_SEPARATION = 5 # pixels
 
     # set local origins of base pieces to be cut
     # row 1 of pieces
@@ -609,13 +612,50 @@ def masterSVG(thickness, width, length, height, partition, partitionLocation, li
 
     if (frontTextYesNo == True):
         textSVG(f,frontText,xStartFront,yStartFront,width,height, "FRONT")
+    
+    #display box attributes
 
+    yAtt = yScale1 + (height+length + 4*thickness)*INCH_TO_PIX_CONV + 25
 
+    f.write(f'<text x = "{xScale1}" y = "{yAtt}" dy = "0">\n')
+    # f.write(f'\t<tspan dy = ".6em"> BOX ATTRIBUTES < /tspan>\n')
+    f.write(f'<tspan x = "20" dy = ".6em" >BOX ATTRIBUTES </tspan>\n')
+    f.write(f'<tspan x = "20" dy = "1.2em" >thickness: </tspan>\n')
+    f.write(f'<tspan x = "20" dy = "1.2em" >width: </tspan>\n')
+    f.write(f'<tspan x = "20" dy = "1.2em" >length:  </tspan>\n')
+    f.write(f'<tspan x = "20" dy = "1.2em" >height: </tspan>\n')
+    f.write(f'<tspan x = "20" dy = "1.2em" >partition:  </tspan>\n')
+    f.write(f'<tspan x = "20" dy = "1.2em" >partition location: </tspan>\n')
+    f.write(f'<tspan x = "20" dy = "1.2em" >lid: </tspan>\n')
+    f.write(f'<tspan x = "20" dy = "1.2em" >top text: </tspan>\n')
+    f.write(f'<tspan x = "20" dy = "1.2em" >top text string: </tspan>\n')
+    f.write(f'<tspan x = "20" dy = "1.2em" >front text: </tspan>\n')
+    f.write(f'<tspan x = "20" dy = "1.2em" >front text string: </tspan>\n')
+    f.write(f'<tspan x = "20" dy = "1.2em" >fractal: </tspan>\n')
+    f.write(f'<tspan x = "20" dy = "1.2em" >fractal side/bottom: </tspan>\n')
+    f.write('</text>')
+
+    f.write(f'<text x = "200" y = "{yAtt}" dy = "0">\n')
+    f.write(f'<tspan x = "200" dy = ".6em" > VALUES </tspan>\n')
+    f.write(f'<tspan x = "200" dy = "1.2em" >' + str(thickness) +'</tspan>\n')
+    f.write(f'<tspan x = "200" dy = "1.2em" >' + str(width) + '</tspan>\n')
+    f.write(f'<tspan x = "200" dy = "1.2em" >' + str(length) + '</tspan>\n')
+    f.write(f'<tspan x = "200" dy = "1.2em" >' + str(height) + '</tspan>\n')
+    f.write(f'<tspan x = "200" dy = "1.2em" >' + str(partition) + '</tspan>\n')
+    f.write(f'<tspan x = "200" dy = "1.2em" >' + str(partitionLocation) +'</tspan>\n')
+    f.write(f'<tspan x = "200" dy = "1.2em" >' + str(lid)  + '</tspan>\n')
+    f.write(f'<tspan x = "200" dy = "1.2em" >' + str(topTextYesNo) + '</tspan>\n')
+    f.write(f'<tspan x = "200" dy = "1.2em" >' + str(frontTextYesNo) + '</tspan>\n')
+    f.write(f'<tspan x = "200" dy = "1.2em" >' + str(fractal) + '</tspan>\n')
+    f.write(f'<tspan x = "200" dy = "1.2em" >' + topText + '</tspan>\n')
+    f.write(f'<tspan x = "200" dy = "1.2em" >' + frontText + '</tspan>\n')
+    f.write(f'<tspan x = "200" dy = "1.2em" >' + fractalSideChoiceInput.lower() + '</tspan>\n')
+
+    f.write('</text>')
+    
     # closing line of SVG file
     f.write('</svg>')
     f.close()
-
-
 
 ###################
 ## MAIN FUNCTION ##
