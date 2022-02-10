@@ -305,7 +305,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
     if position == "TOP":
 
         ## CONSTANTS
-        shiftForScrews = 25
+        shiftForScrews = 20
         polylineLength = 5
         oscillator = 1 ## TO GET OFFSETS
         spacingParam = 3.5 ## CAN CHANGE - SHIFTS VERTICAL DISTANCE
@@ -338,7 +338,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
         for i in range(howManyCols): ##the width
             oscillator = oscillator*(-1)
 
-            for j in range(8): ## THE LENGTH
+            for j in range(13): ## THE LENGTH
 
                 if i == 0:
                     f.write(f'<polyline points = "{xStartNW - thickness*INCH_TO_PIX_CONV},{yStartNW + shiftForScrews + j*spacingParam + oscillator - thickness*INCH_TO_PIX_CONV} {xStartNW + lengthOfStartAndEndLines - thickness*INCH_TO_PIX_CONV},{yStartNW + j*spacingParam + oscillator + shiftForScrews - thickness*INCH_TO_PIX_CONV}" fill = "none" stroke = "black" /> \n')
