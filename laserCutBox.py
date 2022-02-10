@@ -307,10 +307,11 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
         ## CONSTANTS
         shiftForScrews = 25
         polylineLength = 5
-        oscillator = 2 ## TO GET OFFSETS
-        spacingParam = 10 ## CAN CHANGE - SHIFTS VERTICAL DISTANCE
+        oscillator = 1 ## TO GET OFFSETS
+        spacingParam = 3.5 ## CAN CHANGE - SHIFTS VERTICAL DISTANCE
         spacingBetweenCurves = 20
         lengthOfCurve = 10
+        curvatureAdj = 1.5
 
         # outline of the lid
         f.write(f'<rect x = "{xStartNW - thickness*INCH_TO_PIX_CONV}" y = "{yStartNW-thickness*INCH_TO_PIX_CONV}" width = "{(horizontalDim + 2*thickness)*INCH_TO_PIX_CONV}" height = "{(verticalDim + 2*thickness)*INCH_TO_PIX_CONV}" style="fill:none;stroke:black;stroke:2"/>\n')
@@ -343,7 +344,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
                     f.write(f'<polyline points = "{xStartNW - thickness*INCH_TO_PIX_CONV},{yStartNW + shiftForScrews + j*spacingParam + oscillator - thickness*INCH_TO_PIX_CONV} {xStartNW + lengthOfStartAndEndLines - thickness*INCH_TO_PIX_CONV},{yStartNW + j*spacingParam + oscillator + shiftForScrews - thickness*INCH_TO_PIX_CONV}" fill = "none" stroke = "black" /> \n')
 
                 f.write(f'<polyline points = "{xStartNW + i*spacingBetweenCurves + lengthOfStartAndEndLines - thickness*INCH_TO_PIX_CONV + (spacingBetweenCurves - lengthOfCurve - 2*polylineLength)},{yStartNW + shiftForScrews + j*spacingParam + oscillator - thickness*INCH_TO_PIX_CONV} {xStartNW + i*spacingBetweenCurves + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (spacingBetweenCurves - lengthOfCurve - 2*polylineLength)},{yStartNW + j*spacingParam + oscillator + shiftForScrews - thickness*INCH_TO_PIX_CONV}" fill = "none" stroke = "black" /> \n')
-                f.write(f'<path d = "M {xStartNW + i*spacingBetweenCurves + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (spacingBetweenCurves - lengthOfCurve - 2*polylineLength)} {yKerfStart + j*spacingParam + oscillator} C {xStartNW + i*spacingBetweenCurves + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (spacingBetweenCurves - lengthOfCurve - 2*polylineLength)} {yKerfStart + 10 + j*spacingParam + oscillator}, {xStartNW + i*spacingBetweenCurves + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (spacingBetweenCurves - lengthOfCurve - 2*polylineLength) + lengthOfCurve} {yKerfStart + 10 + j*spacingParam + oscillator}, {xStartNW + i*spacingBetweenCurves + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (spacingBetweenCurves - lengthOfCurve - 2*polylineLength) + lengthOfCurve} {yKerfStart + j*spacingParam + oscillator}" stroke = "black" fill = "transparent"/>\n')
+                f.write(f'<path d = "M {xStartNW + i*spacingBetweenCurves + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (spacingBetweenCurves - lengthOfCurve - 2*polylineLength)} {yKerfStart + j*spacingParam + oscillator} C {xStartNW + i*spacingBetweenCurves + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (spacingBetweenCurves - lengthOfCurve - 2*polylineLength)} {yKerfStart + curvatureAdj + j*spacingParam + oscillator}, {xStartNW + i*spacingBetweenCurves + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (spacingBetweenCurves - lengthOfCurve - 2*polylineLength) + lengthOfCurve} {yKerfStart + curvatureAdj + j*spacingParam + oscillator}, {xStartNW + i*spacingBetweenCurves + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (spacingBetweenCurves - lengthOfCurve - 2*polylineLength) + lengthOfCurve} {yKerfStart + j*spacingParam + oscillator}" stroke = "black" fill = "transparent"/>\n')
                 f.write(f'<polyline points = "{xStartNW + i*spacingBetweenCurves + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (spacingBetweenCurves - lengthOfCurve - 2*polylineLength) + lengthOfCurve} {yKerfStart + j*spacingParam + oscillator} {xStartNW + i*spacingBetweenCurves + polylineLength - thickness*INCH_TO_PIX_CONV + lengthOfStartAndEndLines + (spacingBetweenCurves - lengthOfCurve - 2*polylineLength) + lengthOfCurve + polylineLength},{yKerfStart + j*spacingParam + oscillator}" fill = "none" stroke = "black" /> \n')
 
                 if i == (howManyCols -1):
@@ -375,9 +376,9 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
             x4,y4  = x3, y3 + squareNutThickness*MM_TO_PIX_CONV
             x5,y5  = x2, y4
             x6,y6  = x5, y5 + distanceAfterNut*MM_TO_PIX_CONV
-            x7,y7  = x6 + screwDiam*MM_TO_PIX_CONV, y6 
+            x7,y7  = x6 + screwDiam*MM_TO_PIX_CONV, y6
             x8,y8  = x7, y5
-            x9,y9  = x8 + (squareNutSide - screwDiam)*MM_TO_PIX_CONV/2, y8 
+            x9,y9  = x8 + (squareNutSide - screwDiam)*MM_TO_PIX_CONV/2, y8
             x10,y10  = x9, y3
             x11,y11  = x8, y3
             x12,y12  = x11, y1
@@ -394,7 +395,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
             f.write(f'<circle cx = "{xHole1}" cy = "{yHole1}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:2"/>\n')
             f.write(f'<circle cx = "{xHole2}" cy = "{yHole2}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:2"/>\n')
 
-        
+
 
         # vertical side 1 (NE to SE)
         x1,y1 = xStartNE,  yStartNE
@@ -455,8 +456,8 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
             for i in range(int(horizontalDim)):
                 increment = i*INCH_TO_PIX_CONV
                 f.write(f'{x1-increment},{y1} {x2-increment},{y2} {x3-increment},{y3} {x4-increment},{y4} {x5-increment},{y5} ')
-        f.write('" style="fill:none;stroke:black;stroke:2"/>\n')    
-            
+        f.write('" style="fill:none;stroke:black;stroke:2"/>\n')
+
         # holes for screws -> move these down?
         if position == "BOTTOM":
             xHole1,yHole1  = xStartSW + 1.5*doveTailLength*INCH_TO_PIX_CONV, yStartSW + thickness*INCH_TO_PIX_CONV/2
@@ -468,13 +469,13 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
         if position == "FRONT" or position == "BACK":
             x1,y1  = xStartSW + doveTailLength*INCH_TO_PIX_CONV/2 - screwDiam*MM_TO_PIX_CONV/2, yStartSW
             x2,y2  = x1, y1 - (screwLength-squareNutSide - distanceAfterNut)*MM_TO_PIX_CONV - thickness*INCH_TO_PIX_CONV
-            x3,y3  = x2 - (squareNutSide - screwDiam)*MM_TO_PIX_CONV/2, y2 
+            x3,y3  = x2 - (squareNutSide - screwDiam)*MM_TO_PIX_CONV/2, y2
             x4,y4  = x3, y3 - squareNutThickness*MM_TO_PIX_CONV
             x5,y5  = x2, y4
             x6,y6  = x5, y5 - distanceAfterNut*MM_TO_PIX_CONV
-            x7,y7  = x6 + screwDiam*MM_TO_PIX_CONV, y6 
+            x7,y7  = x6 + screwDiam*MM_TO_PIX_CONV, y6
             x8,y8  = x7, y5
-            x9,y9  = x8+ (squareNutSide - screwDiam)*MM_TO_PIX_CONV/2, y8 
+            x9,y9  = x8+ (squareNutSide - screwDiam)*MM_TO_PIX_CONV/2, y8
             x10,y10  = x9, y3
             x11,y11  = x8, y3
             x12,y12  = x11, y1
@@ -484,7 +485,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
             f.write(f'<polyline points = "{x1},{y1} {x2},{y2} {x3},{y3} {x4},{y4} {x5},{y5} {x6},{y6} {x7},{y7} {x8},{y8} {x9},{y9} {x10},{y10} {x11},{y11} {x12},{y12}" style="fill:none;stroke:black;stroke:2"/>\n')
             f.write(f'<polyline points = "{x1 + shiftRight},{y1} {x2 + shiftRight},{y2} {x3 + shiftRight},{y3} {x4 + shiftRight},{y4} {x5 + shiftRight},{y5} {x6 + shiftRight},{y6} {x7 + shiftRight},{y7} {x8 + shiftRight},{y8} {x9 + shiftRight},{y9} {x10 + shiftRight},{y10} {x11 + shiftRight},{y11} {x12 + shiftRight},{y12}" style="fill:none;stroke:black;stroke:2"/>\n')
 
-                
+
         # vertical side 2 (SW to NW)
         x1,y1 = xStartSW,  yStartSW
         f.write('<polyline points="')
@@ -511,7 +512,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
                 f.write(f'{x1},{y1-increment} {x2},{y2-increment} {x3},{y3-increment} {x4},{y4-increment} {x5},{y5-increment} ')
         f.write('" style="fill:none;stroke:black;stroke:2"/>\n')
 
-        # holes -> move these to the right? 
+        # holes -> move these to the right?
         if (position == "FRONT" or position == "BACK" or position == "LEFT" or position == "RIGHT"):
             xHole1,yHole1  = xStartNW - thickness*INCH_TO_PIX_CONV/2, yStartNW + 1.5*doveTailLength*INCH_TO_PIX_CONV
             xHole2,yHole2 = xHole1, yHole1 + shiftDown
