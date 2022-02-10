@@ -317,10 +317,10 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
         f.write(f'<rect x = "{xStartNW - thickness*INCH_TO_PIX_CONV}" y = "{yStartNW-thickness*INCH_TO_PIX_CONV}" width = "{(horizontalDim + 2*thickness)*INCH_TO_PIX_CONV}" height = "{(verticalDim + 2*thickness)*INCH_TO_PIX_CONV}" style="fill:none;stroke:black;stroke:2"/>\n')
 
         # holes for the top
-        xHole1,yHole1  = xStartNW + horizontalDim*INCH_TO_PIX_CONV/6, yStartNW - thickness*INCH_TO_PIX_CONV/2
+        xHole1,yHole1  = xStartNW + horizontalDim*INCH_TO_PIX_CONV/6, yStartNW - thickness*INCH_TO_PIX_CONV/2 + screwDiam*MM_TO_PIX_CONV/2
         xHole2, yHole2 = xStartNW + horizontalDim*INCH_TO_PIX_CONV*(5/6), yHole1
-        f.write(f'<circle cx = "{xHole1}" cy = "{yHole1}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:2"/>\n')
-        f.write(f'<circle cx = "{xHole2}" cy = "{yHole2}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:2"/>\n')
+        f.write(f'<circle cx = "{xHole1}" cy = "{yHole1}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:1"/>\n')
+        f.write(f'<circle cx = "{xHole2}" cy = "{yHole2}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:1"/>\n')
 
         totalLengthKerf = (horizontalDim + 2*thickness)*INCH_TO_PIX_CONV
 
@@ -367,7 +367,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
             f.write(f'{xStartNW},{yStartNW} {xStartNE},{yStartNE} ')
         f.write('" style="fill:none;stroke:black;stroke:2"/>\n')
 
-        # holes for lid
+        # slots for screws and nuts for lid connection
         if position == "BACK":
             shiftForLid = horizontalDim*INCH_TO_PIX_CONV*(4/6)
             x1,y1  = xStartNW + horizontalDim*INCH_TO_PIX_CONV/6 - screwDiam*MM_TO_PIX_CONV/2, yStartNW
@@ -390,10 +390,10 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
 
         # holes for screws -> move these down?
         if position == "BOTTOM":
-            xHole1,yHole1  = xStartNW + doveTailLength*INCH_TO_PIX_CONV/2, yStartNW - thickness*INCH_TO_PIX_CONV/2
+            xHole1,yHole1  = xStartNW + doveTailLength*INCH_TO_PIX_CONV/2, yStartNW - thickness*INCH_TO_PIX_CONV/2 + screwDiam*MM_TO_PIX_CONV/2
             xHole2, yHole2 = xHole1 +shiftRight, yHole1
-            f.write(f'<circle cx = "{xHole1}" cy = "{yHole1}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:2"/>\n')
-            f.write(f'<circle cx = "{xHole2}" cy = "{yHole2}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:2"/>\n')
+            f.write(f'<circle cx = "{xHole1}" cy = "{yHole1}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:1"/>\n')
+            f.write(f'<circle cx = "{xHole2}" cy = "{yHole2}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:1"/>\n')
 
 
 
@@ -460,10 +460,10 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
 
         # holes for screws -> move these down?
         if position == "BOTTOM":
-            xHole1,yHole1  = xStartSW + 1.5*doveTailLength*INCH_TO_PIX_CONV, yStartSW + thickness*INCH_TO_PIX_CONV/2
+            xHole1,yHole1  = xStartSW + 1.5*doveTailLength*INCH_TO_PIX_CONV, yStartSW + thickness*INCH_TO_PIX_CONV/2 - screwDiam*MM_TO_PIX_CONV/2
             xHole2, yHole2 = xHole1 +shiftRight, yHole1
-            f.write(f'<circle cx = "{xHole1}" cy = "{yHole1}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:2"/>\n')
-            f.write(f'<circle cx = "{xHole2}" cy = "{yHole2}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:2"/>\n')
+            f.write(f'<circle cx = "{xHole1}" cy = "{yHole1}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:1"/>\n')
+            f.write(f'<circle cx = "{xHole2}" cy = "{yHole2}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:1"/>\n')
 
         # slots for screws and nuts - bottom connection
         if position == "FRONT" or position == "BACK":
@@ -514,7 +514,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
 
         # holes -> move these to the right?
         if (position == "FRONT" or position == "BACK" or position == "LEFT" or position == "RIGHT"):
-            xHole1,yHole1  = xStartNW - thickness*INCH_TO_PIX_CONV/2, yStartNW + 1.5*doveTailLength*INCH_TO_PIX_CONV
+            xHole1,yHole1  = xStartNW - thickness*INCH_TO_PIX_CONV/2 + screwDiam*MM_TO_PIX_CONV/2, yStartNW + 1.5*doveTailLength*INCH_TO_PIX_CONV
             xHole2,yHole2 = xHole1, yHole1 + shiftDown
             f.write(f'<circle cx = "{xHole1}" cy = "{yHole1}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:2"/>\n')
             f.write(f'<circle cx = "{xHole2}" cy = "{yHole2}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:2"/>\n')
