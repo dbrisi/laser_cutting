@@ -10,10 +10,10 @@
 # 7. text on top for SVG - new function, called by master svg fct           -YLL    DONE
 # 8. text on bottom for SVG - new function, called by master svg fct        -YLL    DONE
 # 9. one (same) function for each dimension input, called by userDimInput() -YLL    DONE
-# 11. need to modify baseSVG() to include holes and nut cut-outs
+# 11. need to modify baseSVG() to include holes and nut cut-outs                    DONE
 # 12. need to modify baseSVG() to include slits on sides for partition      -YLL    DONE
 # 13. need to modify baseSVG() to output partition (no dovetails, screws?)  -YLL    DONE
-# 14. now everything is in inch, scale down? 1:4? 1:8?                      -OPT
+# 14. now everything is in inch, scale down? 1:4? 1:8?                      -OPT    DONE
 # 17. autosize font, based on length of text?                               -OPT
 # 18. error check if text string exceed horizontal dimension?
 
@@ -259,17 +259,17 @@ def fractalGenerator(f,fractalSide, x, y, width, length, height):
 ######################################
 ## FUNCTION TO GENERATE TEXT IN SVG ##
 ######################################
-def textSVG(f, text, xStart, yStart, horizontalDim, verticalDim, topTextYesNo):
+def textSVG(f, text, xStart, yStart, horizontalDim, verticalDim, position):
     if verticalDim < horizontalDim:
         fontSize = FONT_SIZE_CONV*(1/5)*verticalDim
     else:
         fontSize = FONT_SIZE_CONV*(1/10)*horizontalDim
 
-    if topTextYesNo == True:
-        f.write(f'<text x = "{xStart + (horizontalDim*INCH_TO_PIX_CONV)/2}" y = "{yStart + (verticalDim*INCH_TO_PIX_CONV)/1.25}" dominant-baseline= "central" text-anchor= "middle" font-size = "30px" fill = "red">' + text + ' </text> \n')
+    if position == "TOP":
+        f.write(f'<text x = "{xStart + (horizontalDim*INCH_TO_PIX_CONV)/2}" y = "{yStart + (verticalDim*INCH_TO_PIX_CONV)/1.25}" dominant-baseline= "central" text-anchor= "middle" font-size = "30px" fill = "blue">' + text + ' </text> \n')
     else:
         #f.write(f'<text x = "{xStart + (horizontalDim*INCH_TO_PIX_CONV)/2}" y = "{yStart + (verticalDim*INCH_TO_PIX_CONV)/2}" dominant-baseline= "central" text-anchor= "middle" font-size = "{fontSize}px" fill = "red">' + text + ' </text> \n')
-        f.write(f'<text x = "{xStart + (horizontalDim*INCH_TO_PIX_CONV)/2}" y = "{yStart + (verticalDim*INCH_TO_PIX_CONV)/2}" dominant-baseline= "central" text-anchor= "middle" font-size = "30px" fill = "red">' + text + ' </text> \n')
+        f.write(f'<text x = "{xStart + (horizontalDim*INCH_TO_PIX_CONV)/2}" y = "{yStart + (verticalDim*INCH_TO_PIX_CONV)/2}" dominant-baseline= "central" text-anchor= "middle" font-size = "30px" fill = "blue">' + text + ' </text> \n')
 
 #######################################
 ## FUNCTION TO GENERATE BASES IN SVG ##
@@ -283,11 +283,15 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
     partitionDoveTailLength = .5 # in
     partitionDoveTailDistance = .25 # in
 
-    # SCREW and NUT DIMENSIONS --> Change if necessary
+    # SCREW and NUT DIMENSIONS
     screwLength = 10 + 2 #mm with added clearance
     screwDiam = 2 + 0.5 #mm with added clearance
     squareNutSide = 5 + 0.5 #mm ## with added clearance
     squareNutThickness = 1.5 + 0.5 #mm with added clearance
+    nutDistanceFromEdge = 4 #mm
+    distanceAfterNut = 5 #mm
+    shiftDown = (verticalDim-1)*INCH_TO_PIX_CONV
+    shiftRight = (horizontalDim-1)*INCH_TO_PIX_CONV
 
     xStartNW = X_START
     yStartNW = Y_START
@@ -310,6 +314,12 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
 
         # outline of the lid
         f.write(f'<rect x = "{xStartNW - thickness*INCH_TO_PIX_CONV}" y = "{yStartNW-thickness*INCH_TO_PIX_CONV}" width = "{(horizontalDim + 2*thickness)*INCH_TO_PIX_CONV}" height = "{(verticalDim + 2*thickness)*INCH_TO_PIX_CONV}" style="fill:none;stroke:black;stroke:2"/>\n')
+
+        # holes for the top
+        xHole1,yHole1  = xStartNW + horizontalDim*INCH_TO_PIX_CONV/6, yStartNW - thickness*INCH_TO_PIX_CONV/2
+        xHole2, yHole2 = xStartNW + horizontalDim*INCH_TO_PIX_CONV*(5/6), yHole1
+        f.write(f'<circle cx = "{xHole1}" cy = "{yHole1}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:2"/>\n')
+        f.write(f'<circle cx = "{xHole2}" cy = "{yHole2}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:2"/>\n')
 
         totalLengthKerf = (horizontalDim + 2*thickness)*INCH_TO_PIX_CONV
 
@@ -356,6 +366,35 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
             f.write(f'{xStartNW},{yStartNW} {xStartNE},{yStartNE} ')
         f.write('" style="fill:none;stroke:black;stroke:2"/>\n')
 
+        # holes for lid
+        if position == "BACK":
+            shiftForLid = horizontalDim*INCH_TO_PIX_CONV*(4/6)
+            x1,y1  = xStartNW + horizontalDim*INCH_TO_PIX_CONV/6 - screwDiam*MM_TO_PIX_CONV/2, yStartNW
+            x2,y2  = x1, y1 + (screwLength-squareNutSide - distanceAfterNut)*MM_TO_PIX_CONV + thickness*INCH_TO_PIX_CONV
+            x3,y3  = x2 - (squareNutSide - screwDiam)*MM_TO_PIX_CONV/2, y2
+            x4,y4  = x3, y3 + squareNutThickness*MM_TO_PIX_CONV
+            x5,y5  = x2, y4
+            x6,y6  = x5, y5 + distanceAfterNut*MM_TO_PIX_CONV
+            x7,y7  = x6 + screwDiam*MM_TO_PIX_CONV, y6 
+            x8,y8  = x7, y5
+            x9,y9  = x8 + (squareNutSide - screwDiam)*MM_TO_PIX_CONV/2, y8 
+            x10,y10  = x9, y3
+            x11,y11  = x8, y3
+            x12,y12  = x11, y1
+
+            f.write(f'<line x1 = "{x1}" y1 = "{y1}" x2 = "{x12}" y2 = "{y12}" style="fill:none;stroke:white;stroke:2"/>\n')
+            f.write(f'<line x1 = "{x1 + shiftForLid}" y1 = "{y1}" x2 = "{x12 + shiftForLid}" y2 = "{y12}" style="fill:none;stroke:white;stroke:2"/>\n')
+            f.write(f'<polyline points = "{x1},{y1} {x2},{y2} {x3},{y3} {x4},{y4} {x5},{y5} {x6},{y6} {x7},{y7} {x8},{y8} {x9},{y9} {x10},{y10} {x11},{y11} {x12},{y12}" style="fill:none;stroke:black;stroke:2"/>\n')
+            f.write(f'<polyline points = "{x1 + shiftForLid},{y1} {x2 + shiftForLid},{y2} {x3 + shiftForLid},{y3} {x4 + shiftForLid},{y4} {x5 + shiftForLid},{y5} {x6 + shiftForLid},{y6} {x7 + shiftForLid},{y7} {x8 + shiftForLid},{y8} {x9 + shiftForLid},{y9} {x10 + shiftForLid},{y10} {x11 + shiftForLid},{y11} {x12 + shiftForLid},{y12}" style="fill:none;stroke:black;stroke:2"/>\n')
+
+        # holes for screws -> move these down?
+        if position == "BOTTOM":
+            xHole1,yHole1  = xStartNW + doveTailLength*INCH_TO_PIX_CONV/2, yStartNW - thickness*INCH_TO_PIX_CONV/2
+            xHole2, yHole2 = xHole1 +shiftRight, yHole1
+            f.write(f'<circle cx = "{xHole1}" cy = "{yHole1}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:2"/>\n')
+            f.write(f'<circle cx = "{xHole2}" cy = "{yHole2}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:2"/>\n')
+
+        
 
         # vertical side 1 (NE to SE)
         x1,y1 = xStartNE,  yStartNE
@@ -383,21 +422,20 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
                 f.write(f'{x1},{y1+increment} {x2},{y2+increment} {x3},{y3+increment} {x4},{y4+increment} {x5},{y5+increment} ')
         f.write('" style="fill:none;stroke:black;stroke:2"/>\n')
 
+        # slots for screws and nuts - side connections
         if (position == "FRONT" or position == "BACK" or position == "LEFT" or position == "RIGHT"):
             x1,y1  = xStartNE, yStartNE + 1.5*doveTailLength*INCH_TO_PIX_CONV - screwDiam*MM_TO_PIX_CONV/2
-            x2,y2  = x1 - (screwLength-squareNutSide-2)*MM_TO_PIX_CONV - thickness*INCH_TO_PIX_CONV, y1
+            x2,y2  = x1 - (screwLength-squareNutSide - distanceAfterNut)*MM_TO_PIX_CONV - thickness*INCH_TO_PIX_CONV, y1
             x3,y3  = x2, y2 - (squareNutSide - screwDiam)*MM_TO_PIX_CONV/2
             x4,y4  = x3 - squareNutThickness*MM_TO_PIX_CONV, y3
             x5,y5  = x4, y2
-            x6,y6  = x5 - 2*MM_TO_PIX_CONV, y5
+            x6,y6  = x5 - distanceAfterNut*MM_TO_PIX_CONV, y5
             x7,y7  = x6, y6 + screwDiam*MM_TO_PIX_CONV
             x8,y8  = x5,y7
             x9,y9  = x4, y8 + (squareNutSide - screwDiam)*MM_TO_PIX_CONV/2
             x10,y10  = x3, y9
             x11,y11  = x10, y8
             x12,y12  = x1, y11
-
-            shiftDown = (verticalDim-1)*INCH_TO_PIX_CONV
 
             f.write(f'<line x1 = "{x1}" y1 = "{y1}" x2 = "{x12}" y2 = "{y12}" style="fill:none;stroke:white;stroke:2"/>\n')
             f.write(f'<line x1 = "{x1}" y1 = "{y1 + shiftDown}" x2 = "{x12}" y2 = "{y12 + shiftDown}" style="fill:none;stroke:white;stroke:2"/>\n')
@@ -417,8 +455,36 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
             for i in range(int(horizontalDim)):
                 increment = i*INCH_TO_PIX_CONV
                 f.write(f'{x1-increment},{y1} {x2-increment},{y2} {x3-increment},{y3} {x4-increment},{y4} {x5-increment},{y5} ')
-        f.write('" style="fill:none;stroke:black;stroke:2"/>\n')
+        f.write('" style="fill:none;stroke:black;stroke:2"/>\n')    
+            
+        # holes for screws -> move these down?
+        if position == "BOTTOM":
+            xHole1,yHole1  = xStartSW + 1.5*doveTailLength*INCH_TO_PIX_CONV, yStartSW + thickness*INCH_TO_PIX_CONV/2
+            xHole2, yHole2 = xHole1 +shiftRight, yHole1
+            f.write(f'<circle cx = "{xHole1}" cy = "{yHole1}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:2"/>\n')
+            f.write(f'<circle cx = "{xHole2}" cy = "{yHole2}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:2"/>\n')
 
+        # slots for screws and nuts - bottom connection
+        if position == "FRONT" or position == "BACK":
+            x1,y1  = xStartSW + doveTailLength*INCH_TO_PIX_CONV/2 - screwDiam*MM_TO_PIX_CONV/2, yStartSW
+            x2,y2  = x1, y1 - (screwLength-squareNutSide - distanceAfterNut)*MM_TO_PIX_CONV - thickness*INCH_TO_PIX_CONV
+            x3,y3  = x2 - (squareNutSide - screwDiam)*MM_TO_PIX_CONV/2, y2 
+            x4,y4  = x3, y3 - squareNutThickness*MM_TO_PIX_CONV
+            x5,y5  = x2, y4
+            x6,y6  = x5, y5 - distanceAfterNut*MM_TO_PIX_CONV
+            x7,y7  = x6 + screwDiam*MM_TO_PIX_CONV, y6 
+            x8,y8  = x7, y5
+            x9,y9  = x8+ (squareNutSide - screwDiam)*MM_TO_PIX_CONV/2, y8 
+            x10,y10  = x9, y3
+            x11,y11  = x8, y3
+            x12,y12  = x11, y1
+
+            f.write(f'<line x1 = "{x1}" y1 = "{y1}" x2 = "{x12}" y2 = "{y12}" style="fill:none;stroke:white;stroke:2"/>\n')
+            f.write(f'<line x1 = "{x1 + shiftRight}" y1 = "{y1}" x2 = "{x12 + shiftRight}" y2 = "{y12}" style="fill:none;stroke:white;stroke:2"/>\n')
+            f.write(f'<polyline points = "{x1},{y1} {x2},{y2} {x3},{y3} {x4},{y4} {x5},{y5} {x6},{y6} {x7},{y7} {x8},{y8} {x9},{y9} {x10},{y10} {x11},{y11} {x12},{y12}" style="fill:none;stroke:black;stroke:2"/>\n')
+            f.write(f'<polyline points = "{x1 + shiftRight},{y1} {x2 + shiftRight},{y2} {x3 + shiftRight},{y3} {x4 + shiftRight},{y4} {x5 + shiftRight},{y5} {x6 + shiftRight},{y6} {x7 + shiftRight},{y7} {x8 + shiftRight},{y8} {x9 + shiftRight},{y9} {x10 + shiftRight},{y10} {x11 + shiftRight},{y11} {x12 + shiftRight},{y12}" style="fill:none;stroke:black;stroke:2"/>\n')
+
+                
         # vertical side 2 (SW to NW)
         x1,y1 = xStartSW,  yStartSW
         f.write('<polyline points="')
@@ -445,11 +511,12 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
                 f.write(f'{x1},{y1-increment} {x2},{y2-increment} {x3},{y3-increment} {x4},{y4-increment} {x5},{y5-increment} ')
         f.write('" style="fill:none;stroke:black;stroke:2"/>\n')
 
+        # holes -> move these to the right? 
         if (position == "FRONT" or position == "BACK" or position == "LEFT" or position == "RIGHT"):
-            x1,y1  = xStartNW - thickness*INCH_TO_PIX_CONV/2, yStartNW + 1.5*doveTailLength*INCH_TO_PIX_CONV
-            shiftDown = (verticalDim-1)*INCH_TO_PIX_CONV
-            f.write(f'<circle cx = "{x1}" cy = "{y1}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:2"/>\n')
-            f.write(f'<circle cx = "{x1}" cy = "{y1+shiftDown}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:2"/>\n')
+            xHole1,yHole1  = xStartNW - thickness*INCH_TO_PIX_CONV/2, yStartNW + 1.5*doveTailLength*INCH_TO_PIX_CONV
+            xHole2,yHole2 = xHole1, yHole1 + shiftDown
+            f.write(f'<circle cx = "{xHole1}" cy = "{yHole1}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:2"/>\n')
+            f.write(f'<circle cx = "{xHole2}" cy = "{yHole2}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:2"/>\n')
 
         if (position == "LEFT" and partition == True):
             #f.write(f'<rect x = "{X_START + (partitionLocation*INCH_TO_PIX_CONV)/2 - (thickness*INCH_TO_PIX_CONV)/2}" y = "{Y_START}" width = "{thickness*INCH_TO_PIX_CONV}" height = "{verticalDim*INCH_TO_PIX_CONV}" style="fill:none;stroke:black;strokeDim:3"/>\n')
@@ -520,10 +587,10 @@ def masterSVG(thickness, width, length, height, partition, partitionLocation, li
         fractalGenerator(f,fractalSideChoiceInput,xFractal,yFractal, width, length, height)
 
     if (topTextYesNo == True):
-        textSVG(f,topText,xStartTop,yStartTop,width,length, topTextYesNo)
+        textSVG(f,topText,xStartTop,yStartTop,width,length, "TOP")
 
     if (frontTextYesNo == True):
-        textSVG(f,frontText,xStartFront,yStartFront,width,height, topTextYesNo)
+        textSVG(f,frontText,xStartFront,yStartFront,width,height, "FRONT")
 
 
     # closing line of SVG file
