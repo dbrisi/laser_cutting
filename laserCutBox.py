@@ -1,29 +1,15 @@
-# -*- coding: utf-8 -*-
-
-# ACTION ITEMS
-# 1. input for pattern - in userAddOnInput()                                -DJD    DONE
-# 2. input for text on top - in userAddOnInput(), call new fct              -YLL    DONE
-# 3. input for text on front - in userAddOnInput(), call new fct            -YLL    DONE
-# 4. # error checking dimensions - in userDimInput()                        -DJD
-# 5. start svg generation - new "master" fct, calls other svg generations   -ALL    ONGOING
-# 6. fractal pattern - new function (called by master svg function)         -DJD    DONE
-# 7. text on top for SVG - new function, called by master svg fct           -YLL    DONE
-# 8. text on bottom for SVG - new function, called by master svg fct        -YLL    DONE
-# 9. one (same) function for each dimension input, called by userDimInput() -YLL    DONE
-# 11. need to modify baseSVG() to include holes and nut cut-outs                    DONE
-# 12. need to modify baseSVG() to include slits on sides for partition      -YLL    DONE
-# 13. need to modify baseSVG() to output partition (no dovetails, screws?)  -YLL    DONE
-# 14. now everything is in inch, scale down? 1:4? 1:8?                      -OPT    DONE
-# 17. autosize font, based on length of text?                               -OPT
-# 18. error check if text string exceed horizontal dimension?
-
+#########################################################################################
+#########################################################################################
+## A python program to take user input and output an SVG file that can laser cut a box ##
+#########################################################################################
+#########################################################################################
 
 # imports
 import math
 
 # constants
-MAX_WIDTH = 24.0 #verify this is the maximum width of the acrylic
-MAX_HEIGHT = 18.0 #verify this is the maximum height of the acrylic
+MAX_WIDTH = 18 #verify this is the maximum width of the acrylic
+MAX_HEIGHT = 12 #verify this is the maximum height of the acrylic
 INCH_TO_PIX_CONV = 96*(2/5) # one inch = 96 pixels, 2:5 scale
 MM_TO_PIX_CONV = 3.7795275591*(2/5) # one mm = 3.78... pixels, , 2:5 scale
 FONT_SIZE_CONV = 72 # size 1 pt font = 1/72 inch
@@ -54,13 +40,21 @@ def userDimInput(thickness, width, length, height):
 
         # get user input for thickness
         while thickness <= 0 or thickness > MAX_THICKNESS:
-            thickness = float(input('Enter a thickness (in) for the box walls (nominally .25"): '))
-            if thickness <= 0:
-                print("Invalid thickness! Only positive values accepted.")
-            if thickness > MAX_THICKNESS:
-                print('Invalid thickness! That is very thick!')
-                print(f'How about something less than or equal to {MAX_THICKNESS}"?')
-
+            isFloat = True
+            try:
+                thickness = float(input('Enter a thickness (in) for the box walls (nominally .118"): '))
+            except ValueError:
+                print('Invalid thickness! Only numerical values are accepted.')
+                isFloat = False
+                thickness = 0.0
+    
+            if isFloat == True:
+                if thickness <= 0:
+                    print("Invalid thickness! Only positive values accepted.")
+                if thickness > MAX_THICKNESS:
+                    print('Invalid thickness! That is very thick!')
+                    print(f'How about something less than or equal to {MAX_THICKNESS}"?')
+                
         # get user input for width
         width = userSingleDim("width",width,thickness)
 
@@ -70,64 +64,21 @@ def userDimInput(thickness, width, length, height):
         # get user input for height
         height = userSingleDim("height",height,thickness)
 
-        # set reference dimensions -> new function?
-        ## NOT HANDLING TIES FYI
-        if width >= length and width >= height:
-            longestDim = width
-            longestDimInd = "w"
-            if length >= height:
-                mediumDim = length
-                mediumDimInd = "l"
-                shortestDim = height
-                shortestDimInd = "h"
-            else:
-                mediumDim = height
-                mediumDimInd = "h"
-                shortestDim = length
-                shortestDimInd = 'l'
+        # error checking dimensions, .5 accounts for piece separation
+        if (2*width + 2*length + 8*thickness + .5) > MAX_WIDTH or (height + length + 4* thickness + .25) > MAX_HEIGHT:
+            tooBig = True
+            print('Your entered dimensions exceed the allowable material to cut.')
+            print(f'The maximum allowable cutting area is {MAX_WIDTH}" X {MAX_HEIGHT}"')
+            print(f'{MAX_WIDTH}" includes twice the width, twice the length, eight times thickness and piece seperation.')
+            print(f'{MAX_HEIGHT}" includes the length, the height, four times thickness and piece seperation.')
+            print('Please try again.')
+            print("--------------------------------------------------------------------------")
+            
+            thickness, width, length, height = 0,0,0,0
+        else:
+            tooBig = False
 
-        if length >= width and length >= height:
-            longestDim = length
-            longestDimInd = 'l'
-            if width >= height:
-                mediumDim = width
-                mediumDimInd = 'w'
-                shortestDim = height
-                shortestDimInd = 'h'
-            else:
-                mediumDim = height
-                mediumDimInd = 'h'
-                shortestDim = width
-                shortestDimInd = 'w'
-
-        if height >= width and height >= length:
-            longestDim = height
-            longestDimInd = 'h'
-            if width >= length:
-                mediumDim = width
-                mediumDimInd = 'w'
-                shortestDim = length
-                shortestDimInd = 'l'
-            else:
-                mediumDim = length
-                mediumDimInd = 'l'
-                shortestDim = width
-                shortestDimInd = 'w'
-
-    # ERROR CHECK REFERENCE DIMS new function to error check?
-        ## need to check if longestDim x however many cuts (depending on if longest is w,l,h, lid/no-lid, partition(s)/no-partition(s)) exceeds the length/width of the acrylic...
-        ## also need to check rest of dims and remaining acrylic space...
-
-        # if :
-        #     tooBig = True
-        # else:
-        #     tooBig = False
-
-
-        # before error checking, assuming that dims are good so tooBig = False
-        tooBig = False
-
-    return thickness, width, length, height, longestDim, mediumDim, shortestDim, longestDimInd, mediumDimInd, shortestDimInd
+    return thickness, width, length, height
 
 ##########################################################
 ## FUNCTION TO ACCEPT USER INPUTS FOR BOX ADD-ON VALUES ##
@@ -145,20 +96,18 @@ def userAddOnInputs(length):
     # intial box value settings
     partition = False
     lid = False
-    topTextYesNo = False # maybe this is not necessary (just check if text is "" or has something)
-    frontTextYesNo = False # maybe this is not necessary (just check if text is "" or has something)
-    #numPartitions = 0
+    topTextYesNo = False 
+    frontTextYesNo = False 
     partitionLocation = 0
     fractal = False
 
     # user input for partition option and location
-    # maybe consider giving the user the option to choose the orientation (legnth/width-wise) of the partition
     while (partitionInput != "Y" and partitionInput != "N"):
         partitionInput = input("Would you like a partition for the box? Please Enter (Y/N): ").upper()
         if partitionInput == "Y":
             partition = True
             while partitionLocation <= 0 or partitionLocation > length:
-                partitionLocation = float(input("Enter the location (in) of the partition: ")) #maybe clarify length/width later
+                partitionLocation = float(input("Enter the location (in) of the partition, measured from the front of the box: ")) 
                 if partitionLocation < 0:
                     print("Invalid length. Please enter a positive value")
                 if partitionLocation > length:
@@ -198,13 +147,6 @@ def userAddOnInputs(length):
         else:
             fractal = False
 
-    #Simple case: Width and Length along width of acrylic (24"), Height along height of acrylic (18"
-
-    # OTHER USER INPUT OPTIONS?
-    # -Num. of dovetails? automatic? --> NO for now, start with fixed size of dovetails
-    # -ask for text message on front and/or top --> YES
-    # pattern? pick a size/ automatic? --> YES, give options for one (or both) sides, one for now
-
     return partition, partitionLocation, lid, topTextYesNo, topText, frontTextYesNo, frontText, fractal, fractalSideChoiceInput
 
 ############################################
@@ -227,11 +169,16 @@ def textInput(location):
 ##########################################################
 def userSingleDim(dimension, dimensionValue, thickness):
     while dimensionValue <= 0 or dimensionValue > 24 - 2*thickness:
-        dimensionValue = float(input(f'Enter a {dimension} (in) for the box: '))
-        if dimensionValue <= 0:
-            print(f"Invalid {dimension}! Only positive values accepted.")
-        if dimensionValue > 24 - 2*thickness:
-            print(f'Invalid {dimension}! Maximum dimension of the available material is only 24". Please try again.')
+        dimensionValue = input(f'Enter a {dimension} (in) for the box: ')
+        if dimensionValue.isnumeric() == False:
+                print(f"Invalid {dimension}! Only positive, numerical values accepted.")
+                dimensionValue = 0
+        else: 
+            dimensionValue = int(dimensionValue)
+            if dimensionValue == 0:
+                print(f"Invalid {dimension}! Only positive values accepted.")
+            if dimensionValue > 18 - 2*thickness - .5:
+                print(f'Invalid {dimension}! Maximum dimension of the available material is only 18". \nPlease try again. Account for thickness and piece separation.')
 
     return dimensionValue
 
@@ -251,7 +198,6 @@ def fractalGenerator(f,fractalSide, x, y, width, length, height):
         minDistance = int(min(width, length))
 
     f.write(f'<polyline points = "{xStart},{yStart} {xStart + fracSpaceParam*math.cos(59*math.pi/180)},{yStart + fracSpaceParam*math.sin(59*math.pi/180)}" fill = "none" stroke = "red" /> \n')
-
 
     for i in range(22*minDistance):
         f.write(f'<polyline points = "{xStart + fracSpaceParam*math.cos(59*i*math.pi/180)*i},{yStart + fracSpaceParam*math.sin(59*i*math.pi/180)*i} {xStart + fracSpaceParam*math.cos(59*(i+1)*math.pi/180)*(i+1)},{yStart + fracSpaceParam*math.sin(59*(i+1)*math.pi/180)*(i+1)}" fill = "none" stroke = "red" /> \n')
@@ -372,14 +318,13 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
                 f.write(f'<polyline points = "{BegLineFinishX + (i+1)*spacingBetweenLines1 + lineLength1*i},{BegLineStartY} {BegLineFinishX + (i+1)*spacingBetweenLines1 + lineLength1*(i+1)},{BegLineStartY}" fill = "none" stroke = "black" /> \n')
                 #f.write(f'<polyline points = "{(BegLineStartX + BegLineFinishX + (i+1)*spacingBetweenLines1 + lineLength1*i)/2},{BegLineStartY2} {(BegLineStartX + BegLineFinishX + (i+1)*spacingBetweenLines1 + lineLength1*i)/2 + (i+1)*spacingBetweenLines1 + lineLength1*(i+1)},{BegLineStartY2}" fill = "none" stroke = "black" /> \n')
 
-
                 if i == (howManyColsLine1 -1):
                     f.write(f'<polyline points = "{BegLineFinishX + (i+1)*spacingBetweenLines1 + spacingBetweenLines1 + lineLength1*(i+1)} {BegLineStartY} {BegLineFinishX + (i+1)*spacingBetweenLines1 + spacingBetweenLines1 + lineLength1*(i+1) + lengthOfStartAndEndLine1},{BegLineStartY}" fill = "none" stroke = "black" /> \n')
                     f.write(f'<polyline points = "{BegLineStartX + spacingBetweenLines1},{BegLineStartY2} {totalLengthKerfLine1 + BegLineStartX - spacingBetweenLines1},{BegLineStartY2}" fill = "none" stroke = "black" /> \n')
 
     # if not the lid/top
     else:
-        # horizontal side 1 (NW to NE)
+        # horizontal side 1 (NW to NE) --> Top side of SVG base
         f.write('<polyline points="')
         x1,y1 = xStartNW,  yStartNW
         if position == "BOTTOM":
@@ -425,17 +370,18 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
             f.write(f'<polyline points = "{x1 + shiftForLid},{y1} {x2 + shiftForLid},{y2} {x3 + shiftForLid},{y3} {x4 + shiftForLid},{y4} {x5 + shiftForLid},{y5} {x6 + shiftForLid},{y6} {x7 + shiftForLid},{y7} {x8 + shiftForLid},{y8} {x9 + shiftForLid},{y9} {x10 + shiftForLid},{y10} {x11 + shiftForLid},{y11} {x12 + shiftForLid},{y12}" style="fill:none;stroke:black;stroke:2"/>\n')
             f.write(f'<line x1 = "{xStartNW - thickness*INCH_TO_PIX_CONV}" y1 = "{yStartNW}" x2 = "{xStartNW}" y2 = "{yStartNW}" style="fill:none;stroke:white;stroke:2"/>\n')
 
-        # holes for screws and dovetails
+        # holes for screws and dovetails on bottom
         if position == "BOTTOM":
             xHole1,yHole1  = xStartNW + doveTailLength*INCH_TO_PIX_CONV/2, yStartNW - thickness*INCH_TO_PIX_CONV/2 + screwDiam*MM_TO_PIX_CONV/2
             xHole2, yHole2 = xHole1 +shiftRight, yHole1
             f.write(f'<circle cx = "{xHole1}" cy = "{yHole1}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:1"/>\n')
             f.write(f'<circle cx = "{xHole2}" cy = "{yHole2}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:1"/>\n')
 
-        # vertical side 1 (NE to SE)
+        # vertical side 1 (NE to SE) --> Right side of SVG base
         x1,y1 = xStartNE,  yStartNE
         f.write('<polyline points="')
 
+        # only two dovetails for partition
         if position == "PARTITION":
             x1, y1 = xStartNE, yStartNE
             x2, y2 = x1, yStartNE + partitionDoveTailDistance*INCH_TO_PIX_CONV
@@ -450,6 +396,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
 
             f.write(f'{x1},{y1} {x2},{y2} {x3},{y3} {x4},{y4} {x5},{y5} {x6},{y6} {x7},{y7} {x8},{y8} {x9},{y9} {x10},{y10}')
 
+        # every other piece has normal dovetail pattern
         else:
             x2,y2 = x1 + thickness*INCH_TO_PIX_CONV, y1
             x3,y3 = x2, y2 + doveTailLength*INCH_TO_PIX_CONV
@@ -480,13 +427,15 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
             f.write(f'<polyline points = "{x1},{y1} {x2},{y2} {x3},{y3} {x4},{y4} {x5},{y5} {x6},{y6} {x7},{y7} {x8},{y8} {x9},{y9} {x10},{y10} {x11},{y11} {x12},{y12}" style="fill:none;stroke:black;stroke:2"/>\n')
             f.write(f'<polyline points = "{x1},{y1 + shiftDown} {x2},{y2 + shiftDown} {x3},{y3 + shiftDown} {x4},{y4 + shiftDown} {x5},{y5 + shiftDown} {x6},{y6 + shiftDown} {x7},{y7 + shiftDown} {x8},{y8 + shiftDown} {x9},{y9 + shiftDown} {x10},{y10 + shiftDown} {x11},{y11 + shiftDown} {x12},{y12 + shiftDown}" style="fill:none;stroke:black;stroke:2"/>\n')
 
-        # horizontal side 2 (SE to SW)
+        # horizontal side 2 (SE to SW) --> Bottom side of SVG base
         x1,y1 = xStartSE,  yStartSE
         f.write('<polyline points="')
 
+        # flat for partition
         if position == "PARTITION":
             f.write(f'{xStartSE},{yStartSE} {xStartSW},{yStartSW} ')
 
+        # normal pattern for every other side
         else:
             x2,y2 = x1, y1 + thickness*INCH_TO_PIX_CONV
             x3,y3 = x2 - doveTailLength*INCH_TO_PIX_CONV, y2
@@ -498,14 +447,14 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
 
         f.write('" style="fill:none;stroke:black;stroke:2"/>\n')
 
-        # holes for screws
+        # holes for screws - bottom connection (only bottom piece)
         if position == "BOTTOM":
             xHole1,yHole1  = xStartSW + 1.5*doveTailLength*INCH_TO_PIX_CONV, yStartSW + thickness*INCH_TO_PIX_CONV/2 - screwDiam*MM_TO_PIX_CONV/2
             xHole2, yHole2 = xHole1 +shiftRight, yHole1
             f.write(f'<circle cx = "{xHole1}" cy = "{yHole1}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:1"/>\n')
             f.write(f'<circle cx = "{xHole2}" cy = "{yHole2}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:1"/>\n')
 
-        # slots for screws and nuts - bottom connection
+        # slots for screws and nuts - bottom connection (front and back pieces)
         if position == "FRONT" or position == "BACK":
             x1,y1  = xStartSW + doveTailLength*INCH_TO_PIX_CONV/2 - screwDiam*MM_TO_PIX_CONV/2, yStartSW
             x2,y2  = x1, y1 - (screwLength-squareNutSide - distanceAfterNut)*MM_TO_PIX_CONV - thickness*INCH_TO_PIX_CONV
@@ -525,10 +474,11 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
             f.write(f'<polyline points = "{x1},{y1} {x2},{y2} {x3},{y3} {x4},{y4} {x5},{y5} {x6},{y6} {x7},{y7} {x8},{y8} {x9},{y9} {x10},{y10} {x11},{y11} {x12},{y12}" style="fill:none;stroke:black;stroke:2"/>\n')
             f.write(f'<polyline points = "{x1 + shiftRight},{y1} {x2 + shiftRight},{y2} {x3 + shiftRight},{y3} {x4 + shiftRight},{y4} {x5 + shiftRight},{y5} {x6 + shiftRight},{y6} {x7 + shiftRight},{y7} {x8 + shiftRight},{y8} {x9 + shiftRight},{y9} {x10 + shiftRight},{y10} {x11 + shiftRight},{y11} {x12 + shiftRight},{y12}" style="fill:none;stroke:black;stroke:2"/>\n')
 
-        # vertical side 2 (SW to NW)
+        # vertical side 2 (SW to NW) --> Left side of base SVG
         x1,y1 = xStartSW,  yStartSW
         f.write('<polyline points="')
 
+        # less dovetails for partition
         if position == "PARTITION":
             x1, y1 = xStartNW, yStartNW
             x2, y2 = x1, yStartNW + partitionDoveTailDistance*INCH_TO_PIX_CONV
@@ -543,6 +493,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
 
             f.write(f'{x1},{y1} {x2},{y2} {x3},{y3} {x4},{y4} {x5},{y5} {x6},{y6} {x7},{y7} {x8},{y8} {x9},{y9} {x10},{y10}')
 
+        # normal dovetail for every other piece
         else:
             x2,y2 = x1 - thickness*INCH_TO_PIX_CONV, y1
             x3,y3 = x2, y2 - doveTailLength*INCH_TO_PIX_CONV
@@ -554,7 +505,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
 
         f.write('" style="fill:none;stroke:black;stroke:2"/>\n')
 
-        # holes
+        # holes for side connection
         if (position == "FRONT" or position == "BACK" or position == "LEFT" or position == "RIGHT"):
             xHole1,yHole1  = xStartNW - thickness*INCH_TO_PIX_CONV/2 + screwDiam*MM_TO_PIX_CONV/2, yStartNW + 1.5*doveTailLength*INCH_TO_PIX_CONV
             xHole2,yHole2 = xHole1, yHole1 + shiftDown
@@ -574,13 +525,15 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
 ##############################################################
 def masterSVG(thickness, width, length, height, partition, partitionLocation, lid, topTextYesNo, topText, frontTextYesNo, frontText, fractal, fractalSideChoiceInput):
 
-    # base origin
-    xScale1, yScale1 = 25,20
-    xScale2,yScale2 = xScale1 + 1*INCH_TO_PIX_CONV, yScale1
-    X_START, Y_START = 25, 30 # pixels
-    PIECE_SEPARATION = 5 # pixels
+    # origin of SVG 
+    xScale1, yScale1 = 25,20 #pixels
+    xScale2,yScale2 = xScale1 + 1*INCH_TO_PIX_CONV, yScale1 #pixels
+    X_START, Y_START = 25, 30 #pixels
+    
+    # seperation between pieces
+    PIECE_SEPARATION = 5 #pixels
 
-    # set local origins of base pieces to be cut
+    # local origins of base pieces to be cut
     # row 1 of pieces
     xStartFront, yStartFront = X_START, Y_START
     xStartBack, yStartBack = xStartFront + (width + 2*thickness)*INCH_TO_PIX_CONV + PIECE_SEPARATION, Y_START
@@ -600,19 +553,22 @@ def masterSVG(thickness, width, length, height, partition, partitionLocation, li
     f.write('<?xml version = "1.0" encoding = "UTF-8" ?> \n')
     f.write('<svg xmlns="http://www.w3.org/2000/svg" version = "1.1"> \n')
 
-    # set scale of 1"
+    # set and display scale of 1"
     f.write(f'<line x1="{xScale1}" y1="{yScale1}" x2="{xScale2}" y2 ="{yScale2}" style="stroke:red;stroke:4"/>\n')
     f.write(f'<text x = "{xScale2+10}" y = "{yScale2+5}" font-size = "12px" fill = "red"> = 1 inch (2:5 scale) </text> \n')
     #f.write(f'<text x = "{xScale2 + 30} y = "{yScale2+5} font-size = "20px" fill = "red"> RED = SCORE </text> \n')
     #f.write(f'<text x = "{xScale2 + spacingBetweenCurves} y = "{yScale2+5} font-size = "20px" fill = "black"> black = ENGRAVING </text> \n')
 
-    # lines for calling specific SVG functions
+    # CALLING SVG generation functions
+
+    # required SVG generation
     baseSVG(f,"FRONT",thickness,width,height,xStartFront,yStartFront)
     baseSVG(f,"BACK",thickness,width,height,xStartBack,yStartBack, partition, partitionLocation, lid)
     baseSVG(f,"LEFT",thickness,length,height,xStartLeft,yStartLeft,partition, partitionLocation)
     baseSVG(f,"RIGHT",thickness,length,height,xStartRight,yStartRight,partition, partitionLocation)
     baseSVG(f,"BOTTOM",thickness,width,length,xStartBottom,yStartBottom)
 
+    # optional SVG generation
     if (partition == True):
         baseSVG(f,"PARTITION",thickness, width, height, xStartPartition, yStartPartition, partition, partitionLocation)
 
@@ -634,43 +590,43 @@ def masterSVG(thickness, width, length, height, partition, partitionLocation, li
     if (frontTextYesNo == True):
         textSVG(f,frontText,xStartFront,yStartFront,width,height, "FRONT")
 
-    #display box attributes
-
+    #display box attributes below cut out pattern
     yAtt = yScale1 + (height+length + 4*thickness)*INCH_TO_PIX_CONV + 25
+    xAtt1, xAtt2 = 20,200
 
     f.write(f'<text x = "{xScale1}" y = "{yAtt}" dy = "0">\n')
     # f.write(f'\t<tspan dy = ".6em"> BOX ATTRIBUTES < /tspan>\n')
-    f.write(f'<tspan x = "20" dy = ".6em" >BOX ATTRIBUTES </tspan>\n')
-    f.write(f'<tspan x = "20" dy = "1.2em" >thickness: </tspan>\n')
-    f.write(f'<tspan x = "20" dy = "1.2em" >width: </tspan>\n')
-    f.write(f'<tspan x = "20" dy = "1.2em" >length:  </tspan>\n')
-    f.write(f'<tspan x = "20" dy = "1.2em" >height: </tspan>\n')
-    f.write(f'<tspan x = "20" dy = "1.2em" >partition:  </tspan>\n')
-    f.write(f'<tspan x = "20" dy = "1.2em" >partition location: </tspan>\n')
-    f.write(f'<tspan x = "20" dy = "1.2em" >lid: </tspan>\n')
-    f.write(f'<tspan x = "20" dy = "1.2em" >top text: </tspan>\n')
-    f.write(f'<tspan x = "20" dy = "1.2em" >top text string: </tspan>\n')
-    f.write(f'<tspan x = "20" dy = "1.2em" >front text: </tspan>\n')
-    f.write(f'<tspan x = "20" dy = "1.2em" >front text string: </tspan>\n')
-    f.write(f'<tspan x = "20" dy = "1.2em" >fractal: </tspan>\n')
-    f.write(f'<tspan x = "20" dy = "1.2em" >fractal side/bottom: </tspan>\n')
+    f.write(f'<tspan x = "{xAtt1}" dy = ".6em" >BOX ATTRIBUTES </tspan>\n')
+    f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >thickness: </tspan>\n')
+    f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >width: </tspan>\n')
+    f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >length:  </tspan>\n')
+    f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >height: </tspan>\n')
+    f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >partition:  </tspan>\n')
+    f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >partition location: </tspan>\n')
+    f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >lid: </tspan>\n')
+    f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >top text: </tspan>\n')
+    f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >top text string: </tspan>\n')
+    f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >front text: </tspan>\n')
+    f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >front text string: </tspan>\n')
+    f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >fractal: </tspan>\n')
+    f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >fractal side/bottom: </tspan>\n')
     f.write('</text>')
 
-    f.write(f'<text x = "200" y = "{yAtt}" dy = "0">\n')
-    f.write(f'<tspan x = "200" dy = ".6em" > VALUES </tspan>\n')
-    f.write(f'<tspan x = "200" dy = "1.2em" >' + str(thickness) +'</tspan>\n')
-    f.write(f'<tspan x = "200" dy = "1.2em" >' + str(width) + '</tspan>\n')
-    f.write(f'<tspan x = "200" dy = "1.2em" >' + str(length) + '</tspan>\n')
-    f.write(f'<tspan x = "200" dy = "1.2em" >' + str(height) + '</tspan>\n')
-    f.write(f'<tspan x = "200" dy = "1.2em" >' + str(partition) + '</tspan>\n')
-    f.write(f'<tspan x = "200" dy = "1.2em" >' + str(partitionLocation) +'</tspan>\n')
-    f.write(f'<tspan x = "200" dy = "1.2em" >' + str(lid)  + '</tspan>\n')
-    f.write(f'<tspan x = "200" dy = "1.2em" >' + str(topTextYesNo) + '</tspan>\n')
-    f.write(f'<tspan x = "200" dy = "1.2em" >' + str(frontTextYesNo) + '</tspan>\n')
-    f.write(f'<tspan x = "200" dy = "1.2em" >' + str(fractal) + '</tspan>\n')
-    f.write(f'<tspan x = "200" dy = "1.2em" >' + topText + '</tspan>\n')
-    f.write(f'<tspan x = "200" dy = "1.2em" >' + frontText + '</tspan>\n')
-    f.write(f'<tspan x = "200" dy = "1.2em" >' + fractalSideChoiceInput.lower() + '</tspan>\n')
+    f.write(f'<text x = "{xAtt2}" y = "{yAtt}" dy = "0">\n')
+    f.write(f'<tspan x = "{xAtt2}" dy = ".6em" > VALUES </tspan>\n')
+    f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + str(thickness) +'</tspan>\n')
+    f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + str(width) + '</tspan>\n')
+    f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + str(length) + '</tspan>\n')
+    f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + str(height) + '</tspan>\n')
+    f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + str(partition) + '</tspan>\n')
+    f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + str(partitionLocation) +'</tspan>\n')
+    f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + str(lid)  + '</tspan>\n')
+    f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + str(topTextYesNo) + '</tspan>\n')
+    f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + str(frontTextYesNo) + '</tspan>\n')
+    f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + str(fractal) + '</tspan>\n')
+    f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + topText + '</tspan>\n')
+    f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + frontText + '</tspan>\n')
+    f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + fractalSideChoiceInput.lower() + '</tspan>\n')
 
     f.write('</text>')
 
@@ -689,11 +645,6 @@ def main():
     length = 0.0
     height = 0.0
 
-    # reference dimensions for SVG output
-    longestDim = 0.0
-    mediumDim = 0.0
-    shortestDim = 0.0
-
     boxDims = userDimInput(thickness, width, length, height)
 
      # we can get rid of indivudual variables and just use the boxDims tuple... Whichever is easier
@@ -701,12 +652,6 @@ def main():
     width = boxDims[1]
     length = boxDims[2]
     height = boxDims[3]
-    longestDim = boxDims[4]
-    mediumDim = boxDims[5]
-    shortestDim = boxDims[6]
-    longestDimInd = boxDims[7]
-    mediumDimInd = boxDims[8]
-    shortestDimInd = boxDims[9]
 
     boxValues = userAddOnInputs(length)
     # we can get rid of indivudual variables and just use the boxValues tuple... Whichever is easier
@@ -732,12 +677,7 @@ def main():
     print(f'width:  \t\t{width}')
     print(f'length: \t\t{length}')
     print(f'height: \t\t{height}')
-    print(f'longest: \t\t{longestDim}')
-    print(f'medium: \t\t{mediumDim}')
-    print(f'shortest: \t\t{shortestDim}')
-    print(f'Longest: \t\t{longestDimInd}')
-    print(f'Medium: \t\t{mediumDimInd}')
-    print(f'Shortest: \t\t{shortestDimInd}')
+    
     print('---------------------')
     print('Add-ons:')
     print(f'partition: \t\t{partition}')
@@ -748,8 +688,6 @@ def main():
     print(f'front text: \t\t{frontTextYesNo}')
     print(f'front text content: \t{frontText}')
     print(f'fractal: \t\t{fractal}')
-    print(f'fractal side: \t{fractalSideChoiceInput}')
-
-    #fractalGenerator(fractal, fractalSideChoiceInput)
+    print(f'fractal side: \t\t{fractalSideChoiceInput}')
 
 main()
