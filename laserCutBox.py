@@ -124,11 +124,12 @@ def userAddOnInputs(length):
             lid = False
 
     # user input for text option and content
-    while (topTextInput != "Y" and topTextInput != "N"):
-        topTextValues = textInput("top")
-        topTextInput = topTextValues[0]
-        topTextYesNo = topTextValues[1]
-        topText = topTextValues[2]
+    if lid == True:
+        while (topTextInput != "Y" and topTextInput != "N"):
+            topTextValues = textInput("top")
+            topTextInput = topTextValues[0]
+            topTextYesNo = topTextValues[1]
+            topText = topTextValues[2]
 
     # user input for text option and content
     while (frontTextInput != "Y" and frontTextInput != "N"):
@@ -169,17 +170,22 @@ def textInput(location):
 ##########################################################
 def userSingleDim(dimension, dimensionValue, thickness):
     while dimensionValue <= 0 or dimensionValue > 24 - 2*thickness:
-        dimensionValue = input(f'Enter a {dimension} (in) for the box: ')
-        if dimensionValue.isnumeric() == False:
-                print(f"Invalid {dimension}! Only positive, numerical values accepted.")
-                dimensionValue = 0
-        else: 
+        isFloat = True
+
+        try: 
+           dimensionValue = float(input(f'Enter a {dimension} (in) for the box walls: '))
+        except ValueError:
+            print(f'Invalid {dimension}! Only positive, numerical values are accepted.')
+            isFloat = False
+            dimensionValue = 0.0
+
+        if isFloat == True:
             dimensionValue = int(dimensionValue)
-            if dimensionValue == 0:
-                print(f"Invalid {dimension}! Only positive values accepted.")
+            if dimensionValue <= 0:
+                print("Invalid thickness! Only positive values accepted.")
             if dimensionValue > 18 - 2*thickness - .5:
                 print(f'Invalid {dimension}! Maximum dimension of the available material is only 18". \nPlease try again. Account for thickness and piece separation.')
-
+    
     return dimensionValue
 
 #########################################
@@ -210,10 +216,8 @@ def textSVG(f, text, xStart, yStart, horizontalDim, verticalDim, position):
         fontSize = FONT_SIZE_CONV*(1/5)*verticalDim
     else:
         fontSize = FONT_SIZE_CONV*(1/10)*horizontalDim
-
     if position == "TOP":
         fontSize = FONT_SIZE_CONV*(1/20)*verticalDim
-
         f.write(f'<text x = "{xStart + (horizontalDim*INCH_TO_PIX_CONV)/2}" y = "{yStart + (verticalDim*INCH_TO_PIX_CONV)/1.05}" dominant-baseline= "central" text-anchor= "middle" font-size = "14px" fill = "blue">' + text + ' </text> \n')
     else:
         #f.write(f'<text x = "{xStart + (horizontalDim*INCH_TO_PIX_CONV)/2}" y = "{yStart + (verticalDim*INCH_TO_PIX_CONV)/2}" dominant-baseline= "central" text-anchor= "middle" font-size = "{fontSize}px" fill = "red">' + text + ' </text> \n')
@@ -304,7 +308,8 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
         for i in range(howManyColsLine1): ##the width
             #oscillator = oscillator*(-1)
 
-            for j in range(28): ## THE LENGTH
+            kerfLengthIterations = int(verticalDim*(28/4))#length = 4, range = 28
+            for j in range(kerfLengthIterations): ## THE LENGTH
                 BegLineStartY = yStartNW + shiftForScrews + j*spacingParam - thickness*INCH_TO_PIX_CONV
                 BegLineStartY2 = (yStartNW + shiftForScrews + j*spacingParam - thickness*INCH_TO_PIX_CONV + yStartNW + shiftForScrews + (j+1)*spacingParam - thickness*INCH_TO_PIX_CONV)/2
 
@@ -605,11 +610,12 @@ def masterSVG(thickness, width, length, height, partition, partitionLocation, li
     f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >partition location: </tspan>\n')
     f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >lid: </tspan>\n')
     f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >top text: </tspan>\n')
-    f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >top text string: </tspan>\n')
     f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >front text: </tspan>\n')
-    f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >front text string: </tspan>\n')
     f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >fractal: </tspan>\n')
     f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >fractal side/bottom: </tspan>\n')
+    f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >front text string: </tspan>\n')
+    f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >top text string: </tspan>\n')
+    
     f.write('</text>')
 
     f.write(f'<text x = "{xAtt2}" y = "{yAtt}" dy = "0">\n')
@@ -624,9 +630,9 @@ def masterSVG(thickness, width, length, height, partition, partitionLocation, li
     f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + str(topTextYesNo) + '</tspan>\n')
     f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + str(frontTextYesNo) + '</tspan>\n')
     f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + str(fractal) + '</tspan>\n')
-    f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + topText + '</tspan>\n')
-    f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + frontText + '</tspan>\n')
     f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + fractalSideChoiceInput.lower() + '</tspan>\n')
+    f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + frontText + '</tspan>\n')
+    f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + topText + '</tspan>\n')
 
     f.write('</text>')
 
