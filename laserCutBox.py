@@ -240,6 +240,11 @@ def fractalGenerator(f,fractalSide, x, y, width, length, height):
 ## FUNCTION TO GENERATE TEXT IN SVG ##
 ######################################
 def textSVG(f, text, xStart, yStart, horizontalDim, verticalDim, position):
+
+    ## MORE THAN 15 CHARACTERS OUTPUT A WARNING???
+    ## COUPLE IF STATEMENTS BASED ON WIDTH
+    ## IF WIDTH LESS THAN OR EQUAL TO TWO THEN ALL FONT IS 14PX ....
+
     if verticalDim < horizontalDim:
         fontSize = FONT_SIZE_CONV*(1/5)*verticalDim
     else:
