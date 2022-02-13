@@ -47,14 +47,14 @@ def userDimInput(thickness, width, length, height):
                 print('Invalid thickness! Only numerical values are accepted.')
                 isFloat = False
                 thickness = 0.0
-    
+
             if isFloat == True:
                 if thickness <= 0:
                     print("Invalid thickness! Only positive values accepted.")
                 if thickness > MAX_THICKNESS:
                     print('Invalid thickness! That is very thick!')
                     print(f'How about something less than or equal to {MAX_THICKNESS}"?')
-                
+
         # get user input for width
         width = userSingleDim("width",width,thickness)
 
@@ -73,7 +73,7 @@ def userDimInput(thickness, width, length, height):
             print(f'{MAX_HEIGHT}" includes the length, the height, four times thickness and piece seperation.')
             print('Please try again.')
             print("--------------------------------------------------------------------------")
-            
+
             thickness, width, length, height = 0,0,0,0
         else:
             tooBig = False
@@ -96,8 +96,8 @@ def userAddOnInputs(length):
     # intial box value settings
     partition = False
     lid = False
-    topTextYesNo = False 
-    frontTextYesNo = False 
+    topTextYesNo = False
+    frontTextYesNo = False
     partitionLocation = 0
     fractal = False
 
@@ -107,7 +107,7 @@ def userAddOnInputs(length):
         if partitionInput == "Y":
             partition = True
             while partitionLocation <= 0 or partitionLocation > length:
-                partitionLocation = float(input("Enter the location (in) of the partition, measured from the front of the box: ")) 
+                partitionLocation = float(input("Enter the location (in) of the partition, measured from the front of the box: "))
                 if partitionLocation < 0:
                     print("Invalid length. Please enter a positive value")
                 if partitionLocation > length:
@@ -172,7 +172,7 @@ def userSingleDim(dimension, dimensionValue, thickness):
     while dimensionValue <= 0 or dimensionValue > 24 - 2*thickness:
         isFloat = True
 
-        try: 
+        try:
            dimensionValue = float(input(f'Enter a {dimension} (in) for the box walls: '))
         except ValueError:
             print(f'Invalid {dimension}! Only positive, numerical values are accepted.')
@@ -185,7 +185,7 @@ def userSingleDim(dimension, dimensionValue, thickness):
                 print("Invalid thickness! Only positive values accepted.")
             if dimensionValue > 18 - 2*thickness - .5:
                 print(f'Invalid {dimension}! Maximum dimension of the available material is only 18". \nPlease try again. Account for thickness and piece separation.')
-    
+
     return dimensionValue
 
 #########################################
@@ -217,11 +217,11 @@ def textSVG(f, text, xStart, yStart, horizontalDim, verticalDim, position):
     else:
         fontSize = FONT_SIZE_CONV*(1/10)*horizontalDim
     if position == "TOP":
-        fontSize = FONT_SIZE_CONV*(1/20)*verticalDim
-        f.write(f'<text x = "{xStart + (horizontalDim*INCH_TO_PIX_CONV)/2}" y = "{yStart + (verticalDim*INCH_TO_PIX_CONV)/1.05}" dominant-baseline= "central" text-anchor= "middle" font-size = "14px" fill = "blue">' + text + ' </text> \n')
+        fontSize = FONT_SIZE_CONV*(1/22)*verticalDim
+        f.write(f'<text x = "{xStart + (horizontalDim*INCH_TO_PIX_CONV)/2}" y = "{yStart + (verticalDim*INCH_TO_PIX_CONV)/1.05}" dominant-baseline= "central" text-anchor= "middle" font-size = "10px" fill = "blue">' + text + ' </text> \n')
     else:
         #f.write(f'<text x = "{xStart + (horizontalDim*INCH_TO_PIX_CONV)/2}" y = "{yStart + (verticalDim*INCH_TO_PIX_CONV)/2}" dominant-baseline= "central" text-anchor= "middle" font-size = "{fontSize}px" fill = "red">' + text + ' </text> \n')
-        f.write(f'<text x = "{xStart + (horizontalDim*INCH_TO_PIX_CONV)/2}" y = "{yStart + (verticalDim*INCH_TO_PIX_CONV)/2}" dominant-baseline= "central" text-anchor= "middle" font-size = "30px" fill = "blue">' + text + ' </text> \n')
+        f.write(f'<text x = "{xStart + (horizontalDim*INCH_TO_PIX_CONV)/2}" y = "{yStart + (verticalDim*INCH_TO_PIX_CONV)/2}" dominant-baseline= "central" text-anchor= "middle" font-size = "10px" fill = "blue">' + text + ' </text> \n')
 
 #######################################
 ## FUNCTION TO GENERATE BASES IN SVG ##
@@ -237,7 +237,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
 
     # SCREW and NUT DIMENSIONS
     screwLength = 10 - 3 #mm with NO added clearance --> Added the "-3" to account for an issue later, easier to fix this way (in the meantime)
-    screwDiam = 2 #mm with NO added clearance
+    screwDiam = 3 #mm with NO added clearance
     squareNutSide = 5#mm ## with NO added clearance
     squareNutThickness = 1.5#mm with NO added clearance
     nutDistanceFromEdge = 4 #mm
@@ -530,11 +530,11 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
 ##############################################################
 def masterSVG(thickness, width, length, height, partition, partitionLocation, lid, topTextYesNo, topText, frontTextYesNo, frontText, fractal, fractalSideChoiceInput):
 
-    # origin of SVG 
+    # origin of SVG
     xScale1, yScale1 = 25,20 #pixels
     xScale2,yScale2 = xScale1 + 1*INCH_TO_PIX_CONV, yScale1 #pixels
     X_START, Y_START = 25, 30 #pixels
-    
+
     # seperation between pieces
     PIECE_SEPARATION = 5 #pixels
 
@@ -615,7 +615,7 @@ def masterSVG(thickness, width, length, height, partition, partitionLocation, li
     f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >fractal side/bottom: </tspan>\n')
     f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >front text string: </tspan>\n')
     f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >top text string: </tspan>\n')
-    
+
     f.write('</text>')
 
     f.write(f'<text x = "{xAtt2}" y = "{yAtt}" dy = "0">\n')
@@ -683,7 +683,7 @@ def main():
     print(f'width:  \t\t{width}')
     print(f'length: \t\t{length}')
     print(f'height: \t\t{height}')
-    
+
     print('---------------------')
     print('Add-ons:')
     print(f'partition: \t\t{partition}')
