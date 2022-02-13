@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# simple program to ask user for rectangle dimensions and output a rectangle of those dimensions as an .svg file.
+# simple program to ask user for rectangle dimensions and output a rectangle of those dimensions as an SVG
 
 def main():
 
@@ -70,8 +70,10 @@ def main():
     f = open(fileName,"w")
     f.write('<?xml version = "1.0" encoding = "UTF-8" ?> \n')
     f.write('<svg xmlns="http://www.w3.org/2000/svg" version = "1.1"> \n')
-    f.write(f'<rect x = "10" y = "10" width = "{width*inchToPix}" height = "{height*inchToPix}" stroke = "black" stroke-width = "2" fill = "none" /> \n')
-    f.write(f'<text x = "{10 + (width*inchToPix)/2}" y = "{10 + (height*inchToPix)/2}" dominant-baseline= "central" text-anchor= "middle" font-size = "{fontSize}px" fill = "red">' + initials + ' </text> \n')
+    f.write(f'<rect x = "10" y = "10" width = "{width*inchToPix}" height = "{height*inchToPix}" \
+        stroke = "black" stroke-width = "2" fill = "none" /> \n')
+    f.write(f'<text x = "{10 + (width*inchToPix)/2}" y = "{10 + (height*inchToPix)/2}" dominant-baseline = \
+        "central" text-anchor= "middle" font-size = "{fontSize}px" fill = "red">' + initials + ' </text> \n')
     f.write('</svg>')
     f.close()
 
