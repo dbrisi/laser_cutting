@@ -781,7 +781,7 @@ def masterSVG(thickness, width, length, height, partitionMast, partLocMast, lid,
     f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + frontText + '</tspan>\n')
     f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + topText + '</tspan>\n')
 
-    f.write('</text>')
+    f.write('</text>\n')
 
     # closing line of SVG file
     f.write('</svg>')
