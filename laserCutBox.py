@@ -245,7 +245,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
 
     # SCREW and NUT DIMENSIONS
     screwLength = 10 - 3 #mm with NO added clearance --> Added the "-3" to account for an issue later, easier to fix this way (in the meantime)
-    screwDiam = 2 #mm with NO added clearance
+    screwDiam = 2 + 0.5 #mm with added clearance
     squareNutSide = 5#mm ## with NO added clearance
     squareNutThickness = 1.5#mm with NO added clearance
     nutDistanceFromEdge = 4 #mm
