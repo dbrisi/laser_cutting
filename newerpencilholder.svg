@@ -1,0 +1,434 @@
+<?xml version = "1.0" encoding = "UTF-8" ?> 
+<svg xmlns="http://www.w3.org/2000/svg" version = "1.1"> 
+<line x1="25" y1="20" x2="63.400000000000006" y2 ="20" style="stroke:red;stroke:4"/>
+<text x = "73.4" y = "25" font-size = "12px" fill = "red"> = 1 inch (2:5 scale) </text> 
+<polyline points="25,30 101.80000000000001,30 " style="fill:none;stroke:black;stroke:2"/>
+<polyline points="101.80000000000001,30.0 106.60000000000001,30.0 106.60000000000001,49.2 101.80000000000001,49.2 101.80000000000001,68.4 " style="fill:none;stroke:black;stroke:2"/>
+<line x1 = "101.80000000000001" y1 = "56.53228346454" x2 = "101.80000000000001" y2 = "61.06771653546" style="fill:none;stroke:white;stroke:2"/>
+<line x1 = "101.80000000000001" y1 = "56.53228346454" x2 = "101.80000000000001" y2 = "61.06771653546" style="fill:none;stroke:white;stroke:2"/>
+<polyline points = "101.80000000000001,56.53228346454 98.51181102364002,56.53228346454 98.51181102364002,55.0204724409 96.24409448818002,55.0204724409 96.24409448818002,56.53228346454 91.70866141726003,56.53228346454 91.70866141726003,61.06771653546 96.24409448818002,61.06771653546 96.24409448818002,62.5795275591 98.51181102364002,62.5795275591 98.51181102364002,61.06771653546 101.80000000000001,61.06771653546" style="fill:none;stroke:black;stroke:2"/>
+<polyline points = "101.80000000000001,56.53228346454 98.51181102364002,56.53228346454 98.51181102364002,55.0204724409 96.24409448818002,55.0204724409 96.24409448818002,56.53228346454 91.70866141726003,56.53228346454 91.70866141726003,61.06771653546 96.24409448818002,61.06771653546 96.24409448818002,62.5795275591 98.51181102364002,62.5795275591 98.51181102364002,61.06771653546 101.80000000000001,61.06771653546" style="fill:none;stroke:black;stroke:2"/>
+<polyline points="101.80000000000001,68.4 101.80000000000001,73.2 82.60000000000001,73.2 82.60000000000001,68.4 63.400000000000006,68.4 63.400000000000006,68.4 63.400000000000006,73.2 44.2,73.2 44.2,68.4 25.0,68.4 " style="fill:none;stroke:black;stroke:2"/>
+<line x1 = "32.33228346454" y1 = "68.4" x2 = "36.86771653546" y2 = "68.4" style="fill:none;stroke:white;stroke:2"/>
+<line x1 = "70.73228346454" y1 = "68.4" x2 = "75.26771653546001" y2 = "68.4" style="fill:none;stroke:white;stroke:2"/>
+<polyline points = "32.33228346454,68.4 32.33228346454,65.11181102364002 30.820472440899998,65.11181102364002 30.820472440899998,62.84409448818002 32.33228346454,62.84409448818002 32.33228346454,58.30866141726002 36.86771653546,58.30866141726002 36.86771653546,62.84409448818002 38.3795275591,62.84409448818002 38.3795275591,65.11181102364002 36.86771653546,65.11181102364002 36.86771653546,68.4" style="fill:none;stroke:black;stroke:2"/>
+<polyline points = "70.73228346454,68.4 70.73228346454,65.11181102364002 69.22047244090001,65.11181102364002 69.22047244090001,62.84409448818002 70.73228346454,62.84409448818002 70.73228346454,58.30866141726002 75.26771653546001,58.30866141726002 75.26771653546001,62.84409448818002 76.7795275591,62.84409448818002 76.7795275591,65.11181102364002 75.26771653546001,65.11181102364002 75.26771653546001,68.4" style="fill:none;stroke:black;stroke:2"/>
+<polyline points="25.0,68.4 20.2,68.4 20.2,49.2 25.0,49.2 25.0,30.0 " style="fill:none;stroke:black;stroke:2"/>
+<circle cx = "24.86771653546" cy = "58.800000000000004" r = "2.26771653546" style="fill:none;stroke:black;stroke:2"/>
+<circle cx = "24.86771653546" cy = "58.800000000000004" r = "2.26771653546" style="fill:none;stroke:black;stroke:2"/>
+<polyline points="111.60000000000001,30 140.4,30 140.4,25.2 169.20000000000002,25.2 169.20000000000002,30 198.0,30" style="fill:none;stroke:black;stroke:2"/>
+<line x1 = "126.93228346454002" y1 = "30" x2 = "131.46771653546003" y2 = "30" style="fill:none;stroke:white;stroke:2"/>
+<line x1 = "178.13228346454002" y1 = "30" x2 = "182.66771653546004" y2 = "30" style="fill:none;stroke:white;stroke:2"/>
+<polyline points = "126.93228346454002,30 126.93228346454002,33.288188976360004 125.42047244090003,33.288188976360004 125.42047244090003,35.55590551182 126.93228346454002,35.55590551182 126.93228346454002,40.09133858274 131.46771653546003,40.09133858274 131.46771653546003,35.55590551182 132.97952755910003,35.55590551182 132.97952755910003,33.288188976360004 131.46771653546003,33.288188976360004 131.46771653546003,30" style="fill:none;stroke:black;stroke:2"/>
+<polyline points = "178.13228346454002,30 178.13228346454002,33.288188976360004 176.62047244090002,33.288188976360004 176.62047244090002,35.55590551182 178.13228346454002,35.55590551182 178.13228346454002,40.09133858274 182.66771653546004,40.09133858274 182.66771653546004,35.55590551182 184.17952755910005,35.55590551182 184.17952755910005,33.288188976360004 182.66771653546004,33.288188976360004 182.66771653546004,30" style="fill:none;stroke:black;stroke:2"/>
+<line x1 = "111.60000000000001" y1 = "30" x2 = "116.4" y2 = "30" style="fill:none;stroke:white;stroke:2"/>
+<polyline points="193.20000000000002,30.0 198.00000000000003,30.0 198.00000000000003,49.2 193.20000000000002,49.2 193.20000000000002,68.4 " style="fill:none;stroke:black;stroke:2"/>
+<line x1 = "193.20000000000002" y1 = "56.53228346454" x2 = "193.20000000000002" y2 = "61.06771653546" style="fill:none;stroke:white;stroke:2"/>
+<line x1 = "193.20000000000002" y1 = "56.53228346454" x2 = "193.20000000000002" y2 = "61.06771653546" style="fill:none;stroke:white;stroke:2"/>
+<polyline points = "193.20000000000002,56.53228346454 189.91181102364,56.53228346454 189.91181102364,55.0204724409 187.64409448818,55.0204724409 187.64409448818,56.53228346454 183.10866141726,56.53228346454 183.10866141726,61.06771653546 187.64409448818,61.06771653546 187.64409448818,62.5795275591 189.91181102364,62.5795275591 189.91181102364,61.06771653546 193.20000000000002,61.06771653546" style="fill:none;stroke:black;stroke:2"/>
+<polyline points = "193.20000000000002,56.53228346454 189.91181102364,56.53228346454 189.91181102364,55.0204724409 187.64409448818,55.0204724409 187.64409448818,56.53228346454 183.10866141726,56.53228346454 183.10866141726,61.06771653546 187.64409448818,61.06771653546 187.64409448818,62.5795275591 189.91181102364,62.5795275591 189.91181102364,61.06771653546 193.20000000000002,61.06771653546" style="fill:none;stroke:black;stroke:2"/>
+<polyline points="193.20000000000002,68.4 193.20000000000002,73.2 174.0,73.2 174.0,68.4 154.8,68.4 154.8,68.4 154.8,73.2 135.6,73.2 135.6,68.4 116.4,68.4 " style="fill:none;stroke:black;stroke:2"/>
+<line x1 = "123.73228346454" y1 = "68.4" x2 = "128.26771653546" y2 = "68.4" style="fill:none;stroke:white;stroke:2"/>
+<line x1 = "162.13228346454002" y1 = "68.4" x2 = "166.66771653546002" y2 = "68.4" style="fill:none;stroke:white;stroke:2"/>
+<polyline points = "123.73228346454,68.4 123.73228346454,65.11181102364002 122.22047244090001,65.11181102364002 122.22047244090001,62.84409448818002 123.73228346454,62.84409448818002 123.73228346454,58.30866141726002 128.26771653546,58.30866141726002 128.26771653546,62.84409448818002 129.77952755910002,62.84409448818002 129.77952755910002,65.11181102364002 128.26771653546,65.11181102364002 128.26771653546,68.4" style="fill:none;stroke:black;stroke:2"/>
+<polyline points = "162.13228346454002,68.4 162.13228346454002,65.11181102364002 160.62047244090002,65.11181102364002 160.62047244090002,62.84409448818002 162.13228346454002,62.84409448818002 162.13228346454002,58.30866141726002 166.66771653546002,58.30866141726002 166.66771653546002,62.84409448818002 168.17952755910002,62.84409448818002 168.17952755910002,65.11181102364002 166.66771653546002,65.11181102364002 166.66771653546002,68.4" style="fill:none;stroke:black;stroke:2"/>
+<polyline points="116.4,68.4 111.60000000000001,68.4 111.60000000000001,49.2 116.4,49.2 116.4,30.0 " style="fill:none;stroke:black;stroke:2"/>
+<circle cx = "116.26771653546" cy = "58.800000000000004" r = "2.26771653546" style="fill:none;stroke:black;stroke:2"/>
+<circle cx = "116.26771653546" cy = "58.800000000000004" r = "2.26771653546" style="fill:none;stroke:black;stroke:2"/>
+<polyline points="207.8,30 515.0,30 " style="fill:none;stroke:black;stroke:2"/>
+<polyline points="515.0,30.0 519.8,30.0 519.8,49.2 515.0,49.2 515.0,68.4 " style="fill:none;stroke:black;stroke:2"/>
+<line x1 = "515.0" y1 = "56.53228346454" x2 = "515.0" y2 = "61.06771653546" style="fill:none;stroke:white;stroke:2"/>
+<line x1 = "515.0" y1 = "56.53228346454" x2 = "515.0" y2 = "61.06771653546" style="fill:none;stroke:white;stroke:2"/>
+<polyline points = "515.0,56.53228346454 511.71181102364,56.53228346454 511.71181102364,55.0204724409 509.44409448818,55.0204724409 509.44409448818,56.53228346454 504.90866141725996,56.53228346454 504.90866141725996,61.06771653546 509.44409448818,61.06771653546 509.44409448818,62.5795275591 511.71181102364,62.5795275591 511.71181102364,61.06771653546 515.0,61.06771653546" style="fill:none;stroke:black;stroke:2"/>
+<polyline points = "515.0,56.53228346454 511.71181102364,56.53228346454 511.71181102364,55.0204724409 509.44409448818,55.0204724409 509.44409448818,56.53228346454 504.90866141725996,56.53228346454 504.90866141725996,61.06771653546 509.44409448818,61.06771653546 509.44409448818,62.5795275591 511.71181102364,62.5795275591 511.71181102364,61.06771653546 515.0,61.06771653546" style="fill:none;stroke:black;stroke:2"/>
+<polyline points="515.0,68.4 515.0,73.2 495.8,73.2 495.8,68.4 476.6,68.4 476.6,68.4 476.6,73.2 457.4,73.2 457.4,68.4 438.20000000000005,68.4 438.2,68.4 438.2,73.2 419.0,73.2 419.0,68.4 399.8,68.4 399.79999999999995,68.4 399.79999999999995,73.2 380.6,73.2 380.6,68.4 361.4,68.4 361.4,68.4 361.4,73.2 342.2,73.2 342.2,68.4 323.0,68.4 323.0,68.4 323.0,73.2 303.79999999999995,73.2 303.79999999999995,68.4 284.6,68.4 284.59999999999997,68.4 284.59999999999997,73.2 265.4,73.2 265.4,68.4 246.2,68.4 246.19999999999993,68.4 246.19999999999993,73.2 226.99999999999994,73.2 226.99999999999994,68.4 207.79999999999995,68.4 " style="fill:none;stroke:black;stroke:2"/>
+<polyline points="207.79999999999995,68.4 202.99999999999994,68.4 202.99999999999994,49.2 207.79999999999995,49.2 207.79999999999995,30.0 " style="fill:none;stroke:black;stroke:2"/>
+<circle cx = "207.66771653546002" cy = "58.800000000000004" r = "2.26771653546" style="fill:none;stroke:black;stroke:2"/>
+<circle cx = "207.66771653546002" cy = "58.800000000000004" r = "2.26771653546" style="fill:none;stroke:black;stroke:2"/>
+<rect x = "243.8" y = "39.6" width = "4.800000000000001" height = "19.200000000000003" style="fill:none;stroke:black;strokeDim:3"/>
+<rect x = "243.8" y = "39.6" width = "4.800000000000001" height = "19.200000000000003" style="fill:none;stroke:black;strokeDim:3"/>
+<polyline points="529.6000000000001,30 836.8000000000002,30 " style="fill:none;stroke:black;stroke:2"/>
+<polyline points="836.8000000000002,30.0 841.6000000000001,30.0 841.6000000000001,49.2 836.8000000000002,49.2 836.8000000000002,68.4 " style="fill:none;stroke:black;stroke:2"/>
+<line x1 = "836.8000000000002" y1 = "56.53228346454" x2 = "836.8000000000002" y2 = "61.06771653546" style="fill:none;stroke:white;stroke:2"/>
+<line x1 = "836.8000000000002" y1 = "56.53228346454" x2 = "836.8000000000002" y2 = "61.06771653546" style="fill:none;stroke:white;stroke:2"/>
+<polyline points = "836.8000000000002,56.53228346454 833.5118110236402,56.53228346454 833.5118110236402,55.0204724409 831.2440944881803,55.0204724409 831.2440944881803,56.53228346454 826.7086614172603,56.53228346454 826.7086614172603,61.06771653546 831.2440944881803,61.06771653546 831.2440944881803,62.5795275591 833.5118110236402,62.5795275591 833.5118110236402,61.06771653546 836.8000000000002,61.06771653546" style="fill:none;stroke:black;stroke:2"/>
+<polyline points = "836.8000000000002,56.53228346454 833.5118110236402,56.53228346454 833.5118110236402,55.0204724409 831.2440944881803,55.0204724409 831.2440944881803,56.53228346454 826.7086614172603,56.53228346454 826.7086614172603,61.06771653546 831.2440944881803,61.06771653546 831.2440944881803,62.5795275591 833.5118110236402,62.5795275591 833.5118110236402,61.06771653546 836.8000000000002,61.06771653546" style="fill:none;stroke:black;stroke:2"/>
+<polyline points="836.8000000000002,68.4 836.8000000000002,73.2 817.6000000000001,73.2 817.6000000000001,68.4 798.4000000000001,68.4 798.4000000000002,68.4 798.4000000000002,73.2 779.2000000000002,73.2 779.2000000000002,68.4 760.0000000000001,68.4 760.0000000000002,68.4 760.0000000000002,73.2 740.8000000000002,73.2 740.8000000000002,68.4 721.6000000000001,68.4 721.6000000000001,68.4 721.6000000000001,73.2 702.4000000000001,73.2 702.4000000000001,68.4 683.2,68.4 683.2000000000002,68.4 683.2000000000002,73.2 664.0000000000001,73.2 664.0000000000001,68.4 644.8000000000001,68.4 644.8000000000002,68.4 644.8000000000002,73.2 625.6000000000001,73.2 625.6000000000001,68.4 606.4000000000001,68.4 606.4000000000001,68.4 606.4000000000001,73.2 587.2,73.2 587.2,68.4 568.0,68.4 568.0000000000001,68.4 568.0000000000001,73.2 548.8000000000001,73.2 548.8000000000001,68.4 529.6,68.4 " style="fill:none;stroke:black;stroke:2"/>
+<polyline points="529.6000000000001,68.4 524.8000000000002,68.4 524.8000000000002,49.2 529.6000000000001,49.2 529.6000000000001,30.0 " style="fill:none;stroke:black;stroke:2"/>
+<circle cx = "529.4677165354601" cy = "58.800000000000004" r = "2.26771653546" style="fill:none;stroke:black;stroke:2"/>
+<circle cx = "529.4677165354601" cy = "58.800000000000004" r = "2.26771653546" style="fill:none;stroke:black;stroke:2"/>
+<rect x = "796.0000000000002" y = "39.6" width = "4.800000000000001" height = "19.200000000000003" style="fill:none;stroke:black;strokeDim:3"/>
+<rect x = "796.0000000000002" y = "39.6" width = "4.800000000000001" height = "19.200000000000003" style="fill:none;stroke:black;strokeDim:3"/>
+<polyline points="116.4,83.0 116.4,78.2 135.60000000000002,78.2 135.60000000000002,83.0 154.8,83.0 154.8,83.0 154.8,78.2 174.00000000000003,78.2 174.00000000000003,83.0 193.20000000000002,83.0 " style="fill:none;stroke:black;stroke:2"/>
+<circle cx = "126.0" cy = "82.86771653545999" r = "2.26771653546" style="fill:none;stroke:black;stroke:1"/>
+<circle cx = "164.4" cy = "82.86771653545999" r = "2.26771653546" style="fill:none;stroke:black;stroke:1"/>
+<polyline points="193.20000000000002,83.0 198.00000000000003,83.0 198.00000000000003,102.2 193.20000000000002,102.2 193.20000000000002,121.4 193.20000000000002,121.4 198.00000000000003,121.4 198.00000000000003,140.60000000000002 193.20000000000002,140.60000000000002 193.20000000000002,159.8 193.20000000000002,159.8 198.00000000000003,159.8 198.00000000000003,179.0 193.20000000000002,179.0 193.20000000000002,198.20000000000002 193.20000000000002,198.20000000000002 198.00000000000003,198.20000000000002 198.00000000000003,217.40000000000003 193.20000000000002,217.40000000000003 193.20000000000002,236.60000000000002 193.20000000000002,236.60000000000002 198.00000000000003,236.60000000000002 198.00000000000003,255.8 193.20000000000002,255.8 193.20000000000002,275.0 193.20000000000002,275.0 198.00000000000003,275.0 198.00000000000003,294.20000000000005 193.20000000000002,294.20000000000005 193.20000000000002,313.40000000000003 193.20000000000002,313.40000000000003 198.00000000000003,313.40000000000003 198.00000000000003,332.6 193.20000000000002,332.6 193.20000000000002,351.80000000000007 193.20000000000002,351.80000000000007 198.00000000000003,351.80000000000007 198.00000000000003,371.00000000000006 193.20000000000002,371.00000000000006 193.20000000000002,390.20000000000005 " style="fill:none;stroke:black;stroke:2"/>
+<polyline points="193.20000000000002,390.20000000000005 193.20000000000002,395.00000000000006 174.0,395.00000000000006 174.0,390.20000000000005 154.8,390.20000000000005 154.8,390.20000000000005 154.8,395.00000000000006 135.6,395.00000000000006 135.6,390.20000000000005 116.4,390.20000000000005 " style="fill:none;stroke:black;stroke:2"/>
+<circle cx = "145.20000000000002" cy = "390.33228346454" r = "2.26771653546" style="fill:none;stroke:black;stroke:1"/>
+<circle cx = "183.60000000000002" cy = "390.33228346454" r = "2.26771653546" style="fill:none;stroke:black;stroke:1"/>
+<polyline points="116.4,390.20000000000005 111.60000000000001,390.20000000000005 111.60000000000001,371.00000000000006 116.4,371.00000000000006 116.4,351.80000000000007 116.4,351.80000000000007 111.60000000000001,351.80000000000007 111.60000000000001,332.6 116.4,332.6 116.4,313.4000000000001 116.4,313.40000000000003 111.60000000000001,313.40000000000003 111.60000000000001,294.20000000000005 116.4,294.20000000000005 116.4,275.00000000000006 116.4,275.0 111.60000000000001,275.0 111.60000000000001,255.80000000000004 116.4,255.80000000000004 116.4,236.60000000000005 116.4,236.60000000000002 111.60000000000001,236.60000000000002 111.60000000000001,217.40000000000003 116.4,217.40000000000003 116.4,198.20000000000005 116.4,198.20000000000002 111.60000000000001,198.20000000000002 111.60000000000001,179.00000000000003 116.4,179.00000000000003 116.4,159.80000000000004 116.4,159.8 111.60000000000001,159.8 111.60000000000001,140.60000000000002 116.4,140.60000000000002 116.4,121.40000000000003 116.4,121.39999999999998 111.60000000000001,121.39999999999998 111.60000000000001,102.19999999999999 116.4,102.19999999999999 116.4,83.0 " style="fill:none;stroke:black;stroke:2"/>
+<polyline points="207.8,83.0 284.6,83.0 " style="fill:none;stroke:black;stroke:2"/>
+<polyline points="284.6,83.0 284.6,92.6 289.40000000000003,92.6 289.40000000000003,111.8 284.6,111.8 284.6,92.6 289.40000000000003,92.6 289.40000000000003,111.8 284.6,111.8 284.6,121.4" style="fill:none;stroke:black;stroke:2"/>
+<polyline points="284.6,121.4 207.8,121.4 " style="fill:none;stroke:black;stroke:2"/>
+<polyline points="207.8,83.0 207.8,92.6 203.0,92.6 203.0,111.8 207.8,111.8 207.8,92.6 203.0,92.6 203.0,111.8 207.8,111.8 207.8,121.4" style="fill:none;stroke:black;stroke:2"/>
+<polyline points = "20.2,78.2 49.0,78.2 49.0,83.0 77.8,83.0 77.8,78.2 106.60000000000001,78.2 106.60000000000001,395.00000000000006 20.2,395.00000000000006 20.2,78.2" style="fill:none;stroke:black;stroke:2"/>
+<circle cx = "37.800000000000004" cy = "82.86771653545999" r = "2.26771653546" style="fill:none;stroke:black;stroke:1"/>
+<circle cx = "89.00000000000001" cy = "82.86771653545999" r = "2.26771653546" style="fill:none;stroke:black;stroke:1"/>
+<polyline points = "20.2,89.72 32.92,89.72" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,89.72 62.2,89.72" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,94.52 32.92,94.52" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,94.52 62.2,94.52" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,99.32000000000001 32.92,99.32000000000001" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,99.32000000000001 62.2,99.32000000000001" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,104.12 32.92,104.12" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,104.12 62.2,104.12" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,108.92 32.92,108.92" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,108.92 62.2,108.92" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,113.72 32.92,113.72" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,113.72 62.2,113.72" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,118.52 32.92,118.52" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,118.52 62.2,118.52" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,123.32000000000001 32.92,123.32000000000001" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,123.32000000000001 62.2,123.32000000000001" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,128.12 32.92,128.12" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,128.12 62.2,128.12" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,132.92 32.92,132.92" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,132.92 62.2,132.92" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,137.72 32.92,137.72" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,137.72 62.2,137.72" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,142.51999999999998 32.92,142.51999999999998" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,142.51999999999998 62.2,142.51999999999998" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,147.32 32.92,147.32" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,147.32 62.2,147.32" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,152.12 32.92,152.12" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,152.12 62.2,152.12" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,156.92000000000002 32.92,156.92000000000002" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,156.92000000000002 62.2,156.92000000000002" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,161.72 32.92,161.72" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,161.72 62.2,161.72" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,166.51999999999998 32.92,166.51999999999998" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,166.51999999999998 62.2,166.51999999999998" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,171.32 32.92,171.32" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,171.32 62.2,171.32" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,176.12 32.92,176.12" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,176.12 62.2,176.12" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,180.92000000000002 32.92,180.92000000000002" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,180.92000000000002 62.2,180.92000000000002" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,185.72 32.92,185.72" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,185.72 62.2,185.72" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,190.51999999999998 32.92,190.51999999999998" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,190.51999999999998 62.2,190.51999999999998" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,195.32 32.92,195.32" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,195.32 62.2,195.32" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,200.12 32.92,200.12" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,200.12 62.2,200.12" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,204.92000000000002 32.92,204.92000000000002" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,204.92000000000002 62.2,204.92000000000002" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,209.72 32.92,209.72" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,209.72 62.2,209.72" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,214.51999999999998 32.92,214.51999999999998" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,214.51999999999998 62.2,214.51999999999998" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,219.32 32.92,219.32" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,219.32 62.2,219.32" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,224.12 32.92,224.12" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,224.12 62.2,224.12" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,228.92000000000002 32.92,228.92000000000002" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,228.92000000000002 62.2,228.92000000000002" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,233.72000000000003 32.92,233.72000000000003" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,233.72000000000003 62.2,233.72000000000003" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,238.51999999999998 32.92,238.51999999999998" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,238.51999999999998 62.2,238.51999999999998" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,243.32 32.92,243.32" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,243.32 62.2,243.32" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,248.12 32.92,248.12" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,248.12 62.2,248.12" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,252.92000000000002 32.92,252.92000000000002" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,252.92000000000002 62.2,252.92000000000002" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,257.72 32.92,257.72" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,257.72 62.2,257.72" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,262.52 32.92,262.52" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,262.52 62.2,262.52" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,267.32 32.92,267.32" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,267.32 62.2,267.32" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,272.12 32.92,272.12" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,272.12 62.2,272.12" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,276.92 32.92,276.92" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,276.92 62.2,276.92" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,281.72 32.92,281.72" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,281.72 62.2,281.72" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,286.52000000000004 32.92,286.52000000000004" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,286.52000000000004 62.2,286.52000000000004" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,291.32 32.92,291.32" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,291.32 62.2,291.32" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,296.12 32.92,296.12" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,296.12 62.2,296.12" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,300.92 32.92,300.92" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,300.92 62.2,300.92" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,305.72 32.92,305.72" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,305.72 62.2,305.72" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,310.52000000000004 32.92,310.52000000000004" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,310.52000000000004 62.2,310.52000000000004" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,315.32 32.92,315.32" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,315.32 62.2,315.32" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,320.12 32.92,320.12" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,320.12 62.2,320.12" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,324.92 32.92,324.92" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,324.92 62.2,324.92" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,329.72 32.92,329.72" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,329.72 62.2,329.72" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,334.52000000000004 32.92,334.52000000000004" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,334.52000000000004 62.2,334.52000000000004" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,339.32 32.92,339.32" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,339.32 62.2,339.32" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,344.12 32.92,344.12" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,344.12 62.2,344.12" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,348.92 32.92,348.92" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,348.92 62.2,348.92" fill = "none" stroke = "black" /> 
+<polyline points = "20.2,353.72 32.92,353.72" fill = "none" stroke = "black" /> 
+<polyline points = "35.32,353.72 62.2,353.72" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,89.72 91.48,89.72" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 89.72 106.6,89.72" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,92.12 104.2,92.12" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,94.52 91.48,94.52" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 94.52 106.6,94.52" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,96.91999999999999 104.2,96.91999999999999" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,99.32000000000001 91.48,99.32000000000001" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 99.32000000000001 106.6,99.32000000000001" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,101.72 104.2,101.72" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,104.12 91.48,104.12" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 104.12 106.6,104.12" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,106.52000000000001 104.2,106.52000000000001" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,108.92 91.48,108.92" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 108.92 106.6,108.92" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,111.32000000000001 104.2,111.32000000000001" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,113.72 91.48,113.72" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 113.72 106.6,113.72" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,116.12 104.2,116.12" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,118.52 91.48,118.52" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 118.52 106.6,118.52" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,120.91999999999999 104.2,120.91999999999999" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,123.32000000000001 91.48,123.32000000000001" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 123.32000000000001 106.6,123.32000000000001" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,125.72 104.2,125.72" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,128.12 91.48,128.12" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 128.12 106.6,128.12" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,130.52 104.2,130.52" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,132.92 91.48,132.92" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 132.92 106.6,132.92" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,135.32 104.2,135.32" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,137.72 91.48,137.72" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 137.72 106.6,137.72" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,140.12 104.2,140.12" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,142.51999999999998 91.48,142.51999999999998" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 142.51999999999998 106.6,142.51999999999998" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,144.92 104.2,144.92" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,147.32 91.48,147.32" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 147.32 106.6,147.32" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,149.72 104.2,149.72" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,152.12 91.48,152.12" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 152.12 106.6,152.12" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,154.52 104.2,154.52" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,156.92000000000002 91.48,156.92000000000002" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 156.92000000000002 106.6,156.92000000000002" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,159.32000000000002 104.2,159.32000000000002" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,161.72 91.48,161.72" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 161.72 106.6,161.72" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,164.12 104.2,164.12" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,166.51999999999998 91.48,166.51999999999998" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 166.51999999999998 106.6,166.51999999999998" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,168.92 104.2,168.92" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,171.32 91.48,171.32" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 171.32 106.6,171.32" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,173.72 104.2,173.72" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,176.12 91.48,176.12" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 176.12 106.6,176.12" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,178.52 104.2,178.52" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,180.92000000000002 91.48,180.92000000000002" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 180.92000000000002 106.6,180.92000000000002" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,183.32 104.2,183.32" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,185.72 91.48,185.72" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 185.72 106.6,185.72" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,188.12 104.2,188.12" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,190.51999999999998 91.48,190.51999999999998" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 190.51999999999998 106.6,190.51999999999998" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,192.92 104.2,192.92" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,195.32 91.48,195.32" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 195.32 106.6,195.32" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,197.72 104.2,197.72" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,200.12 91.48,200.12" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 200.12 106.6,200.12" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,202.52 104.2,202.52" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,204.92000000000002 91.48,204.92000000000002" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 204.92000000000002 106.6,204.92000000000002" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,207.32 104.2,207.32" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,209.72 91.48,209.72" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 209.72 106.6,209.72" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,212.12 104.2,212.12" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,214.51999999999998 91.48,214.51999999999998" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 214.51999999999998 106.6,214.51999999999998" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,216.92 104.2,216.92" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,219.32 91.48,219.32" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 219.32 106.6,219.32" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,221.72 104.2,221.72" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,224.12 91.48,224.12" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 224.12 106.6,224.12" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,226.52 104.2,226.52" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,228.92000000000002 91.48,228.92000000000002" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 228.92000000000002 106.6,228.92000000000002" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,231.32000000000002 104.2,231.32000000000002" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,233.72000000000003 91.48,233.72000000000003" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 233.72000000000003 106.6,233.72000000000003" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,236.12 104.2,236.12" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,238.51999999999998 91.48,238.51999999999998" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 238.51999999999998 106.6,238.51999999999998" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,240.92 104.2,240.92" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,243.32 91.48,243.32" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 243.32 106.6,243.32" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,245.72 104.2,245.72" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,248.12 91.48,248.12" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 248.12 106.6,248.12" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,250.52 104.2,250.52" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,252.92000000000002 91.48,252.92000000000002" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 252.92000000000002 106.6,252.92000000000002" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,255.32000000000002 104.2,255.32000000000002" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,257.72 91.48,257.72" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 257.72 106.6,257.72" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,260.12 104.2,260.12" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,262.52 91.48,262.52" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 262.52 106.6,262.52" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,264.92 104.2,264.92" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,267.32 91.48,267.32" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 267.32 106.6,267.32" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,269.72 104.2,269.72" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,272.12 91.48,272.12" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 272.12 106.6,272.12" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,274.52000000000004 104.2,274.52000000000004" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,276.92 91.48,276.92" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 276.92 106.6,276.92" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,279.32000000000005 104.2,279.32000000000005" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,281.72 91.48,281.72" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 281.72 106.6,281.72" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,284.12000000000006 104.2,284.12000000000006" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,286.52000000000004 91.48,286.52000000000004" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 286.52000000000004 106.6,286.52000000000004" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,288.9200000000001 104.2,288.9200000000001" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,291.32 91.48,291.32" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 291.32 106.6,291.32" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,293.72 104.2,293.72" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,296.12 91.48,296.12" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 296.12 106.6,296.12" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,298.52000000000004 104.2,298.52000000000004" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,300.92 91.48,300.92" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 300.92 106.6,300.92" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,303.32000000000005 104.2,303.32000000000005" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,305.72 91.48,305.72" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 305.72 106.6,305.72" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,308.12000000000006 104.2,308.12000000000006" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,310.52000000000004 91.48,310.52000000000004" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 310.52000000000004 106.6,310.52000000000004" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,312.9200000000001 104.2,312.9200000000001" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,315.32 91.48,315.32" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 315.32 106.6,315.32" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,317.72 104.2,317.72" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,320.12 91.48,320.12" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 320.12 106.6,320.12" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,322.52000000000004 104.2,322.52000000000004" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,324.92 91.48,324.92" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 324.92 106.6,324.92" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,327.32000000000005 104.2,327.32000000000005" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,329.72 91.48,329.72" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 329.72 106.6,329.72" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,332.12000000000006 104.2,332.12000000000006" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,334.52000000000004 91.48,334.52000000000004" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 334.52000000000004 106.6,334.52000000000004" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,336.9200000000001 104.2,336.9200000000001" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,339.32 91.48,339.32" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 339.32 106.6,339.32" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,341.72 104.2,341.72" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,344.12 91.48,344.12" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 344.12 106.6,344.12" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,346.52000000000004 104.2,346.52000000000004" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,348.92 91.48,348.92" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 348.92 106.6,348.92" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,351.32000000000005 104.2,351.32000000000005" fill = "none" stroke = "black" /> 
+<polyline points = "64.6,353.72 91.48,353.72" fill = "none" stroke = "black" /> 
+<polyline points = "93.88 353.72 106.6,353.72" fill = "none" stroke = "black" /> 
+<polyline points = "22.6,356.12000000000006 104.2,356.12000000000006" fill = "none" stroke = "black" /> 
+<polyline points = "154.8,236.60000000000002 155.18627855618254,237.2428754755266" fill = "none" stroke = "red" /> 
+<polyline points = "154.8,236.60000000000002 155.18627855618254,237.2428754755266" fill = "none" stroke = "red" /> 
+<polyline points = "155.18627855618254,237.2428754755266 154.09579265582119,237.92442138928843" fill = "none" stroke = "red" /> 
+<polyline points = "154.09579265582119,237.92442138928843 152.5530835468022,236.71775590154664" fill = "none" stroke = "red" /> 
+<polyline points = "152.5530835468022,236.71775590154664 153.12242128958778,234.1128872823349" fill = "none" stroke = "red" /> 
+<polyline points = "153.12242128958778,234.1128872823349 156.38481848152765,233.20134579861258" fill = "none" stroke = "red" /> 
+<polyline points = "156.38481848152765,233.20134579861258 159.27534852915724,236.1296219152956" fill = "none" stroke = "red" /> 
+<polyline points = "159.27534852915724,236.1296219152956 157.95952887154826,240.7928364277483" fill = "none" stroke = "red" /> 
+<polyline points = "157.95952887154826,240.7928364277483 152.55236043950455,242.16310312740075" fill = "none" stroke = "red" /> 
+<polyline points = "152.55236043950455,242.16310312740075 148.13310370098284,237.6559326390216" fill = "none" stroke = "red" /> 
+<polyline points = "148.13310370098284,237.6559326390216 149.97909292735096,230.85466667660768" fill = "none" stroke = "red" /> 
+<polyline points = "149.97909292735096,230.85466667660768 157.48593727427155,228.79947175130565" fill = "none" stroke = "red" /> 
+<polyline points = "157.48593727427155,228.79947175130565 163.60332840660425,234.7287947826402" fill = "none" stroke = "red" /> 
+<polyline points = "163.60332840660425,234.7287947826402 161.44948401060938,243.73069859078694" fill = "none" stroke = "red" /> 
+<polyline points = "161.44948401060938,243.73069859078694 151.90580776392153,246.69324780735238" fill = "none" stroke = "red" /> 
+<polyline points = "151.90580776392153,246.69324780735238 143.93333445424798,239.51171425740338" fill = "none" stroke = "red" /> 
+<polyline points = "143.93333445424798,239.51171425740338 146.1679223959362,228.26409955449208" fill = "none" stroke = "red" /> 
+<polyline points = "146.1679223959362,228.26409955449208 157.66812594288427,224.17678167398827" fill = "none" stroke = "red" /> 
+<polyline points = "157.66812594288427,224.17678167398827 167.63926296998457,232.4282705759382" fill = "none" stroke = "red" /> 
+<polyline points = "167.63926296998457,232.4282705759382 165.5546115181745,245.94884116311476" fill = "none" stroke = "red" /> 
+<polyline points = "165.5546115181745,245.94884116311476 152.19527733499604,251.37211629518313" fill = "none" stroke = "red" /> 
+<polyline points = "152.19527733499604,251.37211629518313 140.0961082826691,242.2442952053385" fill = "none" stroke = "red" /> 
+<polyline points = "140.0961082826691,242.2442952053385 141.7978225654891,226.44158565712667" fill = "none" stroke = "red" /> 
+<polyline points = "141.7978225654891,226.44158565712667 156.9022461737388,219.47857888418721" fill = "none" stroke = "red" /> 
+<polyline points = "156.9022461737388,219.47857888418721 171.2438182375668,229.27874042463563" fill = "none" stroke = "red" /> 
+<polyline points = "171.2438182375668,229.27874042463563 170.15910083041865,247.3545581815821" fill = "none" stroke = "red" /> 
+<polyline points = "170.15910083041865,247.3545581815821 153.43974876198956,256.0524989800666" fill = "none" stroke = "red" /> 
+<polyline points = "153.43974876198956,256.0524989800666 136.7571178851856,245.7933076197259" fill = "none" stroke = "red" /> 
+<polyline points = "136.7571178851856,245.7933076197259 136.99098998071506,225.47169545110273" fill = "none" stroke = "red" /> 
+<polyline points = "136.99098998071506,225.47169545110273 155.17958984001083,214.8533126303485" fill = "none" stroke = "red" /> 
+<polyline points = "155.17958984001083,214.8533126303485 174.28557158514988,225.35000000000002" fill = "none" stroke = "red" /> 
+<polyline points = "174.28557158514988,225.35000000000002 175.13490819099098,247.87182367072734" fill = "none" stroke = "red" /> 
+<polyline points = "175.13490819099098,247.87182367072734 155.63758792086014,260.58537984845833" fill = "none" stroke = "red" /> 
+<polyline points = "155.63758792086014,260.58537984845833 134.04290344335078,250.07981611662197" fill = "none" stroke = "red" /> 
+<polyline points = "134.04290344335078,250.07981611662197 131.8807518193712,225.42153575687865" fill = "none" stroke = "red" /> 
+<polyline points = "131.8807518193712,225.42153575687865 152.51216175287394,210.4498891750917" fill = "none" stroke = "red" /> 
+<polyline points = "152.51216175287394,210.4498891750917 176.64345884812352,220.72979818810313" fill = "none" stroke = "red" /> 
+<polyline points = "176.64345884812352,220.72979818810313 180.34400968330525,247.44278881557733" fill = "none" stroke = "red" /> 
+<polyline points = "180.34400968330525,247.44278881557733 158.76643337736184,264.8226399591348" fill = "none" stroke = "red" /> 
+<polyline points = "158.76643337736184,264.8226399591348 132.06848062738365,255.00762143820782" fill = "none" stroke = "red" /> 
+<polyline points = "132.06848062738365,255.00762143820782 126.60922137642278,226.33939570022991" fill = "none" stroke = "red" /> 
+<polyline points = "126.60922137642278,226.33939570022991 148.9326233921712,206.41496410898438" fill = "none" stroke = "red" /> 
+<polyline points = "148.9326233921712,206.41496410898438 178.20906200253796,215.52238589969602" fill = "none" stroke = "red" /> 
+<polyline points = "178.20906200253796,215.52238589969602 185.64082837980794,246.02898747730822" fill = "none" stroke = "red" /> 
+<polyline points = "185.64082837980794,246.02898747730822 162.783422554789,268.61975896710794" fill = "none" stroke = "red" /> 
+<text x = "63.400000000000006" y = "375.5714285714286" dominant-baseline= "central" text-anchor= "middle" font-size = "10px" fill = "blue">SEAS 22' </text> 
+<text x = "63.400000000000006" y = "49.2" dominant-baseline= "central" text-anchor= "middle" font-size = "10px" fill = "blue">MECHE </text> 
+<text x = "25" y = "409.80000000000007" dy = "0">
+<tspan x = "20" dy = ".6em" >BOX ATTRIBUTES </tspan>
+<tspan x = "20" dy = "1.2em" >thickness: </tspan>
+<tspan x = "20" dy = "1.2em" >width: </tspan>
+<tspan x = "20" dy = "1.2em" >length:  </tspan>
+<tspan x = "20" dy = "1.2em" >height: </tspan>
+<tspan x = "20" dy = "1.2em" >partition:  </tspan>
+<tspan x = "20" dy = "1.2em" >partition location: </tspan>
+<tspan x = "20" dy = "1.2em" >lid: </tspan>
+<tspan x = "20" dy = "1.2em" >top text: </tspan>
+<tspan x = "20" dy = "1.2em" >front text: </tspan>
+<tspan x = "20" dy = "1.2em" >fractal: </tspan>
+<tspan x = "20" dy = "1.2em" >fractal side/bottom: </tspan>
+<tspan x = "20" dy = "1.2em" >front text string: </tspan>
+<tspan x = "20" dy = "1.2em" >top text string: </tspan>
+</text><text x = "200" y = "409.80000000000007" dy = "0">
+<tspan x = "200" dy = ".6em" > VALUES </tspan>
+<tspan x = "200" dy = "1.2em" >0.125</tspan>
+<tspan x = "200" dy = "1.2em" >2</tspan>
+<tspan x = "200" dy = "1.2em" >8</tspan>
+<tspan x = "200" dy = "1.2em" >1</tspan>
+<tspan x = "200" dy = "1.2em" >True</tspan>
+<tspan x = "200" dy = "1.2em" >1.0</tspan>
+<tspan x = "200" dy = "1.2em" >True</tspan>
+<tspan x = "200" dy = "1.2em" >True</tspan>
+<tspan x = "200" dy = "1.2em" >True</tspan>
+<tspan x = "200" dy = "1.2em" >True</tspan>
+<tspan x = "200" dy = "1.2em" >bottom</tspan>
+<tspan x = "200" dy = "1.2em" >MECHE</tspan>
+<tspan x = "200" dy = "1.2em" >SEAS 22'</tspan>
+</text></svg>
