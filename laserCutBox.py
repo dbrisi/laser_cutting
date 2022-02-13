@@ -20,7 +20,7 @@ print("-------------------------------------------------------------------------
 print("--------------------------------------------------------------------------")
 print("This program helps you create a user-defined, customizable box.")
 print('The box will be laser cut from acrylic (nominally 1/4" thick).')
-print(f'The box cannot exceed dimensions which require more material than {MAX_WIDTH}" X {MAX_HEIGHT}".')
+print(f'The box cannot exceed dimensions which require more material than {MAX_WIDTH}" x {MAX_HEIGHT}".')
 print("--------------------------------------------------------------------------")
 
 #######################################################
@@ -30,10 +30,11 @@ def userDimInput(thickness, width, length, height):
 
     # while loop placeholder
     tooBig = True # placeholder for initial while loop -> assume box too big until otherwise
-    avoidAreaCheck = "A" # dummy placeholder to begin
+    
 
     # get user input for box values
     while tooBig == True or thickness <= 0 or width <= 0 or length <= 0 or height <= 0:
+        avoidAreaCheck = "A" #reset to dummy
 
         # get user input for thickness
         while thickness <= 0 or thickness > MAX_THICKNESS:
@@ -61,25 +62,28 @@ def userDimInput(thickness, width, length, height):
         # get user input for height
         height = userSingleDim("height",height,thickness)
 
-        print('We recognize you may wish to use multiple 18" x 12" sheets of ' \
-          'material for laser cutting.')
+        if (2*width + 2*length + 8*thickness + .5) > MAX_WIDTH or (height + length + 4* thickness + .25) > MAX_HEIGHT:
+            print('We recognize you may wish to use multiple 18" x 12" sheets of ' \
+            'material for laser cutting.')
 
-        while avoidAreaCheck != "Y" and avoidAreaCheck != "N":
-            avoidAreaCheck = \
-              input('Would you like skip error checking that ensures this ' \
-               'program\'s output will fit on a 18" x 12" sheet? (Y/N) ').upper()
+            while avoidAreaCheck != "Y" and avoidAreaCheck != "N":
+                avoidAreaCheck = \
+                input('Would you like skip error checking that ensures this ' \
+                'program\'s output will fit on a 18" x 12" sheet? (Y/N) ').upper()
 
             if avoidAreaCheck != "Y" and avoidAreaCheck != "N":
                 print('You did not enter a valid response. Please try again.')
+        else:
+            avoidAreaCheck = "N"
 
         if avoidAreaCheck == "N":
 
             # error checking dimensions, .5 accounts for piece separation
             if (2*width + 2*length + 8*thickness + .5) > MAX_WIDTH or (height + length + 4* thickness + .25) > MAX_HEIGHT:
-                avoidAreaCheck = "A" #reset to dummy
+                # avoidAreaCheck = "A" #reset to dummy
                 tooBig = True
                 print('Your entered dimensions exceed the allowable material to cut.')
-                print(f'The maximum allowable cutting area is {MAX_WIDTH}" X {MAX_HEIGHT}"')
+                print(f'The maximum allowable cutting area is {MAX_WIDTH}" x {MAX_HEIGHT}"')
                 print(f'{MAX_WIDTH}" includes twice the width, twice the length, eight times thickness and piece seperation.')
                 print(f'{MAX_HEIGHT}" includes the length, the height, four times thickness and piece seperation.')
                 print('Please try again.')
@@ -88,7 +92,7 @@ def userDimInput(thickness, width, length, height):
                 thickness, width, length, height = 0,0,0,0
             else:
                 tooBig = False
-
+        
         else:
             tooBig = False
             print('WARNING: YOU CHOSE TO SKIP AN ERROR CHECKING STEP. OUTPUT MAY' \
@@ -123,7 +127,13 @@ def userAddOnInputs(length):
         if partitionInput == "Y":
             partition = True
             while partitionLocation <= 0 or partitionLocation > length:
-                partitionLocation = float(input("Enter the location (in) of the partition, measured from the front of the box: "))
+                isFloat = True
+                try:
+                    partitionLocation = float(input("Enter the location (in) of the partition, measured from the front of the box: "))
+                except ValueError:
+                    print(f'Invalid entry! Only positive, numerical values are accepted.')
+                    isFloat = False
+                    partitionLocation = 0.0
                 if partitionLocation < 0:
                     print("Invalid length. Please enter a positive value")
                 if partitionLocation > length:
