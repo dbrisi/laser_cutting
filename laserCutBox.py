@@ -30,6 +30,7 @@ def userDimInput(thickness, width, length, height):
 
     # while loop placeholder
     tooBig = True # placeholder for initial while loop -> assume box too big until otherwise
+    avoidAreaCheck = "A" # dummy placeholder to begin
 
     # get user input for box values
     while tooBig == True or thickness <= 0 or width <= 0 or length <= 0 or height <= 0:
@@ -43,14 +44,14 @@ def userDimInput(thickness, width, length, height):
                 print('Invalid thickness! Only numerical values are accepted.')
                 isFloat = False
                 thickness = 0.0
-    
+
             if isFloat == True:
                 if thickness <= 0:
                     print("Invalid thickness! Only positive values accepted.")
                 if thickness > MAX_THICKNESS:
                     print('Invalid thickness! That is very thick!')
                     print(f'How about something less than or equal to {MAX_THICKNESS}"?')
-                
+
         # get user input for width
         width = userSingleDim("width",width,thickness)
 
@@ -60,19 +61,38 @@ def userDimInput(thickness, width, length, height):
         # get user input for height
         height = userSingleDim("height",height,thickness)
 
-        # error checking dimensions, .5 accounts for piece separation
-        if (2*width + 2*length + 8*thickness + .5) > MAX_WIDTH or (height + length + 4* thickness + .25) > MAX_HEIGHT:
-            tooBig = True
-            print('Your entered dimensions exceed the allowable material to cut.')
-            print(f'The maximum allowable cutting area is {MAX_WIDTH}" X {MAX_HEIGHT}"')
-            print(f'{MAX_WIDTH}" includes twice the width, twice the length, eight times thickness and piece seperation.')
-            print(f'{MAX_HEIGHT}" includes the length, the height, four times thickness and piece seperation.')
-            print('Please try again.')
-            print("--------------------------------------------------------------------------")
-            
-            thickness, width, length, height = 0,0,0,0
+        print('We recognize you may wish to use multiple 18" x 12" sheets of ' \
+          'material for laser cutting.')
+
+        while avoidAreaCheck != "Y" and avoidAreaCheck != "N":
+            avoidAreaCheck = \
+              input('Would you like skip error checking that ensures this ' \
+               'program\'s output will fit on a 18" x 12" sheet? (Y/N) ').upper()
+
+            if avoidAreaCheck != "Y" and avoidAreaCheck != "N":
+                print('You did not enter a valid response. Please try again.')
+
+        if avoidAreaCheck == "N":
+
+            # error checking dimensions, .5 accounts for piece separation
+            if (2*width + 2*length + 8*thickness + .5) > MAX_WIDTH or (height + length + 4* thickness + .25) > MAX_HEIGHT:
+                avoidAreaCheck = "A" #reset to dummy
+                tooBig = True
+                print('Your entered dimensions exceed the allowable material to cut.')
+                print(f'The maximum allowable cutting area is {MAX_WIDTH}" X {MAX_HEIGHT}"')
+                print(f'{MAX_WIDTH}" includes twice the width, twice the length, eight times thickness and piece seperation.')
+                print(f'{MAX_HEIGHT}" includes the length, the height, four times thickness and piece seperation.')
+                print('Please try again.')
+                print("--------------------------------------------------------------------------")
+
+                thickness, width, length, height = 0,0,0,0
+            else:
+                tooBig = False
+
         else:
             tooBig = False
+            print('WARNING: YOU CHOSE TO SKIP AN ERROR CHECKING STEP. OUTPUT MAY' \
+              ' NOT FIT ON 18" x 12" MATERIAL!')
 
     return thickness, width, length, height
 
@@ -92,8 +112,8 @@ def userAddOnInputs(length):
     # intial box value settings
     partition = False
     lid = False
-    topTextYesNo = False 
-    frontTextYesNo = False 
+    topTextYesNo = False
+    frontTextYesNo = False
     partitionLocation = 0
     fractal = False
 
@@ -103,14 +123,14 @@ def userAddOnInputs(length):
         if partitionInput == "Y":
             partition = True
             while partitionLocation <= 0 or partitionLocation > length:
-                partitionLocation = float(input("Enter the location (in) of the partition, measured from the front of the box: ")) 
+                partitionLocation = float(input("Enter the location (in) of the partition, measured from the front of the box: "))
                 if partitionLocation < 0:
                     print("Invalid length. Please enter a positive value")
                 if partitionLocation > length:
                     print("Invalid length. Please enter a value which is less than the length.")
         if partitionInput != "Y" and partitionInput != "N":
             print('You did not enter a valid response. Please try again.')
-        else:
+        if partition == "N":
             partition = False
 
     # user input for lid option
@@ -177,11 +197,11 @@ def textInput(location):
 ## FUNCTION TO ACCEPT USER INPUT FOR A SINGLE DIMENSION ##
 ##########################################################
 def userSingleDim(dimension, dimensionValue, thickness):
-    while dimensionValue <= 0 or dimensionValue > 18 - 2*thickness:
+    while dimensionValue <= 0 or dimensionValue > 18 - 2*thickness - .5:
         isFloat = True
 
-        try: 
-           dimensionValue = float(input(f'Enter a {dimension} (in) for the box walls: '))
+        try:
+           dimensionValue = float(input(f'Enter a {dimension} (in) for the box: '))
         except ValueError:
             print(f'Invalid {dimension}! Only positive, numerical values are accepted.')
             isFloat = False
@@ -193,7 +213,7 @@ def userSingleDim(dimension, dimensionValue, thickness):
                 print(f"Invalid {dimension}! Only positive values accepted.")
             if dimensionValue > 18 - 2*thickness - .5:
                 print(f'Invalid {dimension}! Maximum dimension of the available material is only 18". \nPlease try again. Account for thickness and piece separation.')
-    
+
     return dimensionValue
 
 #########################################
@@ -207,7 +227,7 @@ def fractalGenerator(f,fractalSide, x, y, width, length, height):
     fracSpaceParam = .75
 
     if fractalSide == "SIDE":
-        minDistance = int(min(height, width))
+        minDistance = int(min(height, length))
     else:
         minDistance = int(min(width, length))
 
@@ -226,7 +246,13 @@ def textSVG(f, text, xStart, yStart, horizontalDim, verticalDim, position):
         fontSize = FONT_SIZE_CONV*(1/10)*horizontalDim
     if position == "TOP":
         fontSize = FONT_SIZE_CONV*(1/20)*verticalDim
-        f.write(f'<text x = "{xStart + (horizontalDim*INCH_TO_PIX_CONV)/2}" y = "{yStart + (verticalDim*INCH_TO_PIX_CONV)/1.05}" dominant-baseline= "central" text-anchor= "middle" font-size = "14px" fill = "blue">' + text + ' </text> \n')
+        f.write(f'<text \
+        x = "{xStart + (horizontalDim*INCH_TO_PIX_CONV)/2}" \
+        y = "{yStart + (verticalDim*INCH_TO_PIX_CONV)/1.05}" \
+        dominant-baseline = "central" \
+        text-anchor = "middle" \
+        font-size = "14px" \
+        fill = "blue">' + text + ' </text> \n')
     else:
         #f.write(f'<text x = "{xStart + (horizontalDim*INCH_TO_PIX_CONV)/2}" y = "{yStart + (verticalDim*INCH_TO_PIX_CONV)/2}" dominant-baseline= "central" text-anchor= "middle" font-size = "{fontSize}px" fill = "red">' + text + ' </text> \n')
         f.write(f'<text x = "{xStart + (horizontalDim*INCH_TO_PIX_CONV)/2}" y = "{yStart + (verticalDim*INCH_TO_PIX_CONV)/2}" dominant-baseline= "central" text-anchor= "middle" font-size = "30px" fill = "blue">' + text + ' </text> \n')
@@ -266,18 +292,9 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
 
         ## CONSTANTS
         shiftForScrews = .3*INCH_TO_PIX_CONV
-        #polylineLength = 1
-        #oscillator = .8 ## TO GET OFFSETS --- delete
-        spacingParam = 1/8*INCH_TO_PIX_CONV ## CAN CHANGE - SHIFTS VERTICAL DISTANCE
-        #spacingBetweenCurves = 4
-        spacingBetweenLines1 = 1/16*INCH_TO_PIX_CONV
-        spacingBetweenLines2 = 1/16*INCH_TO_PIX_CONV
-        #lengthOfCurve = 3
-        lineLength1 = .7*INCH_TO_PIX_CONV
-        lineLength2 = .7*INCH_TO_PIX_CONV
-
-        xOffset = (lineLength1)
-        #curvatureAdj = 1
+        vertSpacingParam = 1/8*INCH_TO_PIX_CONV
+        spaceBetweenLines = 1/16*INCH_TO_PIX_CONV
+        lineLength = .7*INCH_TO_PIX_CONV
 
         # outline of the lid
         x1,y1 = xStartNW - thickness*INCH_TO_PIX_CONV, yStartNW-thickness*INCH_TO_PIX_CONV
@@ -290,50 +307,88 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
         x8,y8 = x1,y7
         x9,y9 = x1,y1
 
-        f.write(f'<polyline points = "{x1},{y1} {x2},{y2} {x3},{y3} {x4},{y4} {x5},{y5} {x6},{y6} {x7},{y7} {x8},{y8} {x9},{y9}" style="fill:none;stroke:black;stroke:2"/>\n')
+        f.write(f'<polyline points = "{x1},{y1} \
+          {x2},{y2} \
+          {x3},{y3} \
+          {x4},{y4} \
+          {x5},{y5} \
+          {x6},{y6} \
+          {x7},{y7} \
+          {x8},{y8} \
+          {x9},{y9}" \
+          style = "fill:none;stroke:black;stroke:2"/>\n')
 
         # holes for the lid
-        xHole1,yHole1  = xStartNW + horizontalDim*INCH_TO_PIX_CONV/6, yStartNW - thickness*INCH_TO_PIX_CONV/2 + screwDiam*MM_TO_PIX_CONV/2
+        xHole1, yHole1  = xStartNW + horizontalDim*INCH_TO_PIX_CONV/6, \
+        yStartNW - thickness*INCH_TO_PIX_CONV/2 + screwDiam*MM_TO_PIX_CONV/2
+
         xHole2, yHole2 = xStartNW + horizontalDim*INCH_TO_PIX_CONV*(5/6), yHole1
-        f.write(f'<circle cx = "{xHole1}" cy = "{yHole1}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:1"/>\n')
-        f.write(f'<circle cx = "{xHole2}" cy = "{yHole2}" r = "{screwDiam*MM_TO_PIX_CONV/2}" style="fill:none;stroke:black;stroke:1"/>\n')
 
-        # kerf pattern
-        totalLengthKerfLine1 = (horizontalDim + 2*thickness)*INCH_TO_PIX_CONV
-        #print(totalLengthKerfLine1)
-        totalLengthKerfLine2 = totalLengthKerfLine1 - xOffset
-        #distanceToFill = totalLengthKerf - (lineLength - spacingBetweenLines - lengthOfCurve)
-        howManyColsLine1 = int(totalLengthKerfLine1/(lineLength1 + 2*spacingBetweenLines1))
-        #print(howManyColsLine1)
-        howManyColsLine2 = int(totalLengthKerfLine2/(lineLength2 + 2*spacingBetweenLines2))
-        distanceToFillWithBookends1 = totalLengthKerfLine1 - (lineLength1 + 1*spacingBetweenLines1)*howManyColsLine1 - spacingBetweenLines1
-        distanceToFillWithBookends2 = totalLengthKerfLine2 - (lineLength2 + 1*spacingBetweenLines2)*howManyColsLine2 - spacingBetweenLines2
+        f.write(f'<circle cx = "{xHole1}" cy = "{yHole1}" \
+        r = "{screwDiam*MM_TO_PIX_CONV/2}" \
+        style="fill:none;stroke:black;stroke:1"/>\n')
+
+        f.write(f'<circle cx = "{xHole2}" cy = "{yHole2}" \
+        r = "{screwDiam*MM_TO_PIX_CONV/2}" \
+        style="fill:none;stroke:black;stroke:1"/>\n')
+
+        # kerf pattern begins
+        totLengthFrKerf = (horizontalDim + 2*thickness)*INCH_TO_PIX_CONV
+
+        # how many columns of pattern can we fit
+        numberOfCols = int(totLengthFrKerf/(lineLength \
+          + 2*spaceBetweenLines))
+
+        # the distance slits in the sides must cover
+        distanceToFillWithBookends1 = totLengthFrKerf \
+          - (lineLength + 1*spaceBetweenLines)*numberOfCols \
+          - spaceBetweenLines
+
         lengthOfStartAndEndLine1 = distanceToFillWithBookends1/2
-        lengthOfStartAndEndLine2 = distanceToFillWithBookends2/2
-        #xKerfStart = xStartNW - thickness*INCH_TO_PIX_CONV + polylineLength
-        #yKerfStart = yStartNW - thickness*INCH_TO_PIX_CONV + shiftForScrews
 
-        for i in range(howManyColsLine1): ##the width
-            #oscillator = oscillator*(-1)
+        # iterate along width
+        for i in range(numberOfCols):
 
-            kerfLengthIterations = int(verticalDim*(28/4))#length = 4, range = 28
-            for j in range(kerfLengthIterations): ## THE LENGTH
-                BegLineStartY = yStartNW + shiftForScrews + j*spacingParam - thickness*INCH_TO_PIX_CONV
-                BegLineStartY2 = (yStartNW + shiftForScrews + j*spacingParam - thickness*INCH_TO_PIX_CONV + yStartNW + shiftForScrews + (j+1)*spacingParam - thickness*INCH_TO_PIX_CONV)/2
+            kerfLengthIterations = int(verticalDim*(28/4))
 
+            # iterate along the length
+            for j in range(kerfLengthIterations):
 
+                BegLineStartY = yStartNW + shiftForScrews + j*vertSpacingParam \
+                  - thickness*INCH_TO_PIX_CONV
+
+                BegLineStartY2 = (yStartNW + shiftForScrews + j*vertSpacingParam - \
+                  thickness*INCH_TO_PIX_CONV + yStartNW + shiftForScrews + \
+                  (j+1)*vertSpacingParam - thickness*INCH_TO_PIX_CONV)/2
+
+                # beginning line is of variable length
                 if i == 0:
+
                     BegLineStartX = xStartNW - thickness*INCH_TO_PIX_CONV
-                    BegLineFinishX = xStartNW + lengthOfStartAndEndLine1 - thickness*INCH_TO_PIX_CONV
+                    BegLineFinishX = xStartNW + lengthOfStartAndEndLine1 - \
+                    thickness*INCH_TO_PIX_CONV
 
-                    f.write(f'<polyline points = "{BegLineStartX},{BegLineStartY} {BegLineFinishX},{BegLineStartY}" fill = "none" stroke = "black" /> \n')
+                    f.write(f'<polyline points = "{BegLineStartX},{BegLineStartY} \
+                      {BegLineFinishX},{BegLineStartY}" \
+                      fill = "none" stroke = "black" /> \n')
 
-                f.write(f'<polyline points = "{BegLineFinishX + (i+1)*spacingBetweenLines1 + lineLength1*i},{BegLineStartY} {BegLineFinishX + (i+1)*spacingBetweenLines1 + lineLength1*(i+1)},{BegLineStartY}" fill = "none" stroke = "black" /> \n')
-                #f.write(f'<polyline points = "{(BegLineStartX + BegLineFinishX + (i+1)*spacingBetweenLines1 + lineLength1*i)/2},{BegLineStartY2} {(BegLineStartX + BegLineFinishX + (i+1)*spacingBetweenLines1 + lineLength1*i)/2 + (i+1)*spacingBetweenLines1 + lineLength1*(i+1)},{BegLineStartY2}" fill = "none" stroke = "black" /> \n')
+                # actual iterations
+                f.write(f'<polyline points = " \
+                  {BegLineFinishX + (i+1)*spaceBetweenLines + lineLength*i}, \
+                  {BegLineStartY} {BegLineFinishX + (i+1)*spaceBetweenLines + lineLength*(i+1)}, \
+                  {BegLineStartY}" fill = "none" stroke = "black" /> \n')
 
-                if i == (howManyColsLine1 -1):
-                    f.write(f'<polyline points = "{BegLineFinishX + (i+1)*spacingBetweenLines1 + spacingBetweenLines1 + lineLength1*(i+1)} {BegLineStartY} {BegLineFinishX + (i+1)*spacingBetweenLines1 + spacingBetweenLines1 + lineLength1*(i+1) + lengthOfStartAndEndLine1},{BegLineStartY}" fill = "none" stroke = "black" /> \n')
-                    f.write(f'<polyline points = "{BegLineStartX + spacingBetweenLines1},{BegLineStartY2} {totalLengthKerfLine1 + BegLineStartX - spacingBetweenLines1},{BegLineStartY2}" fill = "none" stroke = "black" /> \n')
+                # end of the line is of variable length
+                if i == (numberOfCols - 1):
+                    f.write(f'<polyline points = " \
+                      {BegLineFinishX + (i+1)*spaceBetweenLines + spaceBetweenLines + lineLength*(i+1)}, \
+                      {BegLineStartY} \
+                      {BegLineFinishX + (i+1)*spaceBetweenLines + spaceBetweenLines + lineLength*(i+1) + lengthOfStartAndEndLine1}, \
+                      {BegLineStartY}" fill = "none" stroke = "black" /> \n')
+
+                    f.write(f'<polyline points = "{BegLineStartX + spaceBetweenLines}, \
+                      {BegLineStartY2} {totLengthFrKerf + BegLineStartX - spaceBetweenLines}, \
+                      {BegLineStartY2}" fill = "none" stroke = "black" /> \n')
 
     # if not the lid/top
     else:
@@ -347,7 +402,8 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
             x5,y5 = x4 + doveTailLength*INCH_TO_PIX_CONV, yStartNW
             for i in range(int(horizontalDim)):
                 increment = i*INCH_TO_PIX_CONV
-                f.write(f'{x1+increment},{y1} {x2+increment},{y2} {x3+increment},{y3} {x4+increment},{y4} {x5+increment},{y5} ')
+                f.write(f'{x1+increment},{y1} {x2+increment},{y2} \
+                  {x3+increment},{y3} {x4+increment},{y4} {x5+increment},{y5} ')
         elif position == "BACK" and lid == True:
             x1,y1 = xStartNW - thickness*INCH_TO_PIX_CONV, yStartNW
             x2,y2 = x1 + (horizontalDim+2*thickness)*INCH_TO_PIX_CONV*(1/3), y1
@@ -365,7 +421,8 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
             shiftForLid = horizontalDim*INCH_TO_PIX_CONV*(2/3)
 
             x1,y1  = xStartNW + horizontalDim*INCH_TO_PIX_CONV/6 - screwDiam*MM_TO_PIX_CONV/2, yStartNW
-            x2,y2  = x1, y1 + (screwLength-squareNutSide - distanceAfterNut)*MM_TO_PIX_CONV + thickness*INCH_TO_PIX_CONV
+            x2,y2  = x1, y1 + (screwLength-squareNutSide - distanceAfterNut)*MM_TO_PIX_CONV \
+              + thickness*INCH_TO_PIX_CONV
             x3,y3  = x2 - (squareNutSide - screwDiam)*MM_TO_PIX_CONV/2, y2
             x4,y4  = x3, y3 + squareNutThickness*MM_TO_PIX_CONV
             x5,y5  = x2, y4
@@ -536,13 +593,13 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
 ##############################################################
 ## FUNCTION TO GENERATE MAIN SVG, CALLS OTHER SVG FUNCTIONS ##
 ##############################################################
-def masterSVG(thickness, width, length, height, partition, partitionLocation, lid, topTextYesNo, topText, frontTextYesNo, frontText, fractal, fractalSideChoiceInput):
+def masterSVG(thickness, width, length, height, partitionMast, partLocMast, lid, topTextYesNo, topText, frontTextYesNo, frontText, fractal, fractalSideChoiceInput):
 
-    # origin of SVG 
+    # origin of SVG
     xScale1, yScale1 = 25,20 #pixels
     xScale2,yScale2 = xScale1 + 1*INCH_TO_PIX_CONV, yScale1 #pixels
     X_START, Y_START = 25, 30 #pixels
-    
+
     # seperation between pieces
     PIECE_SEPARATION = 5 #pixels
 
@@ -576,17 +633,17 @@ def masterSVG(thickness, width, length, height, partition, partitionLocation, li
 
     # required SVG generation
     baseSVG(f,"FRONT",thickness,width,height,xStartFront,yStartFront)
-    baseSVG(f,"BACK",thickness,width,height,xStartBack,yStartBack, partition, partitionLocation, lid)
-    baseSVG(f,"LEFT",thickness,length,height,xStartLeft,yStartLeft,partition, partitionLocation)
-    baseSVG(f,"RIGHT",thickness,length,height,xStartRight,yStartRight,partition, partitionLocation)
+    baseSVG(f,"BACK",thickness,width,height,xStartBack,yStartBack, partitionMast, partLocMast, lid)
+    baseSVG(f,"LEFT",thickness,length,height,xStartLeft,yStartLeft, partitionMast, partLocMast)
+    baseSVG(f,"RIGHT",thickness,length,height,xStartRight,yStartRight, partitionMast, partLocMast)
     baseSVG(f,"BOTTOM",thickness,width,length,xStartBottom,yStartBottom)
 
     # optional SVG generation
-    if (partition == True):
-        baseSVG(f,"PARTITION",thickness, width, height, xStartPartition, yStartPartition, partition, partitionLocation)
+    if (partitionMast == True):
+        baseSVG(f,"PARTITION",thickness, width, height, xStartPartition, yStartPartition, partitionMast, partLocMast)
 
     if (lid == True):
-        baseSVG(f,"TOP",thickness,width, length, xStartTop, yStartTop, partition, partitionLocation, lid)
+        baseSVG(f,"TOP",thickness,width, length, xStartTop, yStartTop, partitionMast, partLocMast, lid)
 
     if fractal == True:
         if fractalSideChoiceInput == "SIDE":
@@ -623,7 +680,7 @@ def masterSVG(thickness, width, length, height, partition, partitionLocation, li
     f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >fractal side/bottom: </tspan>\n')
     f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >front text string: </tspan>\n')
     f.write(f'<tspan x = "{xAtt1}" dy = "1.2em" >top text string: </tspan>\n')
-    
+
     f.write('</text>')
 
     f.write(f'<text x = "{xAtt2}" y = "{yAtt}" dy = "0">\n')
@@ -632,8 +689,8 @@ def masterSVG(thickness, width, length, height, partition, partitionLocation, li
     f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + str(width) + '</tspan>\n')
     f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + str(length) + '</tspan>\n')
     f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + str(height) + '</tspan>\n')
-    f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + str(partition) + '</tspan>\n')
-    f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + str(partitionLocation) +'</tspan>\n')
+    f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + str(partitionMast) + '</tspan>\n')
+    f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + str(partLocMast) +'</tspan>\n')
     f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + str(lid)  + '</tspan>\n')
     f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + str(topTextYesNo) + '</tspan>\n')
     f.write(f'<tspan x = "{xAtt2}" dy = "1.2em" >' + str(frontTextYesNo) + '</tspan>\n')
@@ -669,8 +726,8 @@ def main():
 
     boxValues = userAddOnInputs(length)
     # we can get rid of indivudual variables and just use the boxValues tuple... Whichever is easier
-    partition = boxValues[0]
-    partitionLocation = boxValues[1]
+    partitionMain = boxValues[0]
+    partLocMastain = boxValues[1]
     lid = boxValues[2]
     topTextYesNo = boxValues[3]
     topText = boxValues[4]
@@ -680,7 +737,7 @@ def main():
     fractalSideChoiceInput = boxValues[8]
 
     # CALL SVG FUNCTIONS
-    masterSVG(thickness,width,length,height,partition,partitionLocation,lid,topTextYesNo,topText,frontTextYesNo,frontText,fractal,fractalSideChoiceInput)
+    masterSVG(thickness,width,length,height,partitionMain,partLocMastain,lid,topTextYesNo,topText,frontTextYesNo,frontText,fractal,fractalSideChoiceInput)
 
     # printing results to check
     print('---------------------')
@@ -691,11 +748,11 @@ def main():
     print(f'width:  \t\t{width}')
     print(f'length: \t\t{length}')
     print(f'height: \t\t{height}')
-    
+
     print('---------------------')
     print('Add-ons:')
-    print(f'partition: \t\t{partition}')
-    print(f'location of partition: \t{partitionLocation}')
+    print(f'partition: \t\t{partitionMain}')
+    print(f'location of partition: \t{partLocMastain}')
     print(f'lid: \t\t\t{lid}')
     print(f'top: \t\t\t{topTextYesNo}')
     print(f'top text content: \t{topText}')
