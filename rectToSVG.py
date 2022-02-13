@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# simple program to ask user for rectangle dimensions and to output a rectangle of those dimensions as an .svg file.
+# simple program to ask user for rectangle dimensions and output a rectangle of those dimensions as an .svg file.
 
 def main():
 
