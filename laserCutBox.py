@@ -10,6 +10,7 @@ import math
 # constants
 MAX_WIDTH = 18 #verify this is the maximum width of the acrylic
 MAX_HEIGHT = 12 #verify this is the maximum height of the acrylic
+MAX_THICKNESS = 0.5 # arbitraty maximum thickness
 INCH_TO_PIX_CONV = 96*(2/5) # one inch = 96 pixels, 2:5 scale
 MM_TO_PIX_CONV = 3.7795275591*(2/5) # one mm = 3.78... pixels, , 2:5 scale
 FONT_SIZE_CONV = 72 # size 1 pt font = 1/72 inch
@@ -26,11 +27,6 @@ print("-------------------------------------------------------------------------
 ## FUNCTION TO ACCEPT USER INPUTS FOR BOX DIMENSIONS ##
 #######################################################
 def userDimInput(thickness, width, length, height):
-
-    #constants
-    MAX_WIDTH = 24.0 #verify this is the maximum width of the acrylic
-    MAX_HEIGHT = 18.0 #verify this is the maximum height of the acrylic
-    MAX_THICKNESS = 0.5 # arbitraty maximum thickness
 
     # while loop placeholder
     tooBig = True # placeholder for initial while loop -> assume box too big until otherwise
@@ -112,6 +108,8 @@ def userAddOnInputs(length):
                     print("Invalid length. Please enter a positive value")
                 if partitionLocation > length:
                     print("Invalid length. Please enter a value which is less than the length.")
+        if partitionInput != "Y" and partitionInput != "N":
+            print('You did not enter a valid response. Please try again.')
         else:
             partition = False
 
@@ -122,6 +120,8 @@ def userAddOnInputs(length):
             lid = True
         else:
             lid = False
+        if lidInput != "Y" and lidInput != "N":
+            print('You did not enter a valid response. Please try again.')
 
     # user input for text option and content
     if lid == True:
@@ -130,6 +130,8 @@ def userAddOnInputs(length):
             topTextInput = topTextValues[0]
             topTextYesNo = topTextValues[1]
             topText = topTextValues[2]
+            if topTextInput != "Y" and topTextInput != "N":
+                print('You did not enter a valid response. Please try again.')
 
     # user input for text option and content
     while (frontTextInput != "Y" and frontTextInput != "N"):
@@ -137,6 +139,8 @@ def userAddOnInputs(length):
         frontTextInput = frontTextValues[0]
         frontTextYesNo = frontTextValues[1]
         frontText = frontTextValues[2]
+        if frontTextInput != "Y" and frontTextInput != "N":
+            print('You did not enter a valid response. Please try again.')
 
     # user input for the fractal
     while (fractalInput != "Y" and fractalInput != "N"):
@@ -145,8 +149,12 @@ def userAddOnInputs(length):
             fractal = True
             while (fractalSideChoiceInput != "SIDE" and fractalSideChoiceInput != "BOTTOM"):
                 fractalSideChoiceInput = input("Enter the location of the fractal - Side or Bottom: ").upper()
+                if fractalSideChoiceInput != "SIDE" and fractalSideChoiceInput != "BOTTOM":
+                    print('You did not enter a valid response. Please try again.')
         else:
             fractal = False
+        if fractalInput != "Y" and fractalInput != "N":
+            print('You did not enter a valid response. Please try again.')
 
     return partition, partitionLocation, lid, topTextYesNo, topText, frontTextYesNo, frontText, fractal, fractalSideChoiceInput
 
@@ -169,7 +177,7 @@ def textInput(location):
 ## FUNCTION TO ACCEPT USER INPUT FOR A SINGLE DIMENSION ##
 ##########################################################
 def userSingleDim(dimension, dimensionValue, thickness):
-    while dimensionValue <= 0 or dimensionValue > 24 - 2*thickness:
+    while dimensionValue <= 0 or dimensionValue > 18 - 2*thickness:
         isFloat = True
 
         try: 
@@ -182,7 +190,7 @@ def userSingleDim(dimension, dimensionValue, thickness):
         if isFloat == True:
             dimensionValue = int(dimensionValue)
             if dimensionValue <= 0:
-                print("Invalid thickness! Only positive values accepted.")
+                print(f"Invalid {dimension}! Only positive values accepted.")
             if dimensionValue > 18 - 2*thickness - .5:
                 print(f'Invalid {dimension}! Maximum dimension of the available material is only 18". \nPlease try again. Account for thickness and piece separation.')
     
@@ -292,11 +300,11 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
 
         # kerf pattern
         totalLengthKerfLine1 = (horizontalDim + 2*thickness)*INCH_TO_PIX_CONV
-        print(totalLengthKerfLine1)
+        #print(totalLengthKerfLine1)
         totalLengthKerfLine2 = totalLengthKerfLine1 - xOffset
         #distanceToFill = totalLengthKerf - (lineLength - spacingBetweenLines - lengthOfCurve)
         howManyColsLine1 = int(totalLengthKerfLine1/(lineLength1 + 2*spacingBetweenLines1))
-        print(howManyColsLine1)
+        #print(howManyColsLine1)
         howManyColsLine2 = int(totalLengthKerfLine2/(lineLength2 + 2*spacingBetweenLines2))
         distanceToFillWithBookends1 = totalLengthKerfLine1 - (lineLength1 + 1*spacingBetweenLines1)*howManyColsLine1 - spacingBetweenLines1
         distanceToFillWithBookends2 = totalLengthKerfLine2 - (lineLength2 + 1*spacingBetweenLines2)*howManyColsLine2 - spacingBetweenLines2
