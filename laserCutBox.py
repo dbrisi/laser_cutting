@@ -88,9 +88,9 @@ def userDimInput(thickness, width, length, height):
                 print('Your entered dimensions exceed the allowable material to cut.')
                 print(f'The maximum allowable cutting area is {MAX_WIDTH}" x {MAX_HEIGHT}"')
                 print(f'{MAX_WIDTH}" includes twice the width, twice the length, eight times the '\
-                    'thickness and piece seperation.')
+                    'thickness and piece separation.')
                 print(f'{MAX_HEIGHT}" includes the length, the height, four times thickness '\
-                    'and piece seperation.')
+                    'and piece separation.')
                 print('Please try again.')
                 print("----------------------------------------------------------------------------")
 
