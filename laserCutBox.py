@@ -323,7 +323,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
         spaceBetweenLines = 1/16*INCH_TO_PIX_CONV
         lineLength = .7*INCH_TO_PIX_CONV
 
-        # outline of the lid
+        # OUTLINE OF THE LID
         x1,y1 = xStartNW - thickness*INCH_TO_PIX_CONV, yStartNW-thickness*INCH_TO_PIX_CONV
         x2,y2 = x1 + (horizontalDim+2*thickness)*INCH_TO_PIX_CONV*(1/3), y1
         x3,y3 = x2, y2 + thickness*INCH_TO_PIX_CONV
@@ -334,18 +334,11 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
         x8,y8 = x1,y7
         x9,y9 = x1,y1
 
-        f.write(f'<polyline points = "{x1},{y1} \
-          {x2},{y2} \
-          {x3},{y3} \
-          {x4},{y4} \
-          {x5},{y5} \
-          {x6},{y6} \
-          {x7},{y7} \
-          {x8},{y8} \
-          {x9},{y9}" \
+        f.write(f'<polyline points = "{x1},{y1} {x2},{y2} {x3},{y3} {x4},{y4} {x5},{y5} \
+          {x6},{y6} {x7},{y7} {x8},{y8} {x9},{y9}" \
           style = "fill:none;stroke:black;stroke:2"/>\n')
 
-        # holes for the lid
+        # HOLES FOR THE LID
         xHole1, yHole1  = xStartNW + horizontalDim*INCH_TO_PIX_CONV/6, \
         yStartNW - thickness*INCH_TO_PIX_CONV/2 + screwDiam*MM_TO_PIX_CONV/2
 
@@ -359,7 +352,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
         r = "{screwDiam*MM_TO_PIX_CONV/2}" \
         style="fill:none;stroke:black;stroke:1"/>\n')
 
-        # kerf pattern begins
+        # KERF PATTERN BEGINS
         totLengthFrKerf = (horizontalDim + 2*thickness)*INCH_TO_PIX_CONV
 
         # how many columns of pattern can we fit
@@ -417,9 +410,9 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
                       {BegLineStartY2} {totLengthFrKerf + BegLineStartX - spaceBetweenLines}, \
                       {BegLineStartY2}" fill = "none" stroke = "black" /> \n')
 
-    # if not the lid/top
+    # IF NOT THE LID
     else:
-        # horizontal side 1 (NW to NE) --> Top side of SVG base
+        # HORIZONTAL SIDE 1 (NW to NE) --> Top side of SVG base
         f.write('<polyline points="')
         x1,y1 = xStartNW,  yStartNW
         if position == "BOTTOM":
@@ -486,7 +479,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
             f.write(f'<circle cx = "{xHole2}" cy = "{yHole2}" r = "{screwDiam*MM_TO_PIX_CONV/2}" \
                 style="fill:none;stroke:black;stroke:1"/>\n')
 
-        # vertical side 1 (NE to SE) --> Right side of SVG base
+        # VERTICAL SIDE 1 (NE to SE) --> Right side of SVG base
         x1,y1 = xStartNE,  yStartNE
         f.write('<polyline points="')
 
@@ -522,7 +515,8 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
         # slots for screws and nuts - side connections
         if (position == "FRONT" or position == "BACK" or position == "LEFT" or position == "RIGHT"):
             x1,y1  = xStartNE, yStartNE + 1.5*doveTailLength*INCH_TO_PIX_CONV - screwDiam*MM_TO_PIX_CONV/2
-            x2,y2  = x1-(screwLength-squareNutSide-distanceAfterNut)*MM_TO_PIX_CONV-thickness*INCH_TO_PIX_CONV, y1
+            x2 = x1-(screwLength-squareNutSide-distanceAfterNut)*MM_TO_PIX_CONV-thickness*INCH_TO_PIX_CONV
+            y2 = y1
             x3,y3  = x2, y2 - (squareNutSide - screwDiam)*MM_TO_PIX_CONV/2
             x4,y4  = x3 - squareNutThickness*MM_TO_PIX_CONV, y3
             x5,y5  = x4, y2
@@ -540,14 +534,14 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
                 style="fill:none;stroke:white;stroke:2"/>\n')
             f.write(f'<polyline points = "{x1},{y1} {x2},{y2} {x3},{y3} {x4},{y4} {x5},{y5} {x6},{y6} \
                 {x7},{y7} {x8},{y8} {x9},{y9} {x10},{y10} {x11},{y11} {x12},{y12}" \
-                    style="fill:none;stroke:black;stroke:2"/>\n')
+                style="fill:none;stroke:black;stroke:2"/>\n')
             f.write(f'<polyline points = "{x1},{y1 + shiftDown} {x2},{y2 + shiftDown} \
                 {x3},{y3 + shiftDown} {x4},{y4 + shiftDown} {x5},{y5 + shiftDown} \
                 {x6},{y6 + shiftDown} {x7},{y7 + shiftDown} {x8},{y8 + shiftDown} \
                 {x9},{y9 + shiftDown} {x10},{y10 + shiftDown} {x11},{y11 + shiftDown} {x12},{y12 + shiftDown}" \
                 style="fill:none;stroke:black;stroke:2"/>\n')
 
-        # horizontal side 2 (SE to SW) --> Bottom side of SVG base
+        # HORIZONTAL SIDE 2 (SE to SW) --> Bottom side of SVG base
         x1,y1 = xStartSE,  yStartSE
         f.write('<polyline points="')
 
@@ -563,7 +557,8 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
             x5,y5 = x4 - doveTailLength*INCH_TO_PIX_CONV, yStartSE
             for i in range(int(horizontalDim)):
                 increment = i*INCH_TO_PIX_CONV
-                f.write(f'{x1-increment},{y1} {x2-increment},{y2} {x3-increment},{y3} {x4-increment},{y4} {x5-increment},{y5} ')
+                f.write(f'{x1-increment},{y1} {x2-increment},{y2} {x3-increment},{y3} \
+                    {x4-increment},{y4} {x5-increment},{y5} ')
 
         f.write('" style="fill:none;stroke:black;stroke:2"/>\n')
 
@@ -580,7 +575,8 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
         # slots for screws and nuts - bottom connection (front and back pieces)
         if position == "FRONT" or position == "BACK":
             x1,y1  = xStartSW + doveTailLength*INCH_TO_PIX_CONV/2 - screwDiam*MM_TO_PIX_CONV/2, yStartSW
-            x2,y2  = x1, y1 - (screwLength-squareNutSide - distanceAfterNut)*MM_TO_PIX_CONV - thickness*INCH_TO_PIX_CONV
+            x2 = x1
+            y2 = y1-(screwLength-squareNutSide-distanceAfterNut)*MM_TO_PIX_CONV-thickness*INCH_TO_PIX_CONV
             x3,y3  = x2 - (squareNutSide - screwDiam)*MM_TO_PIX_CONV/2, y2
             x4,y4  = x3, y3 - squareNutThickness*MM_TO_PIX_CONV
             x5,y5  = x2, y4
@@ -598,7 +594,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
                 style="fill:none;stroke:white;stroke:2"/>\n')
             f.write(f'<polyline points = "{x1},{y1} {x2},{y2} {x3},{y3} {x4},{y4} {x5},{y5} {x6},{y6} \
                 {x7},{y7} {x8},{y8} {x9},{y9} {x10},{y10} {x11},{y11} {x12},{y12}" \
-                    style="fill:none;stroke:black;stroke:2"/>\n')
+                style="fill:none;stroke:black;stroke:2"/>\n')
             f.write(f'<polyline points = "{x1 + shiftRight},{y1} {x2 + shiftRight},{y2} \
                 {x3 + shiftRight},{y3} {x4 + shiftRight},{y4} {x5 + shiftRight},{y5} \
                 {x6 + shiftRight},{y6} {x7 + shiftRight},{y7} {x8 + shiftRight},{y8} \
@@ -606,7 +602,7 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
                 {x12 + shiftRight},{y12}" \
                 style="fill:none;stroke:black;stroke:2"/>\n')
 
-        # vertical side 2 (SW to NW) --> Left side of base SVG
+        # VERTICAL SIDE 2 (SW to NW) --> Left side of base SVG
         x1,y1 = xStartSW,  yStartSW
         f.write('<polyline points="')
 
@@ -617,7 +613,8 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
             x3, y3 = xStartNW - thickness*INCH_TO_PIX_CONV, y2
             x4, y4 = x3, y3 + doveTailLength*INCH_TO_PIX_CONV
             x5, y5 = x1, y4
-            x6, y6 = x5, yStartNW + (verticalDim - partitionDoveTailDistance - partitionDoveTailLength)*INCH_TO_PIX_CONV
+            x6= x5 
+            y6 = yStartNW+(verticalDim-partitionDoveTailDistance-partitionDoveTailLength)*INCH_TO_PIX_CONV
             x7, y7 = x5 - thickness*INCH_TO_PIX_CONV, y6
             x8, y8 = x7, y7 + doveTailLength*INCH_TO_PIX_CONV
             x9, y9 = x1, y8
@@ -660,10 +657,12 @@ def baseSVG(f, position, thickness, horizontalDim, verticalDim, X_START, Y_START
                 width = "{thickness*INCH_TO_PIX_CONV}" height = "{partitionDoveTailLength*INCH_TO_PIX_CONV}" \
                 style="fill:none;stroke:black;strokeDim:3"/>\n')
         if (position == "RIGHT" and partition == True):
-            f.write(f'<rect x = "{X_START + (horizontalDim - partitionLocation - thickness/2)*INCH_TO_PIX_CONV}" \
-                y = "{Y_START + (partitionDoveTailDistance*INCH_TO_PIX_CONV)}" width = "{thickness*INCH_TO_PIX_CONV}" \
-                height = "{partitionDoveTailLength*INCH_TO_PIX_CONV}" style="fill:none;stroke:black;strokeDim:3"/>\n')
-            f.write(f'<rect x = "{X_START + (horizontalDim - partitionLocation - thickness/2)*INCH_TO_PIX_CONV}" \
+            f.write(f'<rect x="{X_START+(horizontalDim-partitionLocation-thickness/2)*INCH_TO_PIX_CONV}" \
+                y = "{Y_START + (partitionDoveTailDistance*INCH_TO_PIX_CONV)}" \
+                width = "{thickness*INCH_TO_PIX_CONV}" \
+                height = "{partitionDoveTailLength*INCH_TO_PIX_CONV}" \
+                style="fill:none;stroke:black;strokeDim:3"/>\n')
+            f.write(f'<rect x="{X_START+(horizontalDim-partitionLocation-thickness/2)*INCH_TO_PIX_CONV}" \
                 y = "{Y_START + ((verticalDim - partitionDoveTailLength - partitionDoveTailDistance)*INCH_TO_PIX_CONV)}" \
                 width = "{thickness*INCH_TO_PIX_CONV}" height = "{partitionDoveTailLength*INCH_TO_PIX_CONV}" \
                 style="fill:none;stroke:black;strokeDim:3"/>\n')
@@ -687,7 +686,8 @@ def masterSVG(thickness, width, length, height, partitionMast, partLocMast, lid,
     xStartFront, yStartFront = X_START, Y_START
     xStartBack, yStartBack = xStartFront + (width + 2*thickness)*INCH_TO_PIX_CONV + PIECE_SEPARATION, Y_START
     xStartLeft, yStartLeft = xStartBack + (width + 2* thickness)*INCH_TO_PIX_CONV + PIECE_SEPARATION, Y_START
-    xStartRight, yStartRight = xStartLeft + (length + 2* thickness)*INCH_TO_PIX_CONV + PIECE_SEPARATION, Y_START
+    xStartRight  = xStartLeft + (length + 2* thickness)*INCH_TO_PIX_CONV + PIECE_SEPARATION
+    yStartRight = Y_START
     # row 2 of pieces
     xStartTop, yStartTop = X_START, Y_START + (height + 2*thickness)*INCH_TO_PIX_CONV + PIECE_SEPARATION
     xStartBottom = xStartTop + (width + 2*thickness)*INCH_TO_PIX_CONV + PIECE_SEPARATION 
@@ -712,16 +712,17 @@ def masterSVG(thickness, width, length, height, partitionMast, partLocMast, lid,
 
     # CALLING SVG generation functions
 
-    # required SVG generation
+    # REQUIRED SVG generation
     baseSVG(f,"FRONT",thickness,width,height,xStartFront,yStartFront)
     baseSVG(f,"BACK",thickness,width,height,xStartBack,yStartBack, partitionMast, partLocMast, lid)
     baseSVG(f,"LEFT",thickness,length,height,xStartLeft,yStartLeft, partitionMast, partLocMast)
     baseSVG(f,"RIGHT",thickness,length,height,xStartRight,yStartRight, partitionMast, partLocMast)
     baseSVG(f,"BOTTOM",thickness,width,length,xStartBottom,yStartBottom)
 
-    # optional SVG generation
+    # OPTIONAL SVG generation
     if (partitionMast == True):
-        baseSVG(f,"PARTITION",thickness, width, height, xStartPartition, yStartPartition, partitionMast, partLocMast)
+        baseSVG(f,"PARTITION",thickness, width, height, \
+            xStartPartition, yStartPartition, partitionMast, partLocMast)
 
     if (lid == True):
         baseSVG(f,"TOP",thickness,width, length, xStartTop, yStartTop, partitionMast, partLocMast, lid)
@@ -799,14 +800,13 @@ def main():
 
     boxDims = userDimInput(thickness, width, length, height)
 
-     # we can get rid of indivudual variables and just use the boxDims tuple... Whichever is easier
     thickness = boxDims[0]
     width = boxDims[1]
     length = boxDims[2]
     height = boxDims[3]
 
     boxValues = userAddOnInputs(length)
-    # we can get rid of indivudual variables and just use the boxValues tuple... Whichever is easier
+
     partitionMain = boxValues[0]
     partLocMastain = boxValues[1]
     lid = boxValues[2]
