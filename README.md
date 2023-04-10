@@ -4,7 +4,7 @@
 
 ### (And making a few boxes ourselves)
 
-#### Digital Manufacturing Project (Making a box using later cutting) - 2022
+#### Digital Manufacturing Project - 2022
 
 ![image](./read_me_images/demo_photo.png)
 
