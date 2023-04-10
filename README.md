@@ -1,6 +1,8 @@
 # laser_cutting
 
-## Generating a program to make customizable boxes with a laser cutter. 
+## Creating a program to make customizable boxes with a laser cutter.
+
+### (And making a few boxes ourselves)
 
 #### Digital Manufacturing Project (Making a box using later cutting) - 2022
 
