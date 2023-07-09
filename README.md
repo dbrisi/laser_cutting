@@ -13,7 +13,7 @@ To familiarize ourselves with the laser cutter and programming for SVG creation,
 Our initial program allows the user to generate any rectangle with or without initials so long as the rectangle is not greater than two inches in length or width and the number of initials does not exceed three. The program generates SVG files of the rectangular cutouts with the text of the initials centered and autosized to not exceed the bounds of the rectangle.
 Images of the generated SVG files we used for laser cutting are shown below:
 
-![image](./read_me_images/inital_svgs.JPG)
+![image](./read_me_images/initial_svgs.JPG)
 
 Actual SVG text for the small “DJD” rectangle is shown below:
 ```
@@ -38,7 +38,7 @@ In our code, black signifies a complete “through” cut, and red signifies a p
 
 Images of rectangles we printed using scrap wood from the Makerspace (with our initials) are shown below:
 
-![image](./read_me_images/inital_initials.JPG)
+![image](./read_me_images/initial_initials.JPG)
 
 
 ## Main Python Script Overview
